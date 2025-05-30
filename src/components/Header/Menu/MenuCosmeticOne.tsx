@@ -14,6 +14,9 @@ import { useModalWishlistContext } from '@/context/ModalWishlistContext';
 import { useModalSearchContext } from '@/context/ModalSearchContext';
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     props: string
@@ -30,6 +33,8 @@ const MenuCosmeticOne: React.FC<Props> = ({ props }) => {
     const { openModalSearch } = useModalSearchContext()
     const [searchKeyword, setSearchKeyword] = useState('');
     const router = useRouter()
+    const currentLanguage = useSelector((state: RootState) => state.language);
+    const { t } = useTranslation();
 
     const handleSearch = (value: string) => {
         router.push(`/search-result?query=${value}`)

@@ -13,7 +13,7 @@ interface Props {
 }
 
 const BreadcrumbProduct: React.FC<Props> = ({ data, productPage, productId }) => {
-    const productMain = data.filter(product => product.id === productId)
+    const productMain = data?.filter(product => product.id === productId)
     const router = useRouter()
 
     const handleDetailProduct = (productId: string | number | null) => {

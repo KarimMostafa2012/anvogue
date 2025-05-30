@@ -262,13 +262,12 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                   <div className="heading4 mt-1">{productMain.name}</div>
                 </div>
                 <div
-                  className={`add-wishlist-btn w-12 h-12 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white ${
-                    wishlistState.wishlistArray.some(
-                      (item) => item.id === productMain.id
-                    )
+                  className={`add-wishlist-btn w-12 h-12 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white ${wishlistState.wishlistArray.some(
+                    (item) => item.id === productMain.id
+                  )
                       ? "active"
                       : ""
-                  }`}
+                    }`}
                   onClick={handleAddToWishlist}
                 >
                   {wishlistState.wishlistArray.some(
@@ -452,9 +451,8 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                                 );
                               }
                             }}
-                            className={`${
-                              quantity[item.id] === 0 ? "disabled" : ""
-                            } cursor-pointer`}
+                            className={`${quantity[item.id] === 0 ? "disabled" : ""
+                              } cursor-pointer`}
                           />
                           <div className="body1 font-semibold">
                             {quantity[item.id] || 0}
@@ -484,9 +482,8 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                     {productMain.variation.map((item, index) => (
                       <div
                         key={index}
-                        className={`color-item w-6 h-6 rounded-full !duration-0 relative ${
-                          activeColor === item.color ? "active" : ""
-                        }`}
+                        className={`color-item w-6 h-6 rounded-full !duration-0 relative ${activeColor === item.color ? "active" : ""
+                          }`}
                         style={{ backgroundColor: `${item.colorCode}` }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -570,9 +567,8 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                     <Icon.Minus
                       size={20}
                       onClick={handleDecreaseQuantity}
-                      className={`${
-                        productMain.quantityPurchase === 1 ? "disabled" : ""
-                      } cursor-pointer`}
+                      className={`${productMain.quantityPurchase === 1 ? "disabled" : ""
+                        } cursor-pointer`}
                     />
                     <div className="body1 font-semibold">
                       {productMain.quantityPurchase}
@@ -758,25 +754,22 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
             <div className="flex items-center justify-center w-full">
               <div className="menu-tab flex items-center md:gap-[60px] gap-8">
                 <div
-                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${
-                    activeTab === "description" ? "active" : ""
-                  }`}
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "description" ? "active" : ""
+                    }`}
                   onClick={() => handleActiveTab("description")}
                 >
                   Description
                 </div>
                 <div
-                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${
-                    activeTab === "specifications" ? "active" : ""
-                  }`}
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "specifications" ? "active" : ""
+                    }`}
                   onClick={() => handleActiveTab("specifications")}
                 >
                   Specifications
                 </div>
                 <div
-                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${
-                    activeTab === "review" ? "active" : ""
-                  }`}
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "review" ? "active" : ""
+                    }`}
                   onClick={() => handleActiveTab("review")}
                 >
                   Review
@@ -785,9 +778,8 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
             </div>
             <div className="desc-block mt-8">
               <div
-                className={`desc-item description ${
-                  activeTab === "description" ? "open" : ""
-                }`}
+                className={`desc-item description ${activeTab === "description" ? "open" : ""
+                  }`}
               >
                 <div className="grid md:grid-cols-2 gap-8 gap-y-5">
                   <div className="left">
@@ -879,9 +871,8 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                 </div>
               </div>
               <div
-                className={`desc-item specifications flex items-center justify-center ${
-                  activeTab === "specifications" ? "open" : ""
-                }`}
+                className={`desc-item specifications flex items-center justify-center ${activeTab === "specifications" ? "open" : ""
+                  }`}
               >
                 <div className="lg:w-1/2 sm:w-3/4 w-full">
                   <div className="item bg-surface flex items-center gap-8 py-3 px-10">
@@ -1004,9 +995,8 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                 </div>
               </div>
               <div
-                className={`desc-item review-block ${
-                  activeTab === "review" ? "open" : ""
-                }`}
+                className={`desc-item review-block ${activeTab === "review" ? "open" : ""
+                  }`}
               >
                 <div className="top-overview flex max-sm:flex-col items-center justify-between gap-12 gap-y-4">
                   <div className="left flex max-sm:flex-col gap-y-4 items-center justify-between lg:w-1/2 sm:w-2/3 w-full sm:pr-5">

@@ -57,7 +57,11 @@ const SearchResult = () => {
             sizes: [],
             variation: [],
             thumbImage: [],
-            images: [],
+            images: [
+                { img: '/images/no-data.png', id: 1 },
+                { img: '/images/no-data.png', id: 2 },
+                { img: '/images/no-data.png', id: 3 }
+            ],
             description: 'no-data',
             action: 'no-data',
             slug: 'no-data'
@@ -124,7 +128,7 @@ const SearchResult = () => {
                                 item.id === 'no-data' ? (
                                     <div key={item.id} className="no-data-product">No products match the selected criteria.</div>
                                 ) : (
-                                    <Product key={item.id} data={item} type='grid' />
+                                    <Product key={item.id} data={item} type='grid' style='' />
                                 )
                             ))}
                         </div>

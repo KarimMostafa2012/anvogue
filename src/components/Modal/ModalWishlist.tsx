@@ -33,7 +33,7 @@ const ModalWishlist = () => {
                                 <div className="infor flex items-center gap-5">
                                     <div className="bg-img">
                                         <Image
-                                            src={product.images[0]}
+                                            src={product.images[0].img}
                                             width={300}
                                             height={300}
                                             alt={product.name}

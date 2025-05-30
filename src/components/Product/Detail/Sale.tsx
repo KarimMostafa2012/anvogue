@@ -161,10 +161,10 @@ const Sale: React.FC<Props> = ({ data, productId }) => {
                                 modules={[Navigation, Thumbs]}
                                 className="mySwiper style-rectangle"
                             >
-                                {productMain.images.map((item, index) => (
+                                {productMain.images?.map((item, index) => (
                                     <SwiperSlide key={index}>
                                         <Image
-                                            src={item}
+                                            src={item.img}
                                             width={1000}
                                             height={1300}
                                             alt='prd-img'

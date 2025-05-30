@@ -4,6 +4,10 @@ import React, { useState } from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
 import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { changeLanguage } from '@/redux/slices/languageSlice';
 
 interface Props {
     props: string;
@@ -12,9 +16,21 @@ interface Props {
 
 const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
     const [isOpenLanguage, setIsOpenLanguage] = useState(false)
-    const [isOpenCurrence, setIsOpenCurrence] = useState(false)
-    const [language, setLanguage] = useState('English')
-    const [currence, setCurrence] = useState('USD')
+    const [selectedLanguage, setSelectedLanguage] = useState<string>("English")
+    const dispatch = useDispatch<AppDispatch>()
+    const handleChangeLanguage = (language: string) => {
+        dispatch(changeLanguage(language));
+    };
+    const currentLanguage = useSelector((state: RootState) => state.language);
+    const { t } = useTranslation();
+
+    const languages = [
+        { key: "ar", name: "Arabic" },
+        { key: "en", name: "English" },
+        { key: "de", name: "German" },
+        { key: "ckb", name: "Central Kurdish" },
+        { key: "uk", name: "Ukrainian" },
+    ];
 
     return (
         <>
@@ -26,34 +42,14 @@ const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
                                 className="choose-type choose-language flex items-center gap-1.5"
                                 onClick={() => {
                                     setIsOpenLanguage(!isOpenLanguage)
-                                    setIsOpenCurrence(false)
                                 }}
                             >
                                 <div className="select relative">
-                                    <p className="selected caption2 text-white">{language}</p>
+                                    <p className="selected caption2 text-white">{selectedLanguage}</p>
                                     <ul className={`list-option bg-white ${isOpenLanguage ? 'open' : ''}`}>
                                         {
-                                            ['English', 'Espana', 'France'].map((item, index) => (
-                                                <li key={index} className="caption2" onClick={() => setLanguage(item)}>{item}</li>
-                                            ))
-                                        }
-                                    </ul>
-                                </div>
-                                <Icon.CaretDown size={12} color='#fff' />
-                            </div>
-                            <div
-                                className="choose-type choose-currency flex items-center gap-1.5"
-                                onClick={() => {
-                                    setIsOpenCurrence(!isOpenCurrence)
-                                    setIsOpenLanguage(false)
-                                }}
-                            >
-                                <div className="select relative">
-                                    <p className="selected caption2 text-white">{currence}</p>
-                                    <ul className={`list-option bg-white ${isOpenCurrence ? 'open' : ''}`}>
-                                        {
-                                            ['USD', 'EUR', 'GBP'].map((item, index) => (
-                                                <li key={index} className="caption2" onClick={() => setCurrence(item)}>{item}</li>
+                                            languages.map((item, index) => (
+                                                <li key={index} className="caption2" onClick={() => { handleChangeLanguage(item.key); setSelectedLanguage(item.name) }}>{item.name}</li>
                                             ))
                                         }
                                     </ul>
