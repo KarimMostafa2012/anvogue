@@ -46,16 +46,17 @@ const SearchResult = () => {
             name: 'no-data',
             gender: 'no-data',
             new: false,
-            sale: false,
+            has_offer: false,
             rate: 0,
+            new_price: 0,
             price: 0,
-            originPrice: 0,
+            offer_value: 0,
             brand: 'no-data',
             sold: 0,
             quantity: 0,
             quantityPurchase: 0,
             sizes: [],
-            variation: [],
+            colors: [],
             thumbImage: [],
             images: [
                 { img: '/images/no-data.png', id: 1 },
@@ -128,7 +129,7 @@ const SearchResult = () => {
                                 item.id === 'no-data' ? (
                                     <div key={item.id} className="no-data-product">No products match the selected criteria.</div>
                                 ) : (
-                                    <Product key={item.id} data={item} type='grid' style='' />
+                                    <Product key={item.id} data={item} type='grid' />
                                 )
                             ))}
                         </div>

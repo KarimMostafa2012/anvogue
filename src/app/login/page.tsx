@@ -32,7 +32,7 @@ const Login = () => {
       })
       .then((data) => {
         // معالجة الاستجابة الناجحة
-        if (document.querySelector("#remember").checked) {
+        if ((document.querySelector("#remember") as HTMLInputElement)?.checked) {
           window.localStorage.setItem("accessToken", data.access);
           window.localStorage.setItem("refreshToken", data.refresh);
           window.sessionStorage.setItem("loggedIn", "true");
@@ -68,7 +68,7 @@ const Login = () => {
                 className="md:mt-7 mt-4"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleLogin(e.target);
+                  handleLogin(e.currentTarget);
                 }}
               >
                 <div className="email ">

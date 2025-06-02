@@ -21,7 +21,7 @@ const TabFeatures: React.FC<Props> = ({ data, start, limit }) => {
 
     const getFilterData = () => {
         if (activeTab === 'on sale') {
-            return data.filter((product) => product.sale && (product.category === 'furniture'))
+            return data.filter((product) => product.has_offer && (product.category === 'furniture'))
         }
 
         if (activeTab === 'new arrivals') {
@@ -65,7 +65,7 @@ const TabFeatures: React.FC<Props> = ({ data, start, limit }) => {
 
                     <div className="list-product grid lg:grid-cols-4 grid-cols-2 md:gap-[30px] gap-5 hide-product-sold section-swiper-navigation  md:mt-10 mt-6">
                         {filteredProducts.slice(start, limit).map((prd, index) => (
-                            <Product key={index} data={prd} type='grid' style='style-1' />
+                            <Product key={index} data={prd} type='grid' />
                         ))}
                     </div>
                 </div>

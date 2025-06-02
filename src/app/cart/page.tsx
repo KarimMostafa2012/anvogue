@@ -42,7 +42,7 @@ const Cart = () => {
     let [shipCart, setShipCart] = useState<number>(30)
     let [applyCode, setApplyCode] = useState<number>(0)
 
-    cartState.cartArray.map(item => totalCart += item.price * item.quantity)
+    cartState.cartArray.map(item => totalCart += Number(item.price) * item.quantity)
 
     const handleApplyCode = (minValue: number, discount: number) => {
         if (totalCart > minValue) {
@@ -163,7 +163,7 @@ const Cart = () => {
                                                         </div>
                                                     </div>
                                                     <div className="w-1/6 flex total-price items-center justify-center">
-                                                        <div className="text-title text-center">${product.quantity * product.price}.00</div>
+                                                        <div className="text-title text-center">${product.quantity * Number(product.price)}.00</div>
                                                     </div>
                                                     <div className="w-1/12 flex items-center justify-center">
                                                         <Icon.XCircle

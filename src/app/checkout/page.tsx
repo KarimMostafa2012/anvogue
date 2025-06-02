@@ -22,7 +22,7 @@ const Checkout = () => {
     let [totalCart, setTotalCart] = useState<number>(0)
     const [activePayment, setActivePayment] = useState<string>('credit-card')
 
-    cartState.cartArray.map(item => totalCart += item.price * item.quantity)
+    cartState.cartArray.map(item => totalCart += Number(item.price) * item.quantity)
 
     const handlePayment = (item: string) => {
         setActivePayment(item)
@@ -244,9 +244,9 @@ const Checkout = () => {
                                                         <div>
                                                             <div className="name text-title">{product.name}</div>
                                                             <div className="caption1 text-secondary mt-2">
-                                                                <span className='size capitalize'>{product.selectedSize || product.sizes[0]}</span>
-                                                                <span>/</span>
-                                                                <span className='color capitalize'>{product.selectedColor || product.variation[0].color}</span>
+                                                                {/* <span className='size capitalize'>{product.selectedSize || product.sizes[0]}</span>
+                                                                <span>/</span> */}
+                                                                <span className='color capitalize'>{product.selectedColor || product.colors[0].color}</span>
                                                             </div>
                                                         </div>
                                                         <div className="text-title">

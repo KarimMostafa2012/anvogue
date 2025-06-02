@@ -58,7 +58,7 @@ const WomenFashion: React.FC<Props> = ({ data, start, limit }) => {
                             />
                         </Link>
                         {filteredProducts.slice(start, limit).map((prd, index) => (
-                            <Product key={index} data={prd} type='grid' style='style-1' />
+                            <Product key={index} data={prd} type='grid'  />
                         ))}
                     </div>
                 </div>

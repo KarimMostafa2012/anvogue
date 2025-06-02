@@ -10,7 +10,7 @@ const Checkout = () => {
     const { cartState } = useCart();
     let [totalCart, setTotalCart] = useState<number>(0)
 
-    cartState.cartArray.map(item => totalCart += item.price * item.quantity)
+    cartState.cartArray.map(item => totalCart += Number(item.price) * item.quantity)
 
     return (
         <>

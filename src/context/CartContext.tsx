@@ -6,8 +6,8 @@ import { ProductType } from '@/type/ProductType';
 
 interface CartItem extends ProductType {
     quantity: number
-    selectedSize: string
-    selectedColor: string
+    selectedSize: number | undefined
+    selectedColor: string | undefined
 }
 
 interface CartState {
@@ -19,7 +19,7 @@ type CartAction =
     | { type: 'REMOVE_FROM_CART'; payload: string }
     | {
         type: 'UPDATE_CART'; payload: {
-            itemId: string; quantity: number, selectedSize: string, selectedColor: string
+            itemId: string; quantity: number, selectedSize: number | undefined, selectedColor: string | undefined
         }
     }
     | { type: 'LOAD_CART'; payload: CartItem[] }
@@ -28,7 +28,7 @@ interface CartContextProps {
     cartState: CartState;
     addToCart: (item: ProductType) => void;
     removeFromCart: (itemId: string) => void;
-    updateCart: (itemId: string, quantity: number, selectedColor: string, selectedSize?: string) => void;
+    updateCart: (itemId: string, quantity: number, selectedColor: string | undefined, selectedSize?: number | undefined) => void;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
@@ -36,7 +36,7 @@ const CartContext = createContext<CartContextProps | undefined>(undefined);
 const cartReducer = (state: CartState, action: CartAction): CartState => {
     switch (action.type) {
         case 'ADD_TO_CART':
-            const newItem: CartItem = { ...action.payload, quantity: 1, selectedSize: '', selectedColor: '' };
+            const newItem: CartItem = { ...action.payload, quantity: 1, selectedSize: 0, selectedColor: '' };
             return {
                 ...state,
                 cartArray: [...state.cartArray, newItem],
@@ -81,7 +81,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         dispatch({ type: 'REMOVE_FROM_CART', payload: itemId });
     };
 
-    const updateCart = (itemId: string, quantity: number, selectedSize: string, selectedColor: string) => {
+    const updateCart = (itemId: string, quantity: number, selectedColor: string | undefined, selectedSize?: number | undefined) => {
         dispatch({ type: 'UPDATE_CART', payload: { itemId, quantity, selectedSize, selectedColor } });
     };
 

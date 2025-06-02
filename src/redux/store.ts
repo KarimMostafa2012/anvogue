@@ -5,6 +5,7 @@ import categoriesSlice from "./slices/categorySlice";
 import subCategorySlice from "./slices/subCategorySlice";
 import productSlice from "./slices/productSlice";
 import languageSlice from "./slices/languageSlice";
+import offerSlice from "./slices/offers";
 
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -15,6 +16,7 @@ const store = configureStore({
         categories: categoriesSlice,
         products: productSlice,
         language: languageSlice,
+        offer: offerSlice,
     }
 })
 

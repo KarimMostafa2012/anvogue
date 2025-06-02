@@ -23,7 +23,7 @@ const TabFeatures: React.FC<Props> = ({ data, start, limit }) => {
 
     const getFilterData = () => {
         if (activeTab === 'on sale') {
-            return data.filter((product) => product.sale && (product.category === 'fashion'))
+            return data.filter((product) => product.has_offer && (product.category === 'fashion'))
         }
 
         if (activeTab === 'new arrivals') {

@@ -10,6 +10,7 @@ import Product from "../Product/Product";
 import ReactPaginate from "react-paginate";
 import { useTranslation } from "react-i18next";
 import { getAllCategories } from "@/redux/slices/categorySlice";
+import { ProductType } from "@/type/ProductType";
 
 interface Params {
   product_name?: string;
@@ -25,20 +26,24 @@ interface Params {
   has_offer?: boolean;
 }
 
-// HandlePagination component
 interface PaginationProps {
   pageCount: number;
   onPageChange: (selected: number) => void;
+  forcePage?: number;
 }
 
-const HandlePagination: React.FC<PaginationProps> = ({ pageCount, onPageChange }) => {
+const HandlePagination: React.FC<PaginationProps> = ({
+  pageCount,
+  onPageChange,
+  forcePage,
+}) => {
   const { t } = useTranslation();
   return (
     <ReactPaginate
       previousLabel={<Icon.CaretLeft size={16} className="text-secondary2" />}
       nextLabel={<Icon.CaretRight size={16} className="text-secondary2" />}
       pageCount={pageCount}
-      pageRangeDisplayed={3}
+      pageRangeDisplayed={6}
       marginPagesDisplayed={2}
       onPageChange={(selectedItem) => onPageChange(selectedItem.selected)}
       containerClassName="pagination flex items-center justify-center gap-2 mt-8"
@@ -53,26 +58,43 @@ const HandlePagination: React.FC<PaginationProps> = ({ pageCount, onPageChange }
       disabledClassName="opacity-50 cursor-not-allowed"
       breakLabel={t("...")}
       breakClassName="mx-1 px-3 py-1"
+      forcePage={forcePage}
     />
   );
 };
 
-const ShopSidebarList = () => {
-  const [viewType, setViewType] = useState<"grid" | "list" | "marketplace">("grid");
-  const [params, setParams] = useState<Params>({ lang: "en", page_size: 6, page: 1 });
+const ShopSidebarList = ({
+  data,
+  productPerPage,
+  dataType,
+}: {
+  data: ProductType[];
+  productPerPage: Number;
+  dataType: string | null;
+}) => {
+  const [viewType, setViewType] = useState<"grid" | "list" | "marketplace">(
+    "grid"
+  );
+  const [params, setParams] = useState<Params>({
+    lang: "en",
+    page_size: 12,
+    page: 1,
+  });
   const [showOnlySale, setShowOnlySale] = useState(false);
   const [sortOption, setSortOption] = useState("");
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 100 });
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const currentLanguage = useSelector((state: RootState) => state.language);
   const { t } = useTranslation();
-  let colors: { id: string; product: number; color: string; }[] = [];
+  let colors: { id: string; product: number; color: string }[] = [];
   let colorCounter = 0;
 
   const dispatch = useDispatch<AppDispatch>();
-  const { products, count, loading, error } = useSelector((state: RootState) => state.products);
+  const { products, count, loading, error } = useSelector(
+    (state: RootState) => state.products
+  );
   const { categories } = useSelector((state: RootState) => state.categories);
 
   products.forEach((prod) => {
@@ -89,36 +111,41 @@ const ShopSidebarList = () => {
     setCurrentPage(0);
   }, [selectedCategory, priceRange, selectedColor, sortOption, showOnlySale]);
 
-
   useEffect(() => {
-    dispatch(getAllCategories({
-      lang: currentLanguage
-    }));
+    dispatch(
+      getAllCategories({
+        lang: currentLanguage,
+      })
+    );
   }, [dispatch, currentLanguage]);
 
   // Update params when filters, sorting, or pagination change
   useEffect(() => {
     setParams({
       lang: currentLanguage,
-      page_size: 6,
-      page: currentPage + 1,
+      page_size: 6, // Fixed page size for API
+      page: currentPage + 1, // API pages are 1-based
       category: selectedCategory || undefined,
       min_price: priceRange.min > 0 ? priceRange.min : undefined,
       max_price: priceRange.max < 1000 ? priceRange.max : undefined,
       color: selectedColor || undefined,
       sort:
-        sortOption === "soldQuantityHighToLow"
-          ? "sold desc"
-          : sortOption === "discountHighToLow"
-            ? "discount desc"
-            : sortOption === "priceHighToLow"
-              ? "price desc"
-              : sortOption === "priceLowToHigh"
-                ? "price asc"
-                : undefined,
+        sortOption === "priceHighToLow"
+          ? "-price"
+          : sortOption === "priceLowToHigh"
+          ? "price"
+          : undefined,
       has_offer: showOnlySale || undefined,
     });
-  }, [currentPage, selectedCategory, priceRange, selectedColor, sortOption, showOnlySale, currentLanguage]);
+  }, [
+    currentPage,
+    selectedCategory,
+    priceRange,
+    selectedColor,
+    sortOption,
+    showOnlySale,
+    currentLanguage,
+  ]);
 
   // Fetch products when params change
   useEffect(() => {
@@ -144,10 +171,8 @@ const ShopSidebarList = () => {
     setCurrentPage(0);
   };
 
-  // Pagination
-  const productsPerPage = 30;
-  const pageCount = Math.ceil((count ?? 0) / productsPerPage);
-  const paginatedProducts = products; // Use API-provided products directly
+  // Pure server-side pagination
+  const pageCount = Math.ceil((count ?? 0) / (params.page_size || 6));
 
   return (
     <>
@@ -162,18 +187,6 @@ const ShopSidebarList = () => {
                   <Icon.CaretRight size={14} className="text-secondary2" />
                   <div className="text-secondary2 capitalize">{t("Shop")}</div>
                 </div>
-              </div>
-              <div className="list-tab flex flex-wrap items-center justify-center gap-y-5 gap-8 lg:mt-[70px] mt-12 overflow-hidden">
-                {["t-shirt", "dress", "top", "swimwear", "shirt"].map((item, index) => (
-                  <div
-                    key={index}
-                    className={`tab-item text-button-uppercase cursor-pointer has-line-before line-2px ${selectedCategory === item ? "text-black" : ""
-                      }`}
-                    onClick={() => setSelectedCategory(item === selectedCategory ? null : item)}
-                  >
-                    {t(item)}
-                  </div>
-                ))}
               </div>
             </div>
           </div>
@@ -190,9 +203,14 @@ const ShopSidebarList = () => {
                   {categories.map((item, index) => (
                     <div
                       key={index}
-                      className={`item flex items-center justify-between cursor-pointer ${selectedCategory === item.name ? "text-black" : ""
-                        }`}
-                      onClick={() => setSelectedCategory(item.name === selectedCategory ? null : item.name)}
+                      className={`item flex items-center justify-between cursor-pointer ${
+                        selectedCategory === item.name ? "text-black" : ""
+                      }`}
+                      onClick={() =>
+                        setSelectedCategory(
+                          item.name === selectedCategory ? null : item.name
+                        )
+                      }
                     >
                       <div className="text-secondary has-line-before hover:text-black capitalize">
                         {t(item.name)}
@@ -203,10 +221,14 @@ const ShopSidebarList = () => {
                 </div>
               </div>
               <div className="filter-price pb-8 border-b border-gray-200 mt-8">
-                <div className="text-lg font-semibold text-gray-800 mb-4">{t("Price Range")}</div>
+                <div className="text-lg font-semibold text-gray-800 mb-4">
+                  {t("Price Range")}
+                </div>
                 <div className="price-block flex items-center justify-between gap-4 mt-4">
                   <div className="min flex-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t("Min price")}</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t("Min price")}
+                    </label>
                     <div className="relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span className="text-gray-500 sm:text-sm">$</span>
@@ -214,7 +236,12 @@ const ShopSidebarList = () => {
                       <input
                         type="number"
                         value={priceRange.min}
-                        onChange={(e) => setPriceRange({ ...priceRange, min: Number(e.target.value) })}
+                        onChange={(e) =>
+                          setPriceRange({
+                            ...priceRange,
+                            min: Number(e.target.value),
+                          })
+                        }
                         className="focus:ring-primary-500 focus:border-primary-500 block w-full pl-7 pr-4 py-2 sm:text-sm border-gray-300 rounded-md"
                         placeholder="0"
                         min="0"
@@ -227,7 +254,9 @@ const ShopSidebarList = () => {
                   </div>
 
                   <div className="max flex-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t("Max price")}</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t("Max price")}
+                    </label>
                     <div className="relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span className="text-gray-500 sm:text-sm">$</span>
@@ -235,7 +264,12 @@ const ShopSidebarList = () => {
                       <input
                         type="number"
                         value={priceRange.max}
-                        onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
+                        onChange={(e) =>
+                          setPriceRange({
+                            ...priceRange,
+                            max: Number(e.target.value),
+                          })
+                        }
                         className="focus:ring-primary-500 border focus:border-primary-500 block w-full pl-7 pr-4 py-2 sm:text-sm border-gray-300 rounded-md"
                         placeholder="1000"
                         min="0"
@@ -250,9 +284,14 @@ const ShopSidebarList = () => {
                   {colors.map((color, i) => (
                     <div
                       key={i}
-                      className={`color-item flex items-center justify-center gap-2 rounded-full border border-line ${selectedColor === color.color ? "border-black" : ""
-                        }`}
-                      onClick={() => setSelectedColor(color.color === selectedColor ? null : color.color)}
+                      className={`color-item flex items-center justify-center gap-2 rounded-full border border-line ${
+                        selectedColor === color.color ? "border-black" : ""
+                      }`}
+                      onClick={() =>
+                        setSelectedColor(
+                          color.color === selectedColor ? null : color.color
+                        )
+                      }
                     >
                       <div
                         className="color w-5 h-5 rounded-full border-[1px] border-[rgba(0,0,0,0.4)]"
@@ -265,7 +304,11 @@ const ShopSidebarList = () => {
                   {t("Show more")}
                 </button>
               </div>
-              {(selectedCategory || selectedColor || showOnlySale || priceRange.min > 0 || priceRange.max < 1000) && (
+              {(selectedCategory ||
+                selectedColor ||
+                showOnlySale ||
+                priceRange.min > 0 ||
+                priceRange.max < 1000) && (
                 <button
                   onClick={clearAllFilters}
                   className="text-sm text-blue-500 hover:underline mt-4"
@@ -280,8 +323,9 @@ const ShopSidebarList = () => {
                   <div className="choose-layout flex items-center gap-2">
                     <div
                       onClick={() => setViewType("grid")}
-                      className={`item three-col w-8 h-8 border border-line rounded flex items-center justify-center cursor-pointer ${viewType === "grid" ? "active" : ""
-                        }`}
+                      className={`item three-col w-8 h-8 border border-line rounded flex items-center justify-center cursor-pointer ${
+                        viewType === "grid" ? "active" : ""
+                      }`}
                     >
                       <div className="flex items-center gap-0.5">
                         <span className="w-[3px] h-4 bg-secondary2 rounded-sm"></span>
@@ -291,8 +335,9 @@ const ShopSidebarList = () => {
                     </div>
                     <div
                       onClick={() => setViewType("list")}
-                      className={`item row w-8 h-8 border border-line rounded flex items-center justify-center cursor-pointer ${viewType === "list" ? "active" : ""
-                        }`}
+                      className={`item row w-8 h-8 border border-line rounded flex items-center justify-center cursor-pointer ${
+                        viewType === "list" ? "active" : ""
+                      }`}
                     >
                       <div className="flex flex-col items-center gap-0.5">
                         <span className="w-4 h-[3px] bg-secondary2 rounded-sm"></span>
@@ -310,13 +355,19 @@ const ShopSidebarList = () => {
                       checked={showOnlySale}
                       onChange={() => setShowOnlySale(!showOnlySale)}
                     />
-                    <label htmlFor="filter-sale" className="caption1 cursor-pointer">
+                    <label
+                      htmlFor="filter-sale"
+                      className="caption1 cursor-pointer"
+                    >
                       {t("Show only products on sale")}
                     </label>
                   </div>
                 </div>
                 <div className="right flex items-center gap-3">
-                  <label htmlFor="select-filter" className="caption1 capitalize">
+                  <label
+                    htmlFor="select-filter"
+                    className="caption1 capitalize"
+                  >
                     {t("Sort by")}
                   </label>
                   <div className="select-block relative">
@@ -328,10 +379,12 @@ const ShopSidebarList = () => {
                       onChange={(e) => setSortOption(e.target.value)}
                     >
                       <option value="">{t("Default Sorting")}</option>
-                      <option value="soldQuantityHighToLow">{t("Best Selling")}</option>
-                      <option value="discountHighToLow">{t("Best Discount")}</option>
-                      <option value="priceHighToLow">{t("Price High To Low")}</option>
-                      <option value="priceLowToHigh">{t("Price Low To High")}</option>
+                      <option value="priceHighToLow">
+                        {t("Price High To Low")}
+                      </option>
+                      <option value="priceLowToHigh">
+                        {t("Price Low To High")}
+                      </option>
                     </select>
                     <Icon.CaretDown
                       size={12}
@@ -344,9 +397,15 @@ const ShopSidebarList = () => {
               <div className="list-filtered flex items-center gap-3 mt-4">
                 <div className="total-product">
                   {count ?? 0}
-                  <span className="text-secondary ps-1">{t("Products Found")}</span>
+                  <span className="text-secondary ps-1">
+                    {t("Products Found")}
+                  </span>
                 </div>
-                {(selectedCategory || selectedColor || showOnlySale || priceRange.min > 0 || priceRange.max < 1000) && (
+                {(selectedCategory ||
+                  selectedColor ||
+                  showOnlySale ||
+                  priceRange.min > 0 ||
+                  priceRange.max < 1000) && (
                   <button
                     onClick={clearAllFilters}
                     className="text-sm text-blue-500 hover:underline"
@@ -357,34 +416,37 @@ const ShopSidebarList = () => {
               </div>
 
               <div
-                className={`list-product ${viewType === "grid"
-                  ? "grid lg:grid-cols-3 grid-cols-2 sm:gap-[30px] gap-[20px]"
-                  : viewType === "list"
+                className={`list-product ${
+                  viewType === "grid"
+                    ? "grid lg:grid-cols-3 grid-cols-2 sm:gap-[30px] gap-[20px]"
+                    : viewType === "list"
                     ? "flex flex-col gap-6"
                     : "grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4"
-                  } mt-7`}
+                } mt-7`}
               >
                 {loading ? (
                   <div className="loading-container">
-                    <Icon.SpinnerGap size={32} className="spinner text-secondary2 mb-4" />
-                    <div className="loading-text text-secondary2 font-semibold">{t("Loading products...")}</div>
+                    <Icon.SpinnerGap
+                      size={32}
+                      className="spinner text-secondary2 mb-4"
+                    />
+                    <div className="loading-text text-secondary2 font-semibold">
+                      {t("Loading products...")}
+                    </div>
                   </div>
                 ) : error ? (
                   <div className="col-span-full text-center py-10 text-red-500">
                     {t("Error")}: {error}
                   </div>
-                ) : paginatedProducts.length > 0 ? (
-                  paginatedProducts.map((product) => (
-                    <Product
-                      data={product}
-                      key={product.id}
-                      type={viewType}
-                      style={viewType === "marketplace" ? "style-2" : "style-1"}
-                    />
+                ) : products.length > 0 ? (
+                  products.map((product) => (
+                    <Product data={product} key={product.id} type={viewType} />
                   ))
                 ) : (
                   <div className="no-data-product col-span-full text-center py-10">
-                    {t("No products match your current filters. Try adjusting or clearing filters.")}
+                    {t(
+                      "No products match your current filters. Try adjusting or clearing filters."
+                    )}
                   </div>
                 )}
               </div>
@@ -392,7 +454,15 @@ const ShopSidebarList = () => {
               {pageCount > 1 && (
                 <HandlePagination
                   pageCount={pageCount}
-                  onPageChange={(selected) => setCurrentPage(selected)}
+                  onPageChange={(selected) => {
+                    setCurrentPage(selected);
+                    const element = document.querySelector(".shop-product");
+                    element?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }}
+                  forcePage={currentPage}
                 />
               )}
             </div>

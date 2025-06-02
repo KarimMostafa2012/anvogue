@@ -346,6 +346,7 @@
         border: 2px solid transparent;
         cursor: pointer;
         transition: all ease 0.3s;
+        overflow: hidden;
 
         &.border {
             border-width: 1px;
@@ -358,12 +359,13 @@
         &.active,
         &:hover {
             border-color: var(--black);
+            overflow: unset;
         }
 
         .tag-action {
             position: absolute;
             right: unset;
-            top: -32px;
+            top: -2px;
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
@@ -386,6 +388,7 @@
         }
 
         &:hover .tag-action {
+            top: -32px;
             opacity: 1;
         }
     }

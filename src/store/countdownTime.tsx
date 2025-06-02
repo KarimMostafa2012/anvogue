@@ -1,9 +1,24 @@
-export const countdownTime = (targetDate: string = "2025-05-31") => {
-  const [year, month, day] = targetDate.split("-").map(Number);
-  const createdTargetDate = new Date(year, month - 1, day);
-  const currentDate: Date = new Date();
-  const difference: number =
-    createdTargetDate.getTime() - currentDate.getTime();
+export const countdownTime = (targetDate: string | undefined | null = "2025-05-31") => {
+  // Convert "2025-06-02 02:49 PM" to a valid Date
+  const parseDate = (dateStr: string): Date => {
+    const [datePart, timePart, meridian] = dateStr.split(/[\s:]+/);
+    const [year, month, day] = datePart.split("-").map(Number);
+    let hours = parseInt(timePart);
+    const minutes = parseInt(dateStr.match(/:(\d+)/)?.[1] || "0");
+
+    if (meridian === "PM" && hours !== 12) hours += 12;
+    if (meridian === "AM" && hours === 12) hours = 0;
+
+    return new Date(year, month - 1, day, hours, minutes);
+  };
+
+  const createdTargetDate =
+    targetDate?.includes("AM") || targetDate?.includes("PM")
+      ? parseDate(targetDate)
+      : new Date(targetDate ? targetDate : "");
+
+  const currentDate = new Date();
+  const difference = createdTargetDate.getTime() - currentDate.getTime();
 
   if (difference > 0) {
     const days = Math.floor(difference / (1000 * 60 * 60 * 24));

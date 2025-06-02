@@ -296,7 +296,7 @@ const MyAccount = () => {
   };
 
   const changeAddress = () => {
-    const mainForm = document.querySelectorAll("#mainForm input");
+    const mainForm = document.querySelectorAll("#mainForm input") as NodeListOf<HTMLInputElement>;
     const adressForms = document.querySelectorAll(".otherAddresses");
     fetch("https://api.malalshammobel.com/auth/api/users/me/", {
       method: "PATCH",
@@ -329,7 +329,7 @@ const MyAccount = () => {
         console.error("Error:", error);
       });
     adressForms.forEach((form) => {
-      const formElements = form.querySelectorAll("input");
+      const formElements = form.querySelectorAll("input") as NodeListOf<HTMLInputElement>;
       console.log({
         street_name: formElements[0].value,
         house_num: formElements[2].value,
@@ -375,9 +375,9 @@ const MyAccount = () => {
     fetchProfile();
   };
 
-  const deleteAddress = (ev) => {
+  const deleteAddress = (ev: HTMLFormElement) => {
     fetch(
-      `https://api.malalshammobel.com/auth/api/addresses/${ev.currentTarget.getAttribute(
+      `https://api.malalshammobel.com/auth/api/addresses/${ev.getAttribute(
         "data-id"
       )}/`,
       {
@@ -405,8 +405,8 @@ const MyAccount = () => {
       });
   };
 
-  const addAddress = (ev) => {
-    const form = ev.currentTarget.querySelectorAll("input");
+  const addAddress = (ev: HTMLFormElement) => {
+    const form = ev.querySelectorAll("input");
     fetch("https://api.malalshammobel.com/auth/api/addresses/", {
       method: "POST",
       headers: {
@@ -454,7 +454,7 @@ const MyAccount = () => {
   //   reader.readAsDataURL(file); // Converts file to base64 string
   // }
 
-  const updateProfile = (e) => {
+  const updateProfile = (e: HTMLFormElement) => {
     const form = e.querySelectorAll("input");
     const formData = new FormData(e);
     console.log(form);
@@ -1159,7 +1159,7 @@ const MyAccount = () => {
                           data-id={address.id}
                           onSubmit={(e) => {
                             e.preventDefault();
-                            deleteAddress(e);
+                            deleteAddress(e.currentTarget);
                           }}
                         >
                           <div
@@ -1257,7 +1257,7 @@ const MyAccount = () => {
                       className="newAddress"
                       onSubmit={(e) => {
                         e.preventDefault();
-                        addAddress(e);
+                        addAddress(e.currentTarget);
                       }}
                     >
                       <div

@@ -1,13 +1,23 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductType } from "@/type/ProductType";
+import { Offer } from "@/types/products";
 import Product from "../Product";
 import Rate from "@/components/Other/Rate";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, Scrollbar } from "swiper/modules";
+import {
+  getProductById,
+  clearProduct,
+  getAllProducts,
+} from "@/redux/slices/productSlice";
 import "swiper/css/bundle";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { useCart } from "@/context/CartContext";
@@ -17,16 +27,27 @@ import { useModalWishlistContext } from "@/context/ModalWishlistContext";
 import { useCompare } from "@/context/CompareContext";
 import { useModalCompareContext } from "@/context/ModalCompareContext";
 import { countdownTime } from "@/store/countdownTime";
-// import ModalSizeguide from "@/components/Modal/ModalSizeguide";
+import { clearOffer, getOfferById } from "@/redux/slices/offers";
+import Category from "@/components/Organic/Category";
 
 interface Props {
-  data: Array<ProductType>;
-  productId: string | number | null;
+  data: ProductType[];
+  productId: string;
 }
 
-const VariableProduct: React.FC<Props> = ({ data, productId }) => {
+interface ProductImage {
+  img: string;
+  id: number;
+}
+
+const useAppDispatch = () => useDispatch<AppDispatch>();
+
+const VariableProduct: React.FC<Props> = ({ productId }) => {
   const swiperRef: any = useRef();
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [showMoreColors, setShowMoreColors] = useState(false);
+  const [moreColor, setMoreColor] = useState("white");
+  const [offer, setOffer] = useState<Offer | null>(null);
   const [openPopupImg, setOpenPopupImg] = useState(false);
   const [openSizeGuide, setOpenSizeGuide] = useState<boolean>(false);
   const [activeColor, setActiveColor] = useState<string>("");
@@ -34,6 +55,7 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
     [productId: string]: string;
   }>({});
   const [activeMaterial, setActiveMaterial] = useState<string | null>();
+  // const [data, setData] = useState<ProductType[] | null>(null);
   const [activeTab, setActiveTab] = useState<string | undefined>("description");
   const { addToCart, updateCart, cartState } = useCart();
   const { openModalCart } = useModalCartContext();
@@ -42,42 +64,88 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
   const { addToCompare, removeFromCompare, compareState } = useCompare();
   const { openModalCompare } = useModalCompareContext();
   const [quantity, setQuantity] = useState<{ [productId: string]: number }>({});
-
-  let productMain = data.find(
-    (product) => product.id === productId
-  ) as ProductType;
-  if (productMain === undefined) {
-    productMain = data[0];
-  }
-
-  const percentSale = Math.floor(
-    100 - (productMain.price / productMain.originPrice) * 100
-  );
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
+  const dispatch = useAppDispatch();
+  const data = useSelector((state: RootState) => state.products.products);
+  const product = useSelector((state: RootState) => state.products.product);
+  const loading = useSelector((state: RootState) => state.products.loading);
+  const loadingOffer = useSelector((state: RootState) => state.offer.loading);
+  const error = useSelector((state: RootState) => state.products.error);
+  const errorOffer = useSelector((state: RootState) => state.offer.error);
+  const offerElement = useSelector((state: RootState) => state.offer.offer);
+
+  // Fetch product data
+  useEffect(() => {
+    if (productId) {
+      console.log("Fetching product:", productId);
+      dispatch(getProductById({ id: productId, lang: "en" }));
+    }
+    return () => {
+      dispatch(clearProduct());
+      dispatch(clearOffer());
+    };
+  }, [productId, dispatch]);
 
   useEffect(() => {
-    // Initialize with current time on client only
-    setTimeLeft(countdownTime("2025-5-31"));
+    if (product?.has_offer && product.id) {
+      dispatch(getOfferById({ id: product.id, lang: "en" }));
+    }
+  }, [product?.has_offer, product?.id, dispatch]);
 
+  useEffect(() => {
+    if (product) {
+      console.log(
+        "Fetching products with sub-category id:",
+        product.sub_category.id
+      );
+      const params = {
+        sub_category_id: product.sub_category.id,
+        category: product.sub_category.category.name,
+        lang: "en",
+      };
+      dispatch(getAllProducts({ params }));
+    }
+  }, [product, dispatch]);
+
+  // Set offer once when received
+  useEffect(() => {
+    if (offerElement) {
+      setOffer(offerElement);
+      console.log("Offer received:", offerElement);
+    }
+  }, [offerElement]);
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (!offer?.end_datetime) return;
+
+    // Set initial time
+    setTimeLeft(countdownTime(offer.end_datetime));
+
+    // Update every second
     const timer = setInterval(() => {
-      setTimeLeft(countdownTime("2025-5-31"));
+      setTimeLeft(countdownTime(offer.end_datetime));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [offer?.end_datetime]);
 
-  const handleOpenSizeGuide = () => {
-    setOpenSizeGuide(true);
-  };
-
-  const handleCloseSizeGuide = () => {
-    setOpenSizeGuide(false);
-  };
+  const productMain = product || data?.find((p) => p.id === productId);
+  const percentSale =
+    productMain?.new_price && productMain?.price
+      ? Math.floor(
+          100 - (productMain.new_price / Number(productMain.price)) * 100
+        )
+      : 0;
 
   const handleActiveColor = (item: string) => {
     setActiveColor(item);
@@ -90,10 +158,6 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
     }));
   };
 
-  const handleActiveMaterial = (item: string) => {
-    setActiveMaterial(item);
-  };
-
   const handleQuantityChange = (newQuantity: number, productId: string) => {
     setQuantity((prevQuantity) => ({
       ...prevQuantity,
@@ -102,54 +166,101 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
   };
 
   const handleIncreaseQuantity = () => {
-    productMain.quantityPurchase += 1;
-    updateCart(productMain.id, productMain.quantityPurchase + 1, activeColor);
+    if (productMain) {
+      const newQuantity = (productMain.quantityPurchase || 0) + 1;
+      updateCart(String(productMain.id), newQuantity, activeColor);
+    }
   };
 
   const handleDecreaseQuantity = () => {
-    if (productMain.quantityPurchase > 1) {
-      productMain.quantityPurchase -= 1;
-      updateCart(productMain.id, productMain.quantityPurchase - 1, activeColor);
+    if (productMain && productMain.quantityPurchase > 1) {
+      const newQuantity = productMain.quantityPurchase - 1;
+      updateCart(String(productMain.id), newQuantity, activeColor);
     }
   };
 
-  const handleAddToCart = () => {
-    if (!cartState.cartArray.find((item) => item.id === productMain.id)) {
-      addToCart({ ...productMain });
-      updateCart(productMain.id, productMain.quantityPurchase, activeColor);
+  const getImageUrl = (image: string | ProductImage): string => {
+    if (image != undefined) {
+      return typeof image === "string" ? image : image.img;
     } else {
-      updateCart(productMain.id, productMain.quantityPurchase, activeColor);
+      return "";
+    }
+  };
+
+  const convertToProductType = (product: any): ProductType => {
+    return {
+      ...product,
+      id: String(product.id),
+      images: Array.isArray(product.images)
+        ? product.images.map((img: string | ProductImage, index: number) =>
+            typeof img === "string"
+              ? { img, id: index }
+              : { img: img.img, id: index }
+          )
+        : [],
+      quantityPurchase: product.quantityPurchase || 1,
+    };
+  };
+
+  const handleAddToCart = () => {
+    if (!productMain) return;
+
+    const productToAdd = convertToProductType(productMain);
+
+    if (
+      !cartState.cartArray.find((item) => item.id === String(productMain.id))
+    ) {
+      addToCart(productToAdd);
+      updateCart(
+        String(productMain.id),
+        productMain.quantityPurchase || 1,
+        activeColor
+      );
+    } else {
+      updateCart(
+        String(productMain.id),
+        productMain.quantityPurchase || 1,
+        activeColor
+      );
     }
     openModalCart();
   };
+
   const handleAddToWishlist = () => {
-    // if product existed in wishlit, remove from wishlist and set state to false
+    if (!productMain) return;
+
+    const productToAdd = convertToProductType(productMain);
+
     if (
-      wishlistState.wishlistArray.some((item) => item.id === productMain.id)
+      wishlistState.wishlistArray.some(
+        (item) => item.id === String(productMain.id)
+      )
     ) {
-      removeFromWishlist(productMain.id);
+      removeFromWishlist(String(productMain.id));
     } else {
-      // else, add to wishlist and set state to true
-      addToWishlist(productMain);
+      addToWishlist(productToAdd);
     }
     openModalWishlist();
   };
 
   const handleAddToCompare = () => {
-    // if product existed in wishlit, remove from wishlist and set state to false
+    if (!productMain) return;
+
+    const productToAdd = convertToProductType(productMain);
+
     if (compareState.compareArray.length < 3) {
       if (
-        compareState.compareArray.some((item) => item.id === productMain.id)
+        compareState.compareArray.some(
+          (item) => item.id === String(productMain.id)
+        )
       ) {
-        removeFromCompare(productMain.id);
+        removeFromCompare(String(productMain.id));
       } else {
-        // else, add to wishlist and set state to true
-        addToCompare(productMain);
+        addToCompare(productToAdd);
       }
     } else {
       alert("Compare up to 3 products");
     }
-
     openModalCompare();
   };
 
@@ -157,60 +268,99 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
     setActiveTab(tab);
   };
 
+  // Add loading and error states
+  if (loading || loadingOffer) {
+    return <div className="container py-20">Loading product...</div>;
+  }
+
+  if (error || errorOffer) {
+    return (
+      <div className="container py-20">
+        Error loading product: {error ? error : errorOffer}
+      </div>
+    );
+  }
+
+  if (!product && !productMain) {
+    return <div className="container py-20">Product not found</div>;
+  } else if (!productMain) {
+    return <div className="container py-20">Loading product...</div>;
+  }
+
   return (
     <>
       <div className="product-detail sale">
         <div className="featured-product underwear md:py-20 py-10">
           <div className="container flex justify-between gap-y-6 flex-wrap">
             <div className="list-img md:w-1/2 md:pr-[45px] w-full flex flex-col gap-5">
-              <Image
-                src={productMain.images[0]}
-                width={1000}
-                height={1000}
-                alt="prd-img"
-                className="w-full aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
-                onClick={() => {
-                  swiperRef.current?.slideTo(0);
-                  setOpenPopupImg(true);
-                }}
-              />
-              <div className="grid grid-cols-2 gap-5 mt-5">
+              {productMain.images && productMain.images[0] && (
                 <Image
-                  src={productMain.images[1]}
-                  width={1000}
-                  height={1000}
-                  alt="prd-img"
-                  className="aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
-                  onClick={() => {
-                    swiperRef.current?.slideTo(1);
-                    setOpenPopupImg(true);
-                  }}
-                />
-                <Image
-                  src={productMain.images[2]}
-                  width={1000}
-                  height={1000}
-                  alt="prd-img"
-                  className="aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
-                  onClick={() => {
-                    swiperRef.current?.slideTo(2);
-                    setOpenPopupImg(true);
-                  }}
-                />
-              </div>
-              {productMain.images[3] && (
-                <Image
-                  src={productMain.images[3]}
+                  src={getImageUrl(productMain.images[0])}
                   width={1000}
                   height={1000}
                   alt="prd-img"
                   className="w-full aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
                   onClick={() => {
-                    swiperRef.current?.slideTo(3);
+                    swiperRef.current?.slideTo(0);
                     setOpenPopupImg(true);
                   }}
                 />
               )}
+              <div className="list-img-child flex gap-5 flex-wrap">
+                {productMain.images && productMain.images.length >= 3
+                  ? productMain.images.slice(1).map((item, index) => {
+                      if (
+                        index == productMain.images.length - 2 &&
+                        index % 2 == 0
+                      ) {
+                        return (
+                          <Image
+                            key={index}
+                            src={getImageUrl(item)}
+                            width={1000}
+                            height={1000}
+                            alt="prd-img"
+                            className="w-full aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
+                            onClick={() => {
+                              swiperRef.current?.slideTo(index + 1);
+                              setOpenPopupImg(true);
+                            }}
+                          />
+                        );
+                      } else {
+                        return (
+                          <Image
+                            key={index}
+                            src={getImageUrl(item)}
+                            width={1000}
+                            height={1000}
+                            alt="prd-img"
+                            className="w-[calc(50%-10px)] aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
+                            onClick={() => {
+                              swiperRef.current?.slideTo(index + 1);
+                              setOpenPopupImg(true);
+                            }}
+                          />
+                        );
+                      }
+                    })
+                  : productMain.images &&
+                    productMain.images.length == 2 && (
+                      <>
+                        <Image
+                          src={getImageUrl(productMain.images[1])}
+                          width={1000}
+                          height={1000}
+                          alt="prd-img"
+                          className="w-full aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
+                          onClick={() => {
+                            swiperRef.current?.slideTo(2);
+                            setOpenPopupImg(true);
+                          }}
+                        />
+                      </>
+                    )}
+              </div>
               <div className={`popup-img ${openPopupImg ? "open" : ""}`}>
                 <span
                   className="close-popup-btn absolute top-4 right-4 z-[2] cursor-pointer"
@@ -231,25 +381,26 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                     swiperRef.current = swiper;
                   }}
                 >
-                  {productMain.images.map((item, index) => (
-                    <SwiperSlide
-                      key={index}
-                      onClick={() => {
-                        setOpenPopupImg(false);
-                      }}
-                    >
-                      <Image
-                        src={item}
-                        width={1000}
-                        height={1000}
-                        alt="prd-img"
-                        className="w-full aspect-[3/4] object-cover rounded-xl"
-                        onClick={(e) => {
-                          e.stopPropagation(); // prevent
+                  {productMain.images &&
+                    productMain.images.map((item, index) => (
+                      <SwiperSlide
+                        key={index}
+                        onClick={() => {
+                          setOpenPopupImg(false);
                         }}
-                      />
-                    </SwiperSlide>
-                  ))}
+                      >
+                        <Image
+                          src={getImageUrl(item)}
+                          width={1000}
+                          height={1000}
+                          alt="prd-img"
+                          className="w-full aspect-[3/4] object-cover rounded-xl"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        />
+                      </SwiperSlide>
+                    ))}
                 </Swiper>
               </div>
             </div>
@@ -262,12 +413,13 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                   <div className="heading4 mt-1">{productMain.name}</div>
                 </div>
                 <div
-                  className={`add-wishlist-btn w-12 h-12 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white ${wishlistState.wishlistArray.some(
-                    (item) => item.id === productMain.id
-                  )
+                  className={`add-wishlist-btn w-12 h-12 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white ${
+                    wishlistState.wishlistArray.some(
+                      (item) => item.id === productMain.id
+                    )
                       ? "active"
                       : ""
-                    }`}
+                  }`}
                   onClick={handleAddToWishlist}
                 >
                   {wishlistState.wishlistArray.some(
@@ -293,93 +445,107 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
               </div>
               <div className="flex items-center gap-3 flex-wrap mt-5 pb-6 border-b border-line">
                 <div className="product-price heading5">
-                  ${productMain.price}.00
+                  $
+                  {productMain.new_price
+                    ? productMain.new_price
+                    : productMain.price}
+                  .00
                 </div>
-                <div className="w-px h-4 bg-line"></div>
-                <div className="product-origin-price font-normal text-secondary2">
-                  <del>${productMain.originPrice}.00</del>
-                </div>
-                {productMain.originPrice && (
-                  <div className="product-sale caption2 font-semibold bg-green px-3 py-0.5 inline-block rounded-full">
-                    -{percentSale}%
-                  </div>
+                {productMain.new_price && (
+                  <>
+                    <div className="w-px h-4 bg-line"></div>
+                    <div className="product-origin-price font-normal text-secondary2">
+                      <del>${productMain.price}.00</del>
+                    </div>
+                    <div className="product-sale caption2 font-semibold bg-green px-3 py-0.5 inline-block rounded-full">
+                      -{percentSale}%
+                    </div>
+                  </>
                 )}
                 <div className="desc text-secondary mt-3">
                   {productMain.description}
                 </div>
               </div>
-              <div className="countdown-block flex items-center justify-between flex-wrap gap-y-4 mt-5">
-                <div className="text-title">
-                  Hurry Up!
-                  <br />
-                  Offer ends in:
-                </div>
-                <div className="countdown-time flex items-center lg:gap-5 gap-3 max-[400px]:justify-between max-[400px]:w-full">
-                  <div className="item w-[60px] h-[60px] flex flex-col items-center justify-center border border-red rounded-lg">
-                    <div className="days heading6 text-center">
-                      {timeLeft.days < 10 ? `0${timeLeft.days}` : timeLeft.days}
+              {offer?.active && (
+                <>
+                  <div className="countdown-block flex items-center justify-between flex-wrap gap-y-4 mt-5">
+                    <div className="text-title">
+                      Hurry Up!
+                      <br />
+                      Offer ends in:
                     </div>
-                    <div className="caption1 text-center">Days</div>
-                  </div>
-                  <div className="heading5">:</div>
-                  <div className="item w-[60px] h-[60px] flex flex-col items-center justify-center border border-red rounded-lg">
-                    <div className="hours heading6 text-center">
-                      {timeLeft.hours < 10
-                        ? `0${timeLeft.hours}`
-                        : timeLeft.hours}
+                    <div className="countdown-time flex items-center lg:gap-5 gap-3 max-[400px]:justify-between max-[400px]:w-full">
+                      <div className="item w-[60px] h-[60px] flex flex-col items-center justify-center border border-red rounded-lg">
+                        <div className="days heading6 text-center">
+                          {timeLeft.days < 10
+                            ? `0${timeLeft.days}`
+                            : timeLeft.days}
+                        </div>
+                        <div className="caption1 text-center">Days</div>
+                      </div>
+                      <div className="heading5">:</div>
+                      <div className="item w-[60px] h-[60px] flex flex-col items-center justify-center border border-red rounded-lg">
+                        <div className="hours heading6 text-center">
+                          {timeLeft.hours < 10
+                            ? `0${timeLeft.hours}`
+                            : timeLeft.hours}
+                        </div>
+                        <div className="caption1 text-center">Hours</div>
+                      </div>
+                      <div className="heading5">:</div>
+                      <div className="item w-[60px] h-[60px] flex flex-col items-center justify-center border border-red rounded-lg">
+                        <div className="mins heading6 text-center">
+                          {timeLeft.minutes < 10
+                            ? `0${timeLeft.minutes}`
+                            : timeLeft.minutes}
+                        </div>
+                        <div className="caption1 text-center">Mins</div>
+                      </div>
+                      <div className="heading5">:</div>
+                      <div className="item w-[60px] h-[60px] flex flex-col items-center justify-center border border-red rounded-lg">
+                        <div className="secs heading6 text-center">
+                          {timeLeft.seconds < 10
+                            ? `0${timeLeft.seconds}`
+                            : timeLeft.seconds}
+                        </div>
+                        <div className="caption1 text-center">Secs</div>
+                      </div>
                     </div>
-                    <div className="caption1 text-center">Hours</div>
                   </div>
-                  <div className="heading5">:</div>
-                  <div className="item w-[60px] h-[60px] flex flex-col items-center justify-center border border-red rounded-lg">
-                    <div className="mins heading6 text-center">
-                      {timeLeft.minutes < 10
-                        ? `0${timeLeft.minutes}`
-                        : timeLeft.minutes}
-                    </div>
-                    <div className="caption1 text-center">Mins</div>
-                  </div>
-                  <div className="heading5">:</div>
-                  <div className="item w-[60px] h-[60px] flex flex-col items-center justify-center border border-red rounded-lg">
-                    <div className="secs heading6 text-center">
-                      {timeLeft.seconds < 10
-                        ? `0${timeLeft.seconds}`
-                        : timeLeft.seconds}
-                    </div>
-                    <div className="caption1 text-center">Secs</div>
-                  </div>
-                </div>
-              </div>
-              <div className="sold flex justify-between flex-wrap gap-4 mt-5 pb-6 border-b border-line">
-                <div className="text-title">sold It:</div>
-                <div className="right w-3/4">
-                  <div className="progress h-2 rounded-full overflow-hidden bg-line relative">
-                    <div
-                      className={`percent-sold absolute top-0 left-0 h-full bg-red`}
-                      style={{
-                        width: `${Math.floor(
-                          (productMain.sold / productMain.quantity) * 100
-                        )}%`,
-                      }}
-                    ></div>
-                  </div>
-                  <div className="flex items-center gap-1 mt-2">
-                    <span>
-                      {Math.floor(
-                        (productMain.sold / productMain.quantity) * 100
-                      )}
-                      % Sold -
-                    </span>
-                    <span className="text-secondary">
-                      Only {Math.floor(productMain.quantity - productMain.sold)}{" "}
-                      item(s) left in stock!
-                    </span>
-                  </div>
-                </div>
-              </div>
+
+                  {/* <div className="sold flex justify-between flex-wrap gap-4 mt-5">
+                   <div className="text-title">sold It:</div>
+                   <div className="right w-3/4">
+                     <div className="progress h-2 rounded-full overflow-hidden bg-line relative">
+                       <div
+                         className={`percent-sold absolute top-0 left-0 h-full bg-red`}
+                         style={{
+                           width: `${Math.floor(
+                             (productMain.sold / productMain.quantity) * 100
+                           )}%`,
+                         }}
+                       ></div>
+                     </div>
+                     <div className="flex items-center gap-1 mt-2">
+                       <span>
+                         {Math.floor(
+                           (productMain.sold / productMain.quantity) * 100
+                         )}
+                         % Sold -
+                       </span>
+                       <span className="text-secondary">
+                         Only {Math.floor(productMain.quantity - productMain.sold)}{" "}
+                         item(s) left in stock!
+                       </span>
+                     </div>
+                   </div>
+                 </div> */}
+                  <div className="border-b border-line mt-5"></div>
+                </>
+              )}
               <div className="list-group mt-1">
                 {data
-                  .slice(Number(productId), Number(productId) + 3)
+                  ?.slice(0, data.length >= 3 ? 3 : data.length)
                   .map((item) => (
                     <div
                       key={item.id}
@@ -388,7 +554,7 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                       <div className="left flex items-center gap-5">
                         <div className="bg-img">
                           <Image
-                            src={item.images[0]}
+                            src={item.images[0].img}
                             width={300}
                             height={400}
                             alt="img"
@@ -413,10 +579,10 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                                 }}
                                 className="text-button py-2 pl-3 pr-8 rounded-lg bg-white border border-line"
                               >
-                                {item.variation.map((variate, i) => (
+                                {item.colors.map((variate, i) => (
                                   <option
                                     key={i}
-                                    data-color-code={variate.colorCode}
+                                    data-color-code={variate.color}
                                   >
                                     {variate.color}
                                   </option>
@@ -432,7 +598,7 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                               style={{
                                 backgroundColor:
                                   selectedSubColor[item.id] ||
-                                  item.variation[0].colorCode,
+                                  item.colors[0].color,
                               }}
                             ></span>
                           </div>
@@ -451,8 +617,9 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                                 );
                               }
                             }}
-                            className={`${quantity[item.id] === 0 ? "disabled" : ""
-                              } cursor-pointer`}
+                            className={`${
+                              quantity[item.id] === 0 ? "disabled" : ""
+                            } cursor-pointer`}
                           />
                           <div className="body1 font-semibold">
                             {quantity[item.id] || 0}
@@ -475,26 +642,86 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
               <div className="list-action mt-6">
                 <div className="choose-color mt-5">
                   <div className="text-title">
-                    Colors:{" "}
+                    Color:{" "}
                     <span className="text-title color">{activeColor}</span>
                   </div>
                   <div className="list-color flex items-center gap-2 flex-wrap mt-3">
-                    {productMain.variation.map((item, index) => (
-                      <div
-                        key={index}
-                        className={`color-item w-6 h-6 rounded-full !duration-0 relative ${activeColor === item.color ? "active" : ""
-                          }`}
-                        style={{ backgroundColor: `${item.colorCode}` }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleActiveColor(item.color);
-                        }}
-                      >
-                        <div className="tag-action bg-black text-white caption2 capitalize px-1.5 py-0.5 rounded-sm">
-                          {item.color}
+                    {productMain.colors.map(
+                      (item: { color: string }, index: number) => {
+                        if (index > 4) {
+                          return;
+                        } else {
+                          return (
+                            <div
+                              key={index}
+                              className={`color-item w-6 h-6 rounded-full !duration-0 relative ${
+                                activeColor === item.color ? "active" : ""
+                              }`}
+                              style={{ backgroundColor: `${item.color}` }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleActiveColor(item.color);
+                              }}
+                            >
+                              <div className="tag-action bg-black text-white caption2 capitalize px-1.5 py-0.5 rounded-sm">
+                                {item.color}
+                              </div>
+                            </div>
+                          );
+                        }
+                      }
+                    )}
+                    {productMain.colors.length > 4 && (
+                      <div className="relative">
+                        <div
+                          className={`color-item w-6 h-6 rounded-full !duration-0 relative !border-[rgba(0,0,0,0.4)]`}
+                          style={{ backgroundColor: moreColor }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowMoreColors(!showMoreColors);
+                          }}
+                        >
+                          <div className="tag-action bg-black text-white caption2 capitalize px-1.5 py-0.5 rounded-sm">
+                            more
+                          </div>
                         </div>
+                        {showMoreColors && productMain.colors.length > 4 && (
+                          <div className="flex flex-wrap justify-between absolute bottom-full left-[32px] shadow-md bg-white rounded-[12px] w-[320px] p-[12px] gap-[8px]">
+                            {productMain.colors.map(
+                              (item: { color: string }, index: number) => {
+                                if (index > 4) {
+                                  return (
+                                    <div
+                                      key={index}
+                                      className={`color-item w-6 h-6 rounded-full !duration-0 relative ${
+                                        activeColor === item.color
+                                          ? "active"
+                                          : ""
+                                      }`}
+                                      style={{
+                                        backgroundColor: `${item.color}`,
+                                      }}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleActiveColor(item.color);
+                                        setMoreColor(item.color);
+                                        setShowMoreColors(false);
+                                      }}
+                                    >
+                                      <div className="tag-action bg-black text-white caption2 capitalize px-1.5 py-0.5 rounded-sm">
+                                        {item.color}
+                                      </div>
+                                    </div>
+                                  );
+                                } else {
+                                  return;
+                                }
+                              }
+                            )}
+                          </div>
+                        )}
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
                 {/* <div className="choose-size mt-5">
@@ -516,7 +743,7 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                     />
                   </div>
                   <div className="list-size flex items-center gap-2 flex-wrap mt-3">
-                    {productMain.sizes.map((item, index) => (
+                    {productMain.sizes?.map((item, index) => (
                       <div
                         className={`size-item ${
                           item === "freesize" ? "px-3 py-2" : "w-12 h-12"
@@ -567,8 +794,9 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                     <Icon.Minus
                       size={20}
                       onClick={handleDecreaseQuantity}
-                      className={`${productMain.quantityPurchase === 1 ? "disabled" : ""
-                        } cursor-pointer`}
+                      className={`${
+                        productMain.quantityPurchase === 1 ? "disabled" : ""
+                      } cursor-pointer`}
                     />
                     <div className="body1 font-semibold">
                       {productMain.quantityPurchase}
@@ -754,22 +982,25 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
             <div className="flex items-center justify-center w-full">
               <div className="menu-tab flex items-center md:gap-[60px] gap-8">
                 <div
-                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "description" ? "active" : ""
-                    }`}
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${
+                    activeTab === "description" ? "active" : ""
+                  }`}
                   onClick={() => handleActiveTab("description")}
                 >
                   Description
                 </div>
                 <div
-                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "specifications" ? "active" : ""
-                    }`}
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${
+                    activeTab === "specifications" ? "active" : ""
+                  }`}
                   onClick={() => handleActiveTab("specifications")}
                 >
                   Specifications
                 </div>
                 <div
-                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "review" ? "active" : ""
-                    }`}
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${
+                    activeTab === "review" ? "active" : ""
+                  }`}
                   onClick={() => handleActiveTab("review")}
                 >
                   Review
@@ -778,8 +1009,9 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
             </div>
             <div className="desc-block mt-8">
               <div
-                className={`desc-item description ${activeTab === "description" ? "open" : ""
-                  }`}
+                className={`desc-item description ${
+                  activeTab === "description" ? "open" : ""
+                }`}
               >
                 <div className="grid md:grid-cols-2 gap-8 gap-y-5">
                   <div className="left">
@@ -871,8 +1103,9 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                 </div>
               </div>
               <div
-                className={`desc-item specifications flex items-center justify-center ${activeTab === "specifications" ? "open" : ""
-                  }`}
+                className={`desc-item specifications flex items-center justify-center ${
+                  activeTab === "specifications" ? "open" : ""
+                }`}
               >
                 <div className="lg:w-1/2 sm:w-3/4 w-full">
                   <div className="item bg-surface flex items-center gap-8 py-3 px-10">
@@ -995,8 +1228,9 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
                 </div>
               </div>
               <div
-                className={`desc-item review-block ${activeTab === "review" ? "open" : ""
-                  }`}
+                className={`desc-item review-block ${
+                  activeTab === "review" ? "open" : ""
+                }`}
               >
                 <div className="top-overview flex max-sm:flex-col items-center justify-between gap-12 gap-y-4">
                   <div className="left flex max-sm:flex-col gap-y-4 items-center justify-between lg:w-1/2 sm:w-2/3 w-full sm:pr-5">
@@ -1318,14 +1552,9 @@ const VariableProduct: React.FC<Props> = ({ data, productId }) => {
             <div className="heading3 text-center">Related Products</div>
             <div className="list-product hide-product-sold  grid lg:grid-cols-4 grid-cols-2 md:gap-[30px] gap-5 md:mt-10 mt-6">
               {data
-                .slice(Number(productId), Number(productId) + 4)
+                ?.slice(0, data.length >= 4 ? 4 : data.length)
                 .map((item, index) => (
-                  <Product
-                    key={index}
-                    data={item}
-                    type="grid"
-                    style="style-2"
-                  />
+                  <Product key={index} data={item} type="grid" />
                 ))}
             </div>
           </div>

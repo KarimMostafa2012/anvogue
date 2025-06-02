@@ -20,6 +20,18 @@ import { useSearchParams } from "next/navigation";
 interface Props {
   props: string;
 }
+
+type CategoryOfSub = {
+  id: number;
+  name: {
+    en: string,
+    ar: string,
+    de: string,
+    ckb: string,
+    uk: string,
+    }
+};
+
 type Category = {
   id: number;
   icon?: {
@@ -48,7 +60,7 @@ type Category = {
 type SubCategory = {
   id: number;
 
-  category: Category;
+  category: CategoryOfSub;
 
   translations: {
     en: {
@@ -277,7 +289,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
     router.push(`/shop/breadcrumb1?gender=${gender}`);
   };
 
-  const handleSubCategoryClick = (category: string) => {
+  const handleSubCategoryClick = (category: number) => {
     router.push(`/shop/breadcrumb1?subCategory=${category}`);
   };
 
@@ -338,7 +350,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   : subCat.category.name.en;
                               return (
                                 show && (
-                                  <div className="nav-item">
+                                  <div className="nav-item" key={subCat.id}>
                                     <div className="text-button-uppercase pb-2">
                                       {subCat.category.name.en}
                                     </div>
@@ -351,7 +363,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         ) {
                                           i++;
                                           return (
-                                            <li>
+                                            <li key={subCatName.id}>
                                               <div
                                                 onClick={() =>
                                                   handleSubCategoryClick(
@@ -370,7 +382,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         } else if (i == 5) {
                                           i++;
                                           return (
-                                            <li>
+                                            <li key={subCatName.id}>
                                               <div
                                                 onClick={() => {
                                                   window.location.href = "";
@@ -1367,9 +1379,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               </li>
                               <li>
                                 <div
-                                  onClick={() =>
-                                    handleCategoryClick("cosmetic")
-                                  }
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
                                   View All
@@ -1416,7 +1425,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               </li>
                               <li>
                                 <div
-                                  onClick={() => handleCategoryClick("yoga")}
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
                                   View All
@@ -1510,9 +1518,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               </li>
                               <li>
                                 <div
-                                  onClick={() =>
-                                    handleCategoryClick("toys-kid")
-                                  }
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
                                   View All
@@ -1527,9 +1532,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             <ul>
                               <li>
                                 <div
-                                  onClick={() =>
-                                    handleCategoryClick("furniture")
-                                  }
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
                                   Furniture | Decor
@@ -1561,9 +1563,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               </li>
                               <li>
                                 <div
-                                  onClick={() =>
-                                    handleCategoryClick("furniture")
-                                  }
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
                                   View All
@@ -1892,7 +1891,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   key={index}
                                   data={prd}
                                   type="grid"
-                                  style="style-1"
                                 />
                               ))}
                             </div>

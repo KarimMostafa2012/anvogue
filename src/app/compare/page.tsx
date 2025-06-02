@@ -48,10 +48,10 @@ const Compare = () => {
                                         <div className="product-item px-10 pt-6 pb-5 border-r border-line" key={item.id}>
                                             <div className="bg-img w-full aspect-[3/4] rounded-lg overflow-hidden flex-shrink-0">
                                                 <Image
-                                                    src={item.images[0]}
+                                                    src={item.images[0].img}
                                                     width={1000}
                                                     height={1500}
-                                                    alt={item.images[0]}
+                                                    alt={item.name}
                                                     className='w-full h-full object-cover'
                                                 />
                                             </div>
@@ -114,7 +114,7 @@ const Compare = () => {
                                         {compareState.compareArray.map((item, index) => (
                                             <td className="w-full border border-line h-[60px] border-t-0 border-r-0 size" key={index}>
                                                 <div className='h-full flex items-center justify-center capitalize gap-1'>
-                                                    {item.sizes.map((size, i) => (
+                                                    {item.sizes?.map((size, i) => (
                                                         <p key={i}>{size}
                                                             <span>,</span>
                                                         </p>
@@ -127,11 +127,11 @@ const Compare = () => {
                                         {compareState.compareArray.map((item, index) => (
                                             <td className="w-full border border-line h-[60px] border-t-0 border-r-0 size" key={index}>
                                                 <div className='h-full flex items-center justify-center capitalize gap-2'>
-                                                    {item.variation.map((colorItem, i) => (
+                                                    {item.colors.map((colorItem, i) => (
                                                         <span
                                                             key={i}
                                                             className={`w-6 h-6 rounded-full`}
-                                                            style={{backgroundColor: `${colorItem.colorCode}`}}
+                                                            style={{backgroundColor: `${colorItem.color}`}}
                                                         ></span>
                                                     ))}
                                                 </div>

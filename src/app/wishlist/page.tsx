@@ -53,16 +53,17 @@ const Wishlist = () => {
             name: 'no-data',
             gender: 'no-data',
             new: false,
-            sale: false,
+            has_offer: false,
             rate: 0,
+            new_price: 0,
             price: 0,
-            originPrice: 0,
+            offer_value: 0,
             brand: 'no-data',
             sold: 0,
             quantity: 0,
             quantityPurchase: 0,
             sizes: [],
-            variation: [],
+            colors: [],
             thumbImage: [],
             images: [],
             description: 'no-data',
@@ -81,16 +82,16 @@ const Wishlist = () => {
     if (sortOption === 'discountHighToLow') {
         filteredData = sortedData
             .sort((a, b) => (
-                (Math.floor(100 - ((b.price / b.originPrice) * 100))) - (Math.floor(100 - ((a.price / a.originPrice) * 100)))
+                (Math.floor(100 - ((b.new_price / Number(b.price)) * 100))) - (Math.floor(100 - ((a.new_price / Number(a.price)) * 100)))
             ))
     }
 
     if (sortOption === 'priceHighToLow') {
-        filteredData = sortedData.sort((a, b) => b.price - a.price)
+        filteredData = sortedData.sort((a, b) => Number(b.price) - Number(a.price))
     }
 
     if (sortOption === 'priceLowToHigh') {
-        filteredData = sortedData.sort((a, b) => a.price - b.price)
+        filteredData = sortedData.sort((a, b) => Number(a.price) - Number(b.price))
     }
 
 

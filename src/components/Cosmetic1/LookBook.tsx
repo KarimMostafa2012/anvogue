@@ -25,7 +25,7 @@ const LookBook: React.FC<Props> = ({ data, start, limit }) => {
                             .filter(product => product.category === 'cosmetic')
                             .slice(start, limit)
                             .map((prd, index) => (
-                                <Product key={index} data={prd} type='grid' style='style-1' />
+                                <Product key={index} data={prd} type='grid' />
                             ))
                         }
                     </div>

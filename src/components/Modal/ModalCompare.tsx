@@ -33,7 +33,7 @@ const ModalCompare = () => {
                                         <div className="infor flex items-center gap-4">
                                             <div className="bg-img w-[100px] h-[100px] flex-shrink-0 rounded-lg overflow-hidden">
                                                 <Image
-                                                    src={product.images[0]}
+                                                    src={product.images[0].img}
                                                     width={500}
                                                     height={500}
                                                     alt={product.name}
