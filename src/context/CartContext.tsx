@@ -25,7 +25,7 @@ type CartAction =
     | { type: 'LOAD_CART'; payload: CartItem[] }
 
 interface CartContextProps {
-    cartState: CartState;
+    cartState: CartState; 
     addToCart: (item: ProductType) => void;
     removeFromCart: (itemId: string) => void;
     updateCart: (itemId: string, quantity: number, selectedColor: string | undefined, selectedSize?: number | undefined) => void;

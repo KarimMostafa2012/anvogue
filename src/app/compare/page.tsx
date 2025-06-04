@@ -23,9 +23,9 @@ const Compare = () => {
     const handleAddToCart = (productItem: ProductType) => {
         if (!cartState.cartArray.find(item => item.id === productItem.id)) {
             addToCart({ ...productItem });
-            updateCart(productItem.id, productItem.quantityPurchase, '', '')
+            updateCart(productItem.id, productItem.quantityPurchase, '', undefined)
         } else {
-            updateCart(productItem.id, productItem.quantityPurchase, '', '')
+            updateCart(productItem.id, productItem.quantityPurchase, '', undefined)
         }
         openModalCart()
     };
@@ -114,11 +114,9 @@ const Compare = () => {
                                         {compareState.compareArray.map((item, index) => (
                                             <td className="w-full border border-line h-[60px] border-t-0 border-r-0 size" key={index}>
                                                 <div className='h-full flex items-center justify-center capitalize gap-1'>
-                                                    {item.sizes?.map((size, i) => (
-                                                        <p key={i}>{size}
+                                                        <p>{item.size}
                                                             <span>,</span>
                                                         </p>
-                                                    ))}
                                                 </div>
                                             </td>
                                         ))}

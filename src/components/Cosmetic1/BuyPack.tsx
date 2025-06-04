@@ -17,17 +17,17 @@ const BuyPack = () => {
     const handleAddToCart = () => {
         if (!cartState.cartArray.find(item => item.id === '43')) {
             addToCart(productData.find(item => item.id === '43') as ProductType)
-            updateCart('43', 1, '', '')
+            updateCart('43', 1, '', undefined)
         }
 
         if (!cartState.cartArray.find(item => item.id === '44')) {
             addToCart(productData.find(item => item.id === '44') as ProductType)
-            updateCart('44', 1, '', '')
+            updateCart('44', 1, '', undefined)
         }
 
         if (!cartState.cartArray.find(item => item.id === '42')) {
             addToCart(productData.find(item => item.id === '42') as ProductType)
-            updateCart('42', 1, '', '')
+            updateCart('42', 1, '', undefined)
         }
 
         openModalCart()

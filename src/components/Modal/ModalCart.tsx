@@ -29,9 +29,9 @@ const ModalCart = ({ serverTimeLeft }: { serverTimeLeft: CountdownTimeType }) =>
     const handleAddToCart = (productItem: ProductType) => {
         if (!cartState.cartArray.find(item => item.id === productItem.id)) {
             addToCart({ ...productItem });
-            updateCart(productItem.id, productItem.quantityPurchase, '', '')
+            updateCart(productItem.id, productItem.quantityPurchase, '', undefined)
         } else {
-            updateCart(productItem.id, productItem.quantityPurchase, '', '')
+            updateCart(productItem.id, productItem.quantityPurchase, '', undefined)
         }
     };
 

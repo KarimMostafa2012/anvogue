@@ -2,6 +2,14 @@
   {
     "offer_value": 253,
     "id": "1",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "top",
     "name": "mesh shirt",
@@ -15,7 +23,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -57,6 +65,14 @@
   {
     "offer_value": 253,
     "id": "2",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "Raglan Sleeve T-shirt",
@@ -70,7 +86,7 @@
     "sold": 23,
     "quantity": 200,
     "quantityPurchase": 1,
-    "sizes": ["XS", "S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -112,6 +128,14 @@
   {
     "offer_value": 253,
     "id": "3",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "dress",
     "name": "Off-the-Shoulder Blouse",
@@ -125,7 +149,7 @@
     "sold": 15,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["freesize"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -167,6 +191,14 @@
   {
     "offer_value": 253,
     "id": "4",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "Kimono sleeve top",
@@ -180,7 +212,7 @@
     "sold": 14,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -222,6 +254,14 @@
   {
     "offer_value": 253,
     "id": "5",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "dress",
     "name": "mesh shirt",
@@ -235,7 +275,7 @@
     "sold": 21,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -273,6 +313,14 @@
   {
     "offer_value": 253,
     "id": "6",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "sets",
     "name": "Raglan Sleeve T-shirt",
@@ -286,7 +334,7 @@
     "sold": 19,
     "quantity": 200,
     "quantityPurchase": 1,
-    "sizes": ["XS", "S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -328,6 +376,14 @@
   {
     "offer_value": 253,
     "id": "7",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "shirt",
     "name": "Off-the-Shoulder Blouse",
@@ -341,7 +397,7 @@
     "sold": 22,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["freesize"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -383,6 +439,14 @@
   {
     "offer_value": 253,
     "id": "8",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "sets",
     "name": "Kimono sleeve top",
@@ -396,7 +460,7 @@
     "sold": 45,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -438,6 +502,14 @@
   {
     "offer_value": 253,
     "id": "9",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "mesh shirt",
@@ -451,7 +523,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -493,6 +565,14 @@
   {
     "offer_value": 253,
     "id": "10",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "Raglan Sleeve T-shirt",
@@ -506,7 +586,7 @@
     "sold": 12,
     "quantity": 200,
     "quantityPurchase": 1,
-    "sizes": ["XS", "S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -548,6 +628,14 @@
   {
     "offer_value": 253,
     "id": "11",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "Off-the-Shoulder Blouse",
@@ -561,7 +649,7 @@
     "sold": 14,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["freesize"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -603,6 +691,14 @@
   {
     "offer_value": 253,
     "id": "12",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "sets",
     "name": "Kimono sleeve top",
@@ -616,7 +712,7 @@
     "sold": 17,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -658,6 +754,14 @@
   {
     "offer_value": 253,
     "id": "13",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "mesh shirt",
@@ -671,7 +775,7 @@
     "sold": 39,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -713,6 +817,14 @@
   {
     "offer_value": 253,
     "id": "14",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "sets",
     "name": "Raglan Sleeve T-shirt",
@@ -726,7 +838,7 @@
     "sold": 9,
     "quantity": 200,
     "quantityPurchase": 1,
-    "sizes": ["XS", "S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -768,6 +880,14 @@
   {
     "offer_value": 253,
     "id": "15",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "top",
     "name": "Off-the-Shoulder Blouse",
@@ -781,7 +901,7 @@
     "sold": 8,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["freesize"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -823,6 +943,14 @@
   {
     "offer_value": 253,
     "id": "16",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "top",
     "name": "Kimono sleeve top",
@@ -836,7 +964,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -878,6 +1006,14 @@
   {
     "offer_value": 253,
     "id": "22",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "T-shirt Pockets",
@@ -891,7 +1027,7 @@
     "sold": 41,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -933,6 +1069,14 @@
   {
     "offer_value": 253,
     "id": "23",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "T-shirt Pockets",
@@ -946,7 +1090,7 @@
     "sold": 15,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -988,6 +1132,14 @@
   {
     "offer_value": 253,
     "id": "17",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "mesh shirt",
@@ -1001,7 +1153,7 @@
     "sold": 22,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1043,6 +1195,14 @@
   {
     "offer_value": 253,
     "id": "18",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "shirt",
     "name": "Raglan Sleeve T-shirt",
@@ -1056,7 +1216,7 @@
     "sold": 46,
     "quantity": 200,
     "quantityPurchase": 1,
-    "sizes": ["XS", "S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1098,6 +1258,14 @@
   {
     "offer_value": 253,
     "id": "19",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "dress",
     "name": "Off-the-Shoulder Blouse",
@@ -1111,7 +1279,7 @@
     "sold": 42,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["freesize"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1153,6 +1321,14 @@
   {
     "offer_value": 253,
     "id": "20",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "top",
     "name": "Kimono sleeve top",
@@ -1166,7 +1342,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1208,6 +1384,14 @@
   {
     "offer_value": 253,
     "id": "21",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "T-shirt Pockets",
@@ -1221,7 +1405,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1263,6 +1447,14 @@
   {
     "offer_value": 253,
     "id": "24",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "T-shirt Pockets",
@@ -1276,7 +1468,7 @@
     "sold": 32,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1318,6 +1510,14 @@
   {
     "offer_value": 253,
     "id": "241",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "t-shirt",
     "name": "T-shirt Pockets",
@@ -1331,7 +1531,7 @@
     "sold": 32,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1365,6 +1565,14 @@
   {
     "offer_value": 253,
     "id": "25",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "shirt",
     "name": "Shirt Pockets",
@@ -1378,7 +1586,7 @@
     "sold": 22,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1420,6 +1628,14 @@
   {
     "offer_value": 253,
     "id": "26",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "shirt",
     "name": "T-shirt Pockets",
@@ -1433,7 +1649,7 @@
     "sold": 15,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1475,6 +1691,14 @@
   {
     "offer_value": 253,
     "id": "27",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "shirt",
     "name": "T-shirt Pockets",
@@ -1488,7 +1712,7 @@
     "sold": 36,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1530,6 +1754,14 @@
   {
     "offer_value": 253,
     "id": "28",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "underwear",
     "name": "Kimono sleeve top",
@@ -1543,7 +1775,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1585,6 +1817,14 @@
   {
     "offer_value": 253,
     "id": "29",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "swimwear",
     "name": "mesh shirt",
@@ -1598,7 +1838,7 @@
     "sold": 22,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1640,6 +1880,14 @@
   {
     "offer_value": 253,
     "id": "30",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "swimwear",
     "name": "Raglan Sleeve T-shirt",
@@ -1653,7 +1901,7 @@
     "sold": 11,
     "quantity": 200,
     "quantityPurchase": 1,
-    "sizes": ["XS", "S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1695,6 +1943,14 @@
   {
     "offer_value": 253,
     "id": "31",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "underwear",
     "name": "Off-the-Shoulder Blouse",
@@ -1708,7 +1964,7 @@
     "sold": 5,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["freesize"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1750,6 +2006,14 @@
   {
     "offer_value": 253,
     "id": "32",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "swimwear",
     "name": "Kimono sleeve top",
@@ -1763,7 +2027,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1805,6 +2069,14 @@
   {
     "offer_value": 253,
     "id": "33",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "underwear",
     "name": "T-shirt Pockets",
@@ -1818,7 +2090,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1860,6 +2132,14 @@
   {
     "offer_value": 253,
     "id": "34",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "underwear",
     "name": "T-shirt Pockets",
@@ -1873,7 +2153,7 @@
     "sold": 21,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1911,6 +2191,14 @@
   {
     "offer_value": 253,
     "id": "35",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "swimwear",
     "name": "T-shirt Pockets",
@@ -1924,7 +2212,7 @@
     "sold": 15,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -1966,6 +2254,14 @@
   {
     "offer_value": 253,
     "id": "36",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "swimwear",
     "name": "T-shirt Pockets",
@@ -1979,7 +2275,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2021,6 +2317,14 @@
   {
     "offer_value": 253,
     "id": "37",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "swimwear",
     "name": "Shirt Pockets",
@@ -2034,7 +2338,7 @@
     "sold": 20,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2076,6 +2380,14 @@
   {
     "offer_value": 253,
     "id": "38",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "swimwear",
     "name": "T-shirt Pockets",
@@ -2089,7 +2401,7 @@
     "sold": 15,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2131,6 +2443,14 @@
   {
     "offer_value": 253,
     "id": "39",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "swimwear",
     "name": "T-shirt Pockets",
@@ -2144,7 +2464,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL", "2XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2186,6 +2506,14 @@
   {
     "offer_value": 253,
     "id": "391",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "accessories",
     "name": "gucci sunglasses",
@@ -2199,7 +2527,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2229,6 +2557,14 @@
   {
     "offer_value": 253,
     "id": "392",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "accessories",
     "name": "women handbag",
@@ -2242,7 +2578,7 @@
     "sold": 21,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2272,6 +2608,14 @@
   {
     "offer_value": 253,
     "id": "393",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "accessories",
     "name": "camouflage hat",
@@ -2285,7 +2629,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2315,6 +2659,14 @@
   {
     "offer_value": 253,
     "id": "394",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "accessories",
     "name": "leather belts",
@@ -2328,7 +2680,7 @@
     "sold": 34,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2358,6 +2710,14 @@
   {
     "offer_value": 253,
     "id": "395",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "accessories",
     "name": "one-piece pants",
@@ -2371,7 +2731,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2401,6 +2761,14 @@
   {
     "offer_value": 253,
     "id": "396",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "accessories",
     "name": "T-shirt",
@@ -2414,7 +2782,7 @@
     "sold": 34,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2444,6 +2812,14 @@
   {
     "offer_value": 253,
     "id": "40",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "face",
     "name": "Face Treatment",
@@ -2457,7 +2833,7 @@
     "sold": 18,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["50", "100", "150"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2495,6 +2871,14 @@
   {
     "offer_value": 253,
     "id": "41",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "face",
     "name": "Face Tan Booster",
@@ -2508,7 +2892,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["150", "200", "300"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2546,6 +2930,14 @@
   {
     "offer_value": 253,
     "id": "45",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "eye",
     "name": "Tinted Eye Balm",
@@ -2559,7 +2951,7 @@
     "sold": 24,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["150", "200", "300"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2593,6 +2985,14 @@
   {
     "offer_value": 253,
     "id": "46",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "eye",
     "name": "Tinted Eye Balm",
@@ -2606,7 +3006,7 @@
     "sold": 24,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["50", "100", "200"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2640,6 +3040,14 @@
   {
     "offer_value": 253,
     "id": "47",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "nail",
     "name": "Nail Treatment",
@@ -2653,7 +3061,7 @@
     "sold": 15,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["50", "100", "200"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2687,6 +3095,14 @@
   {
     "offer_value": 253,
     "id": "48",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "nail",
     "name": "Nail After Moon",
@@ -2700,7 +3116,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["100", "150", "200"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2734,6 +3150,14 @@
   {
     "offer_value": 253,
     "id": "49",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "eye",
     "name": "Tinted Moisturiser",
@@ -2747,7 +3171,7 @@
     "sold": 24,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["50", "100", "150"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2785,6 +3209,14 @@
   {
     "offer_value": 253,
     "id": "43",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "hair",
     "name": "Hair Treatment",
@@ -2798,7 +3230,7 @@
     "sold": 10,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["50", "100", "150"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2840,6 +3272,14 @@
   {
     "offer_value": 253,
     "id": "50",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "lip",
     "name": "Lip Top Treatment",
@@ -2853,7 +3293,7 @@
     "sold": 18,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2887,6 +3327,14 @@
   {
     "offer_value": 253,
     "id": "51",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "Lip",
     "name": "Lip Tan Booster",
@@ -2900,7 +3348,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["50", "100", "150"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2934,6 +3382,14 @@
   {
     "offer_value": 253,
     "id": "44",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "hair",
     "name": "After Sun - tan Booster",
@@ -2947,7 +3403,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -2989,6 +3445,14 @@
   {
     "offer_value": 253,
     "id": "42",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "hair",
     "name": "Tinted Moisturiser",
@@ -3002,7 +3466,7 @@
     "sold": 12,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["50", "100", "150"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3044,6 +3508,14 @@
   {
     "offer_value": 253,
     "id": "52",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "lip",
     "name": "Tinted lip Balm",
@@ -3057,7 +3529,7 @@
     "sold": 24,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3095,6 +3567,14 @@
   {
     "offer_value": 253,
     "id": "53",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "cosmetic",
     "type": "eye",
     "name": "Tinted eye Balm",
@@ -3108,7 +3588,7 @@
     "sold": 24,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["150", "200", "300"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3146,6 +3626,14 @@
   {
     "offer_value": 253,
     "id": "54",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "food",
     "name": "Soft Baked",
@@ -3159,7 +3647,7 @@
     "sold": 24,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["200", "300", "500"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3197,6 +3685,14 @@
   {
     "offer_value": 253,
     "id": "55",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "food",
     "name": "Beneful Healthy",
@@ -3210,7 +3706,7 @@
     "sold": 16,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3248,6 +3744,14 @@
   {
     "offer_value": 253,
     "id": "56",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "pet",
     "name": "Corgi Asia",
@@ -3261,7 +3765,7 @@
     "sold": 12,
     "quantity": 40,
     "quantityPurchase": 1,
-    "sizes": ["2", "3"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3299,6 +3803,14 @@
   {
     "offer_value": 253,
     "id": "57",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "outfit",
     "name": "fur-lined pet coat",
@@ -3312,7 +3824,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["1", "2", "3", "4"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3350,6 +3862,14 @@
   {
     "offer_value": 253,
     "id": "58",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "food",
     "name": "Milo kitchen",
@@ -3363,7 +3883,7 @@
     "sold": 24,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["200", "300", "500"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3401,6 +3921,14 @@
   {
     "offer_value": 253,
     "id": "59",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "food",
     "name": "Beneful Healthy",
@@ -3414,7 +3942,7 @@
     "sold": 16,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3452,6 +3980,14 @@
   {
     "offer_value": 253,
     "id": "60",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "bed",
     "name": "Bed for cat",
@@ -3465,7 +4001,7 @@
     "sold": 12,
     "quantity": 40,
     "quantityPurchase": 1,
-    "sizes": ["2", "3", "4", "5"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3503,6 +4039,14 @@
   {
     "offer_value": 253,
     "id": "61",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "ring",
     "name": "Ring for cat",
@@ -3516,7 +4060,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["1", "2", "3", "4"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3554,6 +4098,14 @@
   {
     "offer_value": 253,
     "id": "62",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "bed",
     "name": "Bed for dog",
@@ -3567,7 +4119,7 @@
     "sold": 12,
     "quantity": 40,
     "quantityPurchase": 1,
-    "sizes": ["2", "3", "4", "5"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3605,6 +4157,14 @@
   {
     "offer_value": 253,
     "id": "63",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "bed",
     "name": "Bed dog",
@@ -3618,7 +4178,7 @@
     "sold": 12,
     "quantity": 40,
     "quantityPurchase": 1,
-    "sizes": ["2", "3", "4", "5"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3656,6 +4216,14 @@
   {
     "offer_value": 253,
     "id": "64",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "pet",
     "name": "Cat Germany",
@@ -3669,7 +4237,7 @@
     "sold": 16,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["2", "3", "4", "5"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3707,6 +4275,14 @@
   {
     "offer_value": 253,
     "id": "65",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "pet",
     "type": "pet",
     "name": "dog australia",
@@ -3720,7 +4296,7 @@
     "sold": 16,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["2", "3", "4", "5"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3758,6 +4334,14 @@
   {
     "offer_value": 253,
     "id": "66",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "bracelet",
     "name": "golden bracelet",
@@ -3771,7 +4355,7 @@
     "sold": 16,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["10", "11", "12", "13"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3805,6 +4389,14 @@
   {
     "offer_value": 253,
     "id": "67",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "bracelet",
     "name": "silver bracelet",
@@ -3818,7 +4410,7 @@
     "sold": 16,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["13", "14", "15", "16"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3856,6 +4448,14 @@
   {
     "offer_value": 253,
     "id": "68",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "ring",
     "name": "silver ring",
@@ -3869,7 +4469,7 @@
     "sold": 16,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["10", "11", "12", "13"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3903,6 +4503,14 @@
   {
     "offer_value": 253,
     "id": "69",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "necklace",
     "name": "silver necklace",
@@ -3916,7 +4524,7 @@
     "sold": 16,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["35", "40", "45", "50"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3950,6 +4558,14 @@
   {
     "offer_value": 253,
     "id": "70",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "bracelet",
     "name": "woemn bracelet",
@@ -3963,7 +4579,7 @@
     "sold": 24,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["10", "11", "12", "13"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -3997,6 +4613,14 @@
   {
     "offer_value": 253,
     "id": "71",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "ring",
     "name": "silver ring",
@@ -4010,7 +4634,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["10", "11", "12", "13"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4044,6 +4668,14 @@
   {
     "offer_value": 253,
     "id": "682",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "ring",
     "name": "silver ring",
@@ -4057,7 +4689,7 @@
     "sold": 3,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["10", "11", "12", "13"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4091,6 +4723,14 @@
   {
     "offer_value": 253,
     "id": "692",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "necklace",
     "name": "silver necklace",
@@ -4104,7 +4744,7 @@
     "sold": 2,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["35", "40", "45", "50"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4138,6 +4778,14 @@
   {
     "offer_value": 253,
     "id": "702",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "bracelet",
     "name": "woemn bracelet",
@@ -4151,7 +4799,7 @@
     "sold": 4,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["10", "11", "12", "13"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4185,6 +4833,14 @@
   {
     "offer_value": 253,
     "id": "712",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "jewelry",
     "type": "ring",
     "name": "silver ring",
@@ -4198,7 +4854,7 @@
     "sold": 8,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["10", "11", "12", "13"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4232,6 +4888,14 @@
   {
     "offer_value": 253,
     "id": "86",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "sofa chair",
@@ -4245,7 +4909,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4279,6 +4943,14 @@
   {
     "offer_value": 253,
     "id": "73",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "wood chair",
@@ -4292,7 +4964,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4326,6 +4998,14 @@
   {
     "offer_value": 253,
     "id": "75",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "wood chair",
@@ -4339,7 +5019,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4373,6 +5053,14 @@
   {
     "offer_value": 253,
     "id": "76",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "chair furniture",
@@ -4386,7 +5074,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4420,6 +5108,14 @@
   {
     "offer_value": 253,
     "id": "72",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "chair furniture",
@@ -4433,7 +5129,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4467,6 +5163,14 @@
   {
     "offer_value": 253,
     "id": "77",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "wood chair",
@@ -4480,7 +5184,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4514,6 +5218,14 @@
   {
     "offer_value": 253,
     "id": "74",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "chair furniture",
@@ -4527,7 +5239,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4561,6 +5273,14 @@
   {
     "offer_value": 253,
     "id": "78",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "table",
     "name": "wood table",
@@ -4574,7 +5294,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4612,6 +5332,14 @@
   {
     "offer_value": 253,
     "id": "80",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "stainless steel chair",
@@ -4625,7 +5353,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4659,6 +5387,14 @@
   {
     "offer_value": 253,
     "id": "81",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "chair",
     "name": "aluminium chair",
@@ -4672,7 +5408,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4706,6 +5442,14 @@
   {
     "offer_value": 253,
     "id": "83",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "table",
     "name": "wood table",
@@ -4719,7 +5463,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4753,6 +5497,14 @@
   {
     "offer_value": 253,
     "id": "84",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "table",
     "name": "wood table",
@@ -4766,7 +5518,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4800,6 +5552,14 @@
   {
     "offer_value": 253,
     "id": "85",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "table",
     "name": "wood table",
@@ -4813,7 +5573,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4847,6 +5607,14 @@
   {
     "offer_value": 253,
     "id": "87",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "lighting",
     "name": "sofa lighting",
@@ -4860,7 +5628,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4894,6 +5662,14 @@
   {
     "offer_value": 253,
     "id": "79",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "table",
     "name": "wood table",
@@ -4907,7 +5683,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4945,6 +5721,14 @@
   {
     "offer_value": 253,
     "id": "82",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "table",
     "name": "wood table",
@@ -4958,7 +5742,7 @@
     "sold": 21,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -4996,6 +5780,14 @@
   {
     "offer_value": 253,
     "id": "88",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "furniture",
     "type": "lighting",
     "name": "bed lighting",
@@ -5009,7 +5801,7 @@
     "sold": 12,
     "quantity": 88,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5043,6 +5835,14 @@
   {
     "offer_value": 253,
     "id": "89",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "pad",
     "name": "bed lighting",
@@ -5056,7 +5856,7 @@
     "sold": 28,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5094,6 +5894,14 @@
   {
     "offer_value": 253,
     "id": "90",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "toy",
     "name": "toys lighting",
@@ -5107,7 +5915,7 @@
     "sold": 21,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5145,6 +5953,14 @@
   {
     "offer_value": 253,
     "id": "91",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "blanket",
     "name": "blanket lighting",
@@ -5158,7 +5974,7 @@
     "sold": 35,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5196,6 +6012,14 @@
   {
     "offer_value": 253,
     "id": "92",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "clothing",
     "name": "clothing lighting",
@@ -5209,7 +6033,7 @@
     "sold": 65,
     "quantity": 180,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5247,6 +6071,14 @@
   {
     "offer_value": 253,
     "id": "93",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "pad",
     "name": "bed lighting",
@@ -5260,7 +6092,7 @@
     "sold": 14,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5298,6 +6130,14 @@
   {
     "offer_value": 253,
     "id": "94",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "toy",
     "name": "toys lighting",
@@ -5311,7 +6151,7 @@
     "sold": 28,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5349,6 +6189,14 @@
   {
     "offer_value": 253,
     "id": "95",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "blanket",
     "name": "blanket lighting",
@@ -5362,7 +6210,7 @@
     "sold": 34,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5400,6 +6248,14 @@
   {
     "offer_value": 253,
     "id": "96",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "clothing",
     "name": "clothing lighting",
@@ -5413,7 +6269,7 @@
     "sold": 73,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5451,6 +6307,14 @@
   {
     "offer_value": 253,
     "id": "97",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "blanket",
     "name": "blanket lighting",
@@ -5464,7 +6328,7 @@
     "sold": 65,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5506,6 +6370,14 @@
   {
     "offer_value": 253,
     "id": "98",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "bib",
     "name": "bib lighting",
@@ -5519,7 +6391,7 @@
     "sold": 28,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5561,6 +6433,14 @@
   {
     "offer_value": 253,
     "id": "99",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "clothing",
     "name": "clothing lighting",
@@ -5574,7 +6454,7 @@
     "sold": 23,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5612,6 +6492,14 @@
   {
     "offer_value": 253,
     "id": "100",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "toys-kid",
     "type": "blanket",
     "name": "blanket lighting",
@@ -5625,7 +6513,7 @@
     "sold": 28,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["5", "8", "10", "12"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5659,6 +6547,14 @@
   {
     "offer_value": 253,
     "id": "101",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "candle",
     "name": "candle lighting",
@@ -5672,7 +6568,7 @@
     "sold": 28,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300", "400"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5710,6 +6606,14 @@
   {
     "offer_value": 253,
     "id": "102",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "drinks",
     "name": "drinks lighting",
@@ -5723,7 +6627,7 @@
     "sold": 54,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300", "400"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5761,6 +6665,14 @@
   {
     "offer_value": 253,
     "id": "103",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "kits",
     "name": "kits lighting",
@@ -5774,7 +6686,7 @@
     "sold": 21,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["0.5", "1", "1.5", "2"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5816,6 +6728,14 @@
   {
     "offer_value": 253,
     "id": "104",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "clothes",
     "name": "clothing lighting",
@@ -5829,7 +6749,7 @@
     "sold": 58,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5871,6 +6791,14 @@
   {
     "offer_value": 253,
     "id": "105",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "candle",
     "name": "candle lighting",
@@ -5884,7 +6812,7 @@
     "sold": 28,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300", "400"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5922,6 +6850,14 @@
   {
     "offer_value": 253,
     "id": "106",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "drinks",
     "name": "drinks lighting",
@@ -5935,7 +6871,7 @@
     "sold": 54,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300", "400"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -5973,6 +6909,14 @@
   {
     "offer_value": 253,
     "id": "107",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "mats",
     "name": "mats lighting",
@@ -5986,7 +6930,7 @@
     "sold": 21,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": ["0.5", "1", "1.5", "2"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6028,6 +6972,14 @@
   {
     "offer_value": 253,
     "id": "108",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "clothes",
     "name": "clothing lighting",
@@ -6041,7 +6993,7 @@
     "sold": 58,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6079,6 +7031,14 @@
   {
     "offer_value": 253,
     "id": "109",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "candle",
     "name": "candle lighting",
@@ -6092,7 +7052,7 @@
     "sold": 28,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300", "400"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6130,6 +7090,14 @@
   {
     "offer_value": 253,
     "id": "110",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "drinks",
     "name": "drinks lighting",
@@ -6143,7 +7111,7 @@
     "sold": 54,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300", "400"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6181,6 +7149,14 @@
   {
     "offer_value": 253,
     "id": "111",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "kits",
     "name": "kits lighting",
@@ -6194,7 +7170,7 @@
     "sold": 21,
     "quantity": 100,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6236,6 +7212,14 @@
   {
     "offer_value": 253,
     "id": "112",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "yoga",
     "type": "drinks",
     "name": "drinks lighting",
@@ -6249,7 +7233,7 @@
     "sold": 54,
     "quantity": 120,
     "quantityPurchase": 1,
-    "sizes": ["100", "200", "300", "400"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6287,6 +7271,14 @@
   {
     "offer_value": 253,
     "id": "113",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "classic",
     "name": "classic seiko",
@@ -6300,7 +7292,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6342,6 +7334,14 @@
   {
     "offer_value": 253,
     "id": "114",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "classic",
     "name": "classic seiko women",
@@ -6355,7 +7355,7 @@
     "sold": 15,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["14", "16"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6397,6 +7397,14 @@
   {
     "offer_value": 253,
     "id": "115",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "luxury",
     "name": "luxury seiko",
@@ -6410,7 +7418,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6444,6 +7452,14 @@
   {
     "offer_value": 253,
     "id": "116",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "apple",
     "name": "apple watch",
@@ -6457,7 +7473,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6491,6 +7507,14 @@
   {
     "offer_value": 253,
     "id": "117",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "smart",
     "name": "smart watch",
@@ -6504,7 +7528,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6538,6 +7562,14 @@
   {
     "offer_value": 253,
     "id": "118",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "sport",
     "name": "sport watch",
@@ -6551,7 +7583,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6585,6 +7617,14 @@
   {
     "offer_value": 253,
     "id": "119",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "apple",
     "name": "apple watch",
@@ -6598,7 +7638,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6636,6 +7676,14 @@
   {
     "offer_value": 253,
     "id": "120",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "fitness",
     "name": "fitness watch",
@@ -6649,7 +7697,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6683,6 +7731,14 @@
   {
     "offer_value": 253,
     "id": "121",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "luxury",
     "name": "luxury watch",
@@ -6696,7 +7752,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6738,6 +7794,14 @@
   {
     "offer_value": 253,
     "id": "122",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "watch",
     "type": "sport",
     "name": "sport watch",
@@ -6751,7 +7815,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["18", "20"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6785,6 +7849,14 @@
   {
     "offer_value": 253,
     "id": "123",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "vegetables",
     "name": "green cabbage organic",
@@ -6798,7 +7870,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6836,6 +7908,14 @@
   {
     "offer_value": 253,
     "id": "124",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "vegetables",
     "name": "purple cabbage organic",
@@ -6849,7 +7929,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6887,6 +7967,14 @@
   {
     "offer_value": 253,
     "id": "125",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "vegetables",
     "name": "Tinted Moisturiser",
@@ -6900,7 +7988,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6938,6 +8026,14 @@
   {
     "offer_value": 253,
     "id": "126",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "vegetables",
     "name": "purple cabbage organic",
@@ -6951,7 +8047,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -6985,6 +8081,14 @@
   {
     "offer_value": 253,
     "id": "127",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "vegetables",
     "name": "green cabbage organic",
@@ -6998,7 +8102,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7032,6 +8136,14 @@
   {
     "offer_value": 253,
     "id": "128",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "vegetables",
     "name": "green cai organic",
@@ -7045,7 +8157,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7083,6 +8195,14 @@
   {
     "offer_value": 253,
     "id": "129",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "vegetables",
     "name": "yellow cabbage organic",
@@ -7096,7 +8216,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7134,6 +8254,14 @@
   {
     "offer_value": 253,
     "id": "130",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "vegetables",
     "name": "purple cabbage organic",
@@ -7147,7 +8275,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7185,6 +8313,14 @@
   {
     "offer_value": 253,
     "id": "131",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "meat",
     "name": "green beef organic",
@@ -7198,7 +8334,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7232,6 +8368,14 @@
   {
     "offer_value": 253,
     "id": "132",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "meat",
     "name": "purple pork organic",
@@ -7245,7 +8389,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7279,6 +8423,14 @@
   {
     "offer_value": 253,
     "id": "133",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "meat",
     "name": "fish organic",
@@ -7292,7 +8444,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7326,6 +8478,14 @@
   {
     "offer_value": 253,
     "id": "134",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "meat",
     "name": "purple cabbage organic",
@@ -7339,7 +8499,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7373,6 +8533,14 @@
   {
     "offer_value": 253,
     "id": "135",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "fruit",
     "name": "apple organic",
@@ -7386,7 +8554,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7420,6 +8588,14 @@
   {
     "offer_value": 253,
     "id": "136",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "fruit",
     "name": "passion fruit organic",
@@ -7433,7 +8609,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7467,6 +8643,14 @@
   {
     "offer_value": 253,
     "id": "137",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "fruit",
     "name": "kiwi organic",
@@ -7480,7 +8664,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7514,6 +8698,14 @@
   {
     "offer_value": 253,
     "id": "138",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "organic",
     "type": "fruit",
     "name": "dragon fruit organic",
@@ -7527,7 +8719,7 @@
     "sold": 24,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": [],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7561,6 +8753,14 @@
   {
     "offer_value": 253,
     "id": "139",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "sweater",
     "name": "silver sweater",
@@ -7574,7 +8774,7 @@
     "sold": 16,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7608,6 +8808,14 @@
   {
     "offer_value": 253,
     "id": "140",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "sweater",
     "name": "silver sweater",
@@ -7621,7 +8829,7 @@
     "sold": 26,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7655,6 +8863,14 @@
   {
     "offer_value": 253,
     "id": "141",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "outerwear",
     "name": "women office outerwear",
@@ -7668,7 +8884,7 @@
     "sold": 16,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7702,6 +8918,14 @@
   {
     "offer_value": 253,
     "id": "142",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "outerwear",
     "name": "men outerwear",
@@ -7715,7 +8939,7 @@
     "sold": 26,
     "quantity": 64,
     "quantityPurchase": 1,
-    "sizes": ["S", "M", "L", "XL"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7749,6 +8973,14 @@
   {
     "offer_value": 253,
     "id": "143",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "fashion",
     "type": "dress",
     "name": "Off-the-Shoulder Blouse",
@@ -7762,7 +8994,7 @@
     "sold": 42,
     "quantity": 80,
     "quantityPurchase": 1,
-    "sizes": ["freesize"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7804,6 +9036,14 @@
   {
     "offer_value": 253,
     "id": "144",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "ipad",
     "type": "mini",
     "name": "Apple IPad Mini 6 Wi-Fi 64GB/128GB",
@@ -7817,7 +9057,7 @@
     "sold": 8,
     "quantity": 70,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7859,6 +9099,14 @@
   {
     "offer_value": 253,
     "id": "145",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "ipad",
     "type": "pro",
     "name": "Apple IPad Pro 6 Wi-Fi 64GB/128GB",
@@ -7872,7 +9120,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7914,6 +9162,14 @@
   {
     "offer_value": 253,
     "id": "146",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "ipad",
     "type": "pro",
     "name": "Apple IPad Pro 6 Wi-Fi 64GB/128GB",
@@ -7927,7 +9183,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -7969,6 +9225,14 @@
   {
     "offer_value": 253,
     "id": "147",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "ipad",
     "type": "pro",
     "name": "Apple IPad Pro 6 Wi-Fi 64GB/128GB",
@@ -7982,7 +9246,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8024,6 +9288,14 @@
   {
     "offer_value": 253,
     "id": "148",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "ipad",
     "type": "pro",
     "name": "Apple IPad Pro 6 Wi-Fi 64GB/128GB",
@@ -8037,7 +9309,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8079,6 +9351,14 @@
   {
     "offer_value": 253,
     "id": "149",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "phone",
     "type": "pro",
     "name": "IPhone 13 Promax 256GB - Unlocked",
@@ -8092,7 +9372,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8134,6 +9414,14 @@
   {
     "offer_value": 253,
     "id": "150",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "phone",
     "type": "pro",
     "name": "IPhone 13 Promax 256GB - Unlocked",
@@ -8147,7 +9435,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8189,6 +9477,14 @@
   {
     "offer_value": 253,
     "id": "151",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "phone",
     "type": "pro",
     "name": "IPhone 13 Promax 256GB - Unlocked",
@@ -8202,7 +9498,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8244,6 +9540,14 @@
   {
     "offer_value": 253,
     "id": "152",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "phone",
     "type": "pro",
     "name": "Samsung Galaxy S21",
@@ -8257,7 +9561,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8299,6 +9603,14 @@
   {
     "offer_value": 253,
     "id": "153",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "phone",
     "type": "pro",
     "name": "IPhone 13 Promax 256GB - Unlocked",
@@ -8312,7 +9624,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8354,6 +9666,14 @@
   {
     "offer_value": 253,
     "id": "154",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "headphone",
     "type": "airpod",
     "name": "Airpod Max 2023",
@@ -8367,7 +9687,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8401,6 +9721,14 @@
   {
     "offer_value": 253,
     "id": "155",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "headphone",
     "type": "airpod",
     "name": "Airpod Pro 2023",
@@ -8414,7 +9742,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8448,6 +9776,14 @@
   {
     "offer_value": 253,
     "id": "156",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "keyboard&mouse",
     "type": "pro",
     "name": "Edra EK384 Triple Mode - Alpha Brown Switch",
@@ -8461,7 +9797,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8495,6 +9831,14 @@
   {
     "offer_value": 253,
     "id": "157",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "keyboard&mouse",
     "type": "pro",
     "name": "Edra EK384 RGBA Mode - Alpha Blue Switch",
@@ -8508,7 +9852,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8542,6 +9886,14 @@
   {
     "offer_value": 253,
     "id": "158",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "keyboard&mouse",
     "type": "pro",
     "name": "KM580 Gaming Keyboard and Mouse Combo",
@@ -8555,7 +9907,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8593,6 +9945,14 @@
   {
     "offer_value": 253,
     "id": "159",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "keyboard&mouse",
     "type": "pro",
     "name": "KM580 Gaming Keyboard and Mouse Combo",
@@ -8606,7 +9966,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,
@@ -8644,6 +10004,14 @@
   {
     "offer_value": 253,
     "id": "160",
+    "sub_category": {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "test"
+      },
+      "name": "test"
+    },
     "category": "keyboard&mouse",
     "type": "pro",
     "name": "KM580 Gaming Keyboard and Mouse Combo",
@@ -8657,7 +10025,7 @@
     "sold": 4,
     "quantity": 50,
     "quantityPurchase": 1,
-    "sizes": ["64GB", "128GB"],
+    "size": 10,
     "colors": [
       {
         "id": 1,

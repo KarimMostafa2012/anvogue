@@ -32,7 +32,7 @@ const Cart = () => {
         // Kiểm tra xem sản phẩm có tồn tại không
         if (itemToUpdate) {
             // Truyền giá trị hiện tại của selectedSize và selectedColor
-            updateCart(productId, newQuantity, itemToUpdate.selectedSize, itemToUpdate.selectedColor);
+            updateCart(productId, newQuantity, itemToUpdate.selectedColor,itemToUpdate.selectedSize);
         }
     };
 
