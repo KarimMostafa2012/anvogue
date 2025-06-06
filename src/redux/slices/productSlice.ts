@@ -21,6 +21,7 @@ interface GetAllProductsParams {
     page?: number;
     sort?: string;
     color?: string;
+    has_offer?: boolean;
   };
 }
 interface GetOneProductParams {

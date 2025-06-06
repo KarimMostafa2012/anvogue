@@ -29,7 +29,7 @@ const ModalQuickview = () => {
   const { addToCompare, removeFromCompare, compareState } = useCompare();
   const { openModalCompare } = useModalCompareContext();
   const percentSale =
-    selectedProduct &&
+    selectedProduct?.new_price &&
     Math.floor(
       100 - (selectedProduct.new_price / Number(selectedProduct.price)) * 100
     );
@@ -75,9 +75,9 @@ const ModalQuickview = () => {
       };
 
       if (!cartState.cartArray.find((item) => item.id === selectedProduct.id)) {
-        addToCart(productToAdd);
+        addToCart(selectedProduct, activeColor, quantity);
       } else {
-        updateCart(selectedProduct.id, quantity, activeColor, activeSize);
+        updateCart(selectedProduct.id, quantity, activeColor);
       }
       openModalCart();
       closeQuickview();

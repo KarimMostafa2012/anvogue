@@ -24,7 +24,7 @@ export interface ProductType {
   has_offer: boolean;
   rate: number;
   price: string | number;
-  new_price: number;
+  new_price?: number;
   offer_value: number;
   brand?: string;
   sold: number;

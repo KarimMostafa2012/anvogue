@@ -26,7 +26,7 @@ export default function Home() {
         <SliderNine />
       </div>
       <TrendingNow />
-      <Deal data={productData} start={0} limit={4} />
+      <Deal start={0} limit={4} />
       <Banner />
       <TabFeatures data={productData} start={0} limit={8} />
       <Benefit props="md:mt-20 mt-10 py-10 px-2.5 bg-surface rounded-[32px]" />

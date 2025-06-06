@@ -5,20 +5,26 @@ import Link from "next/link";
 import Product from "../Product/Product";
 import { ProductType } from "@/type/ProductType";
 import { countdownTime } from "@/store/countdownTime";
+import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts } from "@/redux/slices/productSlice";
 
 interface Props {
-  data: Array<ProductType>;
   start: number;
   limit: number;
 }
 
-const Deal: React.FC<Props> = ({ data, start, limit }) => {
+const Deal: React.FC<Props> = ({ start, limit }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
+  const dispatch = useDispatch<AppDispatch>();
+  const { products, count, loading, error } = useSelector(
+    (state: RootState) => state.products
+  );
 
   useEffect(() => {
     // Initialize with current time on client only
@@ -31,6 +37,11 @@ const Deal: React.FC<Props> = ({ data, start, limit }) => {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    // console.log("Fetching with params:", params);
+    dispatch(getAllProducts({ params: { lang: "en", has_offer: true } }));
+  }, [dispatch]);
+
   return (
     <>
       <div className="tab-features-block md:pt-20 pt-10">
@@ -38,25 +49,9 @@ const Deal: React.FC<Props> = ({ data, start, limit }) => {
           <div className="heading flex items-center justify-between gap-5 flex-wrap">
             <div className="left flex items-center gap-6 gap-y-3 flex-wrap">
               <div className="heading3">Deals of the day</div>
-              <div className="deal-time bg-red py-1 px-5 rounded-lg">
-                <div className="heading6 text-white">
-                  <span className="day">{timeLeft.days}</span>
-                  <span>D : </span>
-                  <span className="hour">{timeLeft.hours}</span>
-                  <span>H : </span>
-                  <span className="minute">{timeLeft.minutes}</span>
-                  <span>M : </span>
-                  <span className="second">
-                    {timeLeft.seconds < 10
-                      ? `0${timeLeft.seconds}`
-                      : timeLeft.seconds}
-                  </span>
-                  <span>S</span>
-                </div>
-              </div>
             </div>
             <Link
-              href={"/shop/breadcrumb-img"}
+              href={"/shop/?has_offer=true"}
               className="text-button pb-1 border-b-2 border-black"
             >
               View All Deals
@@ -64,7 +59,7 @@ const Deal: React.FC<Props> = ({ data, start, limit }) => {
           </div>
 
           <div className="list-product show-product-sold grid lg:grid-cols-4 grid-cols-2 sm:gap-[30px] gap-[20px] md:mt-10 mt-6">
-            {data.slice(start, limit).map((prd, index) => (
+            {products.slice(start, limit).map((prd, index) => (
               <Product key={index} data={prd} type="grid" />
             ))}
           </div>

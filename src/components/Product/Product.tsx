@@ -26,6 +26,7 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
   const [activeColor, setActiveColor] = useState<string>("");
   const [activeSize, setActiveSize] = useState<number | undefined>(undefined);
   const [openQuickShop, setOpenQuickShop] = useState<boolean>(false);
+  const [quantityPurchase, setQuantityPurchase] = useState<number>(1);
   const { addToCart, updateCart, cartState } = useCart();
   const { openModalCart } = useModalCartContext();
   const { addToWishlist, removeFromWishlist, wishlistState } = useWishlist();
@@ -44,11 +45,12 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
   };
 
   const handleAddToCart = () => {
+    console.log(`product page: ${data}`)
     if (!cartState.cartArray.find((item) => item.id === data.id)) {
-      addToCart({ ...data });
-      updateCart(data.id, data.quantityPurchase, activeColor, activeSize);
+      addToCart({ ...data }, activeColor ? activeColor : data.colors[0].color, 1);
+      updateCart(data.id, quantityPurchase, activeColor);
     } else {
-      updateCart(data.id, data.quantityPurchase, activeColor, activeSize);
+      updateCart(data.id, data.quantityPurchase, activeColor);
     }
     openModalCart();
   };

@@ -50,12 +50,12 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
   const [offer, setOffer] = useState<Offer | null>(null);
   const [openPopupImg, setOpenPopupImg] = useState(false);
   const [openSizeGuide, setOpenSizeGuide] = useState<boolean>(false);
-  const [activeColor, setActiveColor] = useState<string>("");
+  const [activeColor, setActiveColor] = useState<string | undefined>("");
   const [selectedSubColor, setSelectedSubColor] = useState<{
     [productId: string]: string;
   }>({});
   const [activeMaterial, setActiveMaterial] = useState<string | null>();
-  // const [data, setData] = useState<ProductType[] | null>(null);
+  const [filteredData, setFilteredData] = useState<ProductType[] | null>(null);
   const [activeTab, setActiveTab] = useState<string | undefined>("description");
   const { addToCart, updateCart, cartState } = useCart();
   const { openModalCart } = useModalCartContext();
@@ -63,7 +63,9 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
   const { openModalWishlist } = useModalWishlistContext();
   const { addToCompare, removeFromCompare, compareState } = useCompare();
   const { openModalCompare } = useModalCompareContext();
-  const [quantity, setQuantity] = useState<{ [productId: string]: number }>({});
+  const [quantity, setQuantity] = useState<{ [productId: string]: number }>({
+    [productId]: 1,
+  });
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -98,6 +100,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
   }, [product?.has_offer, product?.id, dispatch]);
 
   useEffect(() => {
+    setActiveColor(product?.colors[0].color);
     if (product) {
       console.log(
         "Fetching products with sub-category id:",
@@ -105,7 +108,6 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
       );
       const params = {
         sub_category_id: product.sub_category.id,
-        category: product.sub_category.category.name,
         lang: "en",
       };
       dispatch(getAllProducts({ params }));
@@ -119,11 +121,9 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
       console.log("Offer received:", offerElement);
     }
   }, [offerElement]);
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  }, [data]);
+  const filterById = (data: any[], targetId: string | number) => {
+    return data.filter((item) => String(item.id) !== String(targetId));
+  };
 
   useEffect(() => {
     if (!offer?.end_datetime) return;
@@ -139,13 +139,21 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     return () => clearInterval(timer);
   }, [offer?.end_datetime]);
 
-  const productMain = product || data?.find((p) => p.id === productId);
+  const productMain: ProductType | undefined =
+    product || data?.find((p) => p.id === productId);
   const percentSale =
     productMain?.new_price && productMain?.price
       ? Math.floor(
           100 - (productMain.new_price / Number(productMain.price)) * 100
         )
       : 0;
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      setFilteredData(filterById(data, productId));
+    }
+  }, [data]);
 
   const handleActiveColor = (item: string) => {
     setActiveColor(item);
@@ -167,15 +175,23 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
 
   const handleIncreaseQuantity = () => {
     if (productMain) {
-      const newQuantity = (productMain.quantityPurchase || 0) + 1;
+      const newQuantity = (quantity[productId] || 1) + 1;
+      setQuantity((prev) => ({
+        ...prev,
+        [productId]: newQuantity,
+      }));
       updateCart(String(productMain.id), newQuantity, activeColor);
     }
   };
 
   const handleDecreaseQuantity = () => {
-    if (productMain && productMain.quantityPurchase > 1) {
-      const newQuantity = productMain.quantityPurchase - 1;
-      updateCart(String(productMain.id), newQuantity, activeColor);
+    if (productMain && (quantity[productId] || 1) > 1) {
+      const newQuantity = (quantity[productId] || 1) - 1;
+      setQuantity((prev) => ({
+        ...prev,
+        [productId]: newQuantity,
+      }));
+      updateCart(productMain.id, newQuantity, activeColor);
     }
   };
 
@@ -198,32 +214,93 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
               : { img: img.img, id: index }
           )
         : [],
-      quantityPurchase: product.quantityPurchase || 1,
+      quantity: quantity || 1,
     };
   };
 
-  const handleAddToCart = () => {
-    if (!productMain) return;
+  // const handleAddToCart = () => {
+  //   if (!productMain) return;
 
-    const productToAdd = convertToProductType(productMain);
+  //   const productToAdd = convertToProductType(productMain);
 
-    if (
-      !cartState.cartArray.find((item) => item.id === String(productMain.id))
-    ) {
-      addToCart(productToAdd);
-      updateCart(
-        String(productMain.id),
-        productMain.quantityPurchase || 1,
-        activeColor
-      );
-    } else {
-      updateCart(
-        String(productMain.id),
-        productMain.quantityPurchase || 1,
-        activeColor
-      );
+  //   if (
+  //     !cartState.cartArray.find((item) => item.id === String(productMain.id))
+  //   ) {
+  //     addToCart(productToAdd);
+  //     updateCart(String(productMain.id), quantity.productId || 1, activeColor);
+  //   } else {
+  //     updateCart(String(productMain.id), quantity.productId || 1, activeColor);
+  //   }
+  //   openModalCart();
+  // };
+
+  const handleAddToCart = async () => {
+    try {
+      // First add all items from data array
+      // const addPromises = data.map(async (ele, i) => {
+      //   if (i < 3 && quantity[ele.id] > 0) {
+      //     console.log(
+      //       ele,
+      //       selectedSubColor[ele.id]
+      //         ? selectedSubColor[ele.id]
+      //         : ele.colors[0].color,
+      //       quantity[ele.id]
+      //     );
+      //     if (!cartState.cartArray.find((item) => item.id === ele.id)) {
+      //       console.log(`found: ${ele.id}`);
+      //       await addToCart(
+      //         ele,
+      //         selectedSubColor[ele.id]
+      //           ? selectedSubColor[ele.id]
+      //           : ele.colors[0].color,
+      //         quantity[ele.id]
+      //       );
+      //     } else {
+      //       await updateCart(
+      //         ele.id,
+      //         Number(quantity[ele.id]),
+      //         selectedSubColor[ele.id]
+      //           ? selectedSubColor[ele.id]
+      //           : ele.colors[0].color
+      //       );
+      //     }
+      //   }
+      // });
+
+      // Wait for all data items to be added
+      // await Promise.all(addPromises);
+
+      // Then add the main product if it exists
+      if (productMain) {
+        // await addToCart(
+        //   { ...productMain },
+        //   activeColor == undefined ? productMain.colors[0].color : activeColor,
+        //   quantity[productMain.id]
+        // );
+        if (!cartState.cartArray.find((item) => item.id === productMain.id)) {
+          console.log(`found: ${productMain.id}`);
+          await addToCart(
+            productMain,
+            activeColor == undefined
+              ? productMain.colors[0].color
+              : activeColor,
+            quantity[productMain.id]
+          );
+        } else {
+          await updateCart(
+            productMain.id,
+            quantity[productMain.id],
+            activeColor == undefined ? productMain.colors[0].color : activeColor
+          );
+        }
+      }
+
+      // Show success message once all items are added
+      alert("Products added to cart!");
+    } catch (error) {
+      console.error("Failed to add products:", error);
+      // Show error message to user
     }
-    openModalCart();
   };
 
   const handleAddToWishlist = () => {
@@ -449,7 +526,6 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                   {productMain.new_price
                     ? productMain.new_price
                     : productMain.price}
-                  .00
                 </div>
                 {productMain.new_price && (
                   <>
@@ -521,7 +597,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                          className={`percent-sold absolute top-0 left-0 h-full bg-red`}
                          style={{
                            width: `${Math.floor(
-                             (productMain.sold / productMain.quantity) * 100
+                             (productMain.sold / quantity) * 100
                            )}%`,
                          }}
                        ></div>
@@ -529,12 +605,12 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                      <div className="flex items-center gap-1 mt-2">
                        <span>
                          {Math.floor(
-                           (productMain.sold / productMain.quantity) * 100
+                           (productMain.sold / quantity) * 100
                          )}
                          % Sold -
                        </span>
                        <span className="text-secondary">
-                         Only {Math.floor(productMain.quantity - productMain.sold)}{" "}
+                         Only {Math.floor(quantity - productMain.sold)}{" "}
                          item(s) left in stock!
                        </span>
                      </div>
@@ -544,8 +620,8 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                 </>
               )}
               <div className="list-group mt-1">
-                {data
-                  ?.slice(0, data.length >= 3 ? 3 : data.length)
+                {filteredData
+                  ?.slice(0, filteredData.length >= 3 ? 3 : filteredData.length)
                   .map((item) => (
                     <div
                       key={item.id}
@@ -724,7 +800,8 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                     )}
                   </div>
                 </div>
-                {/* <div className="choose-size mt-5">
+                {/* 
+                <div className="choose-size mt-5">
                   <div className="heading flex items-center justify-between">
                     <div className="text-title">
                       Size:{" "}
@@ -757,7 +834,8 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                       </div>
                     ))}
                   </div>
-                </div> */}
+                </div> 
+                */}
                 {/* <div className="choose-color mt-5">
                   <div className="text-title">
                     Material:{" "}
@@ -793,17 +871,29 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                   <div className="quantity-block md:p-3 max-md:py-1.5 max-md:px-3 flex items-center justify-between rounded-lg border border-line sm:w-[180px] w-[120px] flex-shrink-0">
                     <Icon.Minus
                       size={20}
-                      onClick={handleDecreaseQuantity}
+                      onClick={() =>
+                        handleQuantityChange(
+                          quantity[productMain.id] > 1
+                            ? quantity[productMain.id] - 1
+                            : 1,
+                          productMain.id
+                        )
+                      }
                       className={`${
-                        productMain.quantityPurchase === 1 ? "disabled" : ""
+                        quantity[productId] === 1 ? "disabled" : ""
                       } cursor-pointer`}
                     />
                     <div className="body1 font-semibold">
-                      {productMain.quantityPurchase}
+                      {quantity[productId]}
                     </div>
                     <Icon.Plus
                       size={20}
-                      onClick={handleIncreaseQuantity}
+                      onClick={() =>
+                        handleQuantityChange(
+                          (quantity[productMain.id] || 1) + 1,
+                          productMain.id
+                        )
+                      }
                       className="cursor-pointer"
                     />
                   </div>
@@ -1551,8 +1641,8 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
           <div className="container">
             <div className="heading3 text-center">Related Products</div>
             <div className="list-product hide-product-sold  grid lg:grid-cols-4 grid-cols-2 md:gap-[30px] gap-5 md:mt-10 mt-6">
-              {data
-                ?.slice(0, data.length >= 4 ? 4 : data.length)
+              {filteredData
+                ?.slice(0, filteredData.length >= 4 ? 4 : filteredData.length)
                 .map((item, index) => (
                   <Product key={index} data={item} type="grid" />
                 ))}

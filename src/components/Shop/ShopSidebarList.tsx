@@ -80,7 +80,7 @@ const ShopSidebarList = ({
     page_size: 12,
     page: 1,
   });
-  const [showOnlySale, setShowOnlySale] = useState(false);
+  const [showOnlySale, setShowOnlySale] = useState(params.has_offer ? true : false);
   const [sortOption, setSortOption] = useState("");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -99,12 +99,13 @@ const ShopSidebarList = ({
 
   products.forEach((prod) => {
     prod.colors.forEach((col: any) => {
-      if (colorCounter < 59) {
+      if (colorCounter < 1000) {
         colors[colorCounter] = col;
         colorCounter++;
       }
     });
   });
+  // console.log(colors)
 
   // Reset currentPage to 0 when filters change
   useEffect(() => {
@@ -123,7 +124,7 @@ const ShopSidebarList = ({
   useEffect(() => {
     setParams({
       lang: currentLanguage,
-      page_size: 6, // Fixed page size for API
+      page_size: 12, // Fixed page size for API
       page: currentPage + 1, // API pages are 1-based
       category: selectedCategory || undefined,
       min_price: priceRange.min > 0 ? priceRange.min : undefined,
@@ -149,7 +150,7 @@ const ShopSidebarList = ({
 
   // Fetch products when params change
   useEffect(() => {
-    console.log("Fetching with params:", params);
+    // console.log("Fetching with params:", params);
     dispatch(getAllProducts({ params }));
   }, [dispatch, params]);
 
