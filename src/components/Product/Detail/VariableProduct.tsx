@@ -28,7 +28,6 @@ import { useCompare } from "@/context/CompareContext";
 import { useModalCompareContext } from "@/context/ModalCompareContext";
 import { countdownTime } from "@/store/countdownTime";
 import { clearOffer, getOfferById } from "@/redux/slices/offers";
-import Category from "@/components/Organic/Category";
 
 interface Props {
   data: ProductType[];
