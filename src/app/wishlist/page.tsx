@@ -91,8 +91,8 @@ const Wishlist = () => {
   if (sortOption === "discountHighToLow") {
     filteredData = sortedData.sort(
       (a, b) =>
-        Math.floor(100 - (b.new_price / Number(b.price)) * 100) -
-        Math.floor(100 - (a.new_price / Number(a.price)) * 100)
+        Math.floor(100 - (b.new_price ? b.new_price : Number(b.price) / Number(b.price)) * 100) -
+        Math.floor(100 - (a.new_price ? a.new_price : Number(a.price) / Number(a.price)) * 100)
     );
   }
 
