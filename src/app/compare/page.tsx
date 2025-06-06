@@ -22,7 +22,7 @@ const Compare = () => {
 
   const handleAddToCart = (productItem: ProductType) => {
     if (!cartState.cartArray.find((item) => item.id === productItem.id)) {
-      addToCart({ ...productItem });
+      addToCart( productItem, productItem.colors[0].color, 1);
       updateCart(productItem.id, productItem.quantityPurchase, "", undefined);
     } else {
       updateCart(productItem.id, productItem.quantityPurchase, "", undefined);
