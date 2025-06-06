@@ -92,7 +92,7 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
   };
 
   let percentSale = Math.floor(
-    100 - (data.new_price / Number(data.price)) * 100
+    100 - (data.new_price ? data.new_price : Number(data.price) / Number(data.price)) * 100
   );
 
   return (
