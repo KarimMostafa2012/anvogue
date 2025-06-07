@@ -140,13 +140,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
       if (!response.ok) {
-        if (Number(response.status) == 401) {
-          window.localStorage.removeItem("accessToken");
-          window.sessionStorage.removeItem("accessToken");
-          window.localStorage.removeItem("refreshToken");
-          window.sessionStorage.removeItem("refreshToken");
-          window.location.href = "/login";
-        }
         throw new Error("Failed to load cart");
       }
       const data = await response.json();
