@@ -173,12 +173,12 @@ const MenuEight = () => {
   useEffect(() => {
     if (window.sessionStorage.getItem("loggedIn") == "true") {
       setLoggedIn(true);
-    } else if (window.localStorage.getItem("accessToken")) {
+    } else if (window.localStorage.getItem("accessToken") || window.sessionStorage.getItem("accessToken")) {
       // auth/api/users/me/
       fetch("https://api.malalshammobel.com/auth/api/users/me/", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${window.localStorage.getItem("accessToken") || window.sessionStorage.getItem("accessToken")}`,
           "Content-Type": "application/json",
         },
       })
@@ -192,7 +192,7 @@ const MenuEight = () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                refresh: window.localStorage.getItem("refreshToken"),
+                refresh: window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken"),
               }),
             })
               .then((response) => {
@@ -206,7 +206,8 @@ const MenuEight = () => {
                 setLoggedIn(true);
                 window.localStorage.setItem("accessToken", data.access);
                 window.sessionStorage.setItem("accessToken", data.access);
-                window.localStorage.setItem("accessToken", data.access);
+                window.localStorage.setItem("refreshToken", data.refresh);
+                window.sessionStorage.setItem("refreshToken", data.refresh);
                 window.sessionStorage.setItem("loggedIn", "true");
               })
               .catch((error) => {
@@ -224,14 +225,14 @@ const MenuEight = () => {
         .catch((error) => {
           console.error("Error:", error);
         });
-    } else if (window.localStorage.getItem("refreshToken")) {
+    } else if (window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken")) {
       fetch("https://api.malalshammobel.com/auth/api/token/refresh/", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          refresh: window.localStorage.getItem("refreshToken"),
+          refresh: window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken"),
         }),
       })
         .then((response) => {
@@ -245,7 +246,8 @@ const MenuEight = () => {
           setLoggedIn(true);
           window.localStorage.setItem("accessToken", data.access);
           window.sessionStorage.setItem("accessToken", data.access);
-          window.localStorage.setItem("accessToken", data.access);
+          window.localStorage.setItem("refreshToken", data.refresh);
+          window.sessionStorage.setItem("refreshToken", data.refresh);
           window.sessionStorage.setItem("loggedIn", "true");
         })
         .catch((error) => {
@@ -431,7 +433,7 @@ const MenuEight = () => {
                     return (
                       <div key={cat.id} className="item block">
                         <Link
-                          href={"/shop/breadcrumb-img"}
+                          href={"/shop/?category=" + cat.translations.en.name}
                           className="py-1.5 whitespace-nowrap inline-block"
                         >
                           {cat.translations.en.name}
@@ -494,7 +496,8 @@ const MenuEight = () => {
                                               <div
                                                 onClick={() =>
                                                   handleSubCategoryClick(
-                                                    subCatName.translations.en.name
+                                                    subCatName.translations.en
+                                                      .name
                                                   )
                                                 }
                                                 className={`link text-secondary duration-300 cursor-pointer`}

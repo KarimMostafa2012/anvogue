@@ -29,7 +29,8 @@
     "redux": "^5.0.1",
     "sass": "^1.69.5",
     "slick-carousel": "^1.8.1",
-    "swiper": "^11.0.4"
+    "swiper": "^11.0.4",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@types/node": "^20",

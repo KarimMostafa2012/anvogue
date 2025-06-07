@@ -10,6 +10,8 @@ import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { Console } from "console";
+import { ProductType } from "@/type/ProductType";
+import { tree } from "next/dist/build/templates/app-page";
 
 type Address = {
   street_name: string;
@@ -34,6 +36,7 @@ interface UserProfile {
   profile_img?: string;
   // Add other expected properties here
 }
+
 type Order = {
   id: string;
   user: {
@@ -54,47 +57,7 @@ type Order = {
       id: number;
       order: string;
       color: string;
-      product: {
-        id: number;
-        sub_category: {
-          id: number;
-          category: {
-            id: number;
-            name: {
-              de: string;
-              en: string;
-              ar: string;
-              ckb: string;
-              uk: string;
-            };
-          };
-          translations: {
-            en: {
-              name: string;
-            };
-            ar: {
-              name: string;
-            };
-            de: {
-              name: string;
-            };
-            ckb: {
-              name: string;
-            };
-            uk: {
-              name: string;
-            };
-          };
-        };
-        price: string;
-        images: [
-          {
-            id: number;
-            product: number;
-            img: string;
-          }
-        ];
-      };
+      product: ProductType;
     }
   ];
   notes: string;
@@ -109,10 +72,16 @@ const MyAccount = () => {
   const [activeTab, setActiveTab] = useState<string | undefined>("dashboard");
   const [activeAddress, setActiveAddress] = useState<string | null>("billing");
   const [activeOrders, setActiveOrders] = useState<string | undefined>("all");
+  const [detailOrder, setDetailOrder] = useState<Order | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [openDetail, setOpenDetail] = useState<boolean | undefined>(false);
   const [newForm, setNewForm] = useState<boolean | undefined>(false);
   const [profile, setProfile] = useState<UserProfile>({});
+  const [cancel, setCancel] = useState<{
+    state: boolean;
+    id: null | string | number;
+  }>({ state: false, id: null });
+  const [totalDiscount, setTotalDiscount] = useState<number>(0);
   //   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -151,22 +120,27 @@ const MyAccount = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        if (Number(response.status) == 401) {
+          window.localStorage.removeItem("accessToken");
+          window.sessionStorage.removeItem("accessToken");
+          window.localStorage.removeItem("refreshToken");
+          window.sessionStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
       }
 
       const data = await response.json();
-      console.log(data);
       setProfile(data);
     } catch (error) {
       console.error("Error fetching profile:", error);
     }
   };
+
   useEffect(() => {
     fetchProfile();
   }, []);
 
   useEffect(() => {
-    console.log(profile);
     if (searchParams.get("uid") && searchParams.get("token")) {
       fetch("https://api.malalshammobel.com/auth/api/users/activation/", {
         method: "POST",
@@ -195,7 +169,13 @@ const MyAccount = () => {
             })
               .then((response) => {
                 if (!response.ok) {
-                  console.log(response);
+                  if (Number(response.status) == 401) {
+                    window.localStorage.removeItem("accessToken");
+                    window.sessionStorage.removeItem("accessToken");
+                    window.localStorage.removeItem("refreshToken");
+                    window.sessionStorage.removeItem("refreshToken");
+                    window.location.href = "/login";
+                  }
                 }
                 return response.json();
               })
@@ -207,9 +187,6 @@ const MyAccount = () => {
               });
           }
           return response.json();
-        })
-        .then((data) => {
-          console.log(data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -228,12 +205,15 @@ const MyAccount = () => {
       })
         .then((response) => {
           if (!response.ok) {
-            console.log(response);
+            if (Number(response.status) == 401) {
+              window.localStorage.removeItem("accessToken");
+              window.sessionStorage.removeItem("accessToken");
+              window.localStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("refreshToken");
+              window.location.href = "/login";
+            }
           }
           return response.json();
-        })
-        .then((data) => {
-          console.log(data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -256,20 +236,25 @@ const MyAccount = () => {
       })
         .then((response) => {
           if (!response.ok) {
-            console.log(response);
-            // auth/api/users/me/
-          } else {
+            if (Number(response.status) == 401) {
+              window.localStorage.removeItem("accessToken");
+              window.sessionStorage.removeItem("accessToken");
+              window.localStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("refreshToken");
+              window.location.href = "/login";
+            }
           }
           return response.json();
         })
         .then((data) => {
           console.log(data);
+          setOrders(data);
         })
         .catch((error) => {
           console.error("Error:", error);
         });
     }
-  }, []);
+  }, [profile.verified]);
 
   const activate = () => {
     fetch("https://api.malalshammobel.com/auth/activation/", {
@@ -296,7 +281,9 @@ const MyAccount = () => {
   };
 
   const changeAddress = () => {
-    const mainForm = document.querySelectorAll("#mainForm input") as NodeListOf<HTMLInputElement>;
+    const mainForm = document.querySelectorAll(
+      "#mainForm input"
+    ) as NodeListOf<HTMLInputElement>;
     const adressForms = document.querySelectorAll(".otherAddresses");
     fetch("https://api.malalshammobel.com/auth/api/users/me/", {
       method: "PATCH",
@@ -318,9 +305,14 @@ const MyAccount = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
+          if (Number(response.status) == 401) {
+            window.localStorage.removeItem("accessToken");
+            window.sessionStorage.removeItem("accessToken");
+            window.localStorage.removeItem("refreshToken");
+            window.sessionStorage.removeItem("refreshToken");
+            window.location.href = "/login";
+          }
         } else {
-          console.log(response, "ok");
           // window.location.href = "https://mail.google.com/";
           return;
         }
@@ -329,13 +321,9 @@ const MyAccount = () => {
         console.error("Error:", error);
       });
     adressForms.forEach((form) => {
-      const formElements = form.querySelectorAll("input") as NodeListOf<HTMLInputElement>;
-      console.log({
-        street_name: formElements[0].value,
-        house_num: formElements[2].value,
-        city: formElements[1].value,
-        zip_code: formElements[3].value,
-      });
+      const formElements = form.querySelectorAll(
+        "input"
+      ) as NodeListOf<HTMLInputElement>;
       // more addresses ================================
       fetch(
         `https://api.malalshammobel.com/auth/api/addresses/${form.getAttribute(
@@ -361,9 +349,14 @@ const MyAccount = () => {
       )
         .then((response) => {
           if (!response.ok) {
-            console.log(response);
+            if (Number(response.status) == 401) {
+              window.localStorage.removeItem("accessToken");
+              window.sessionStorage.removeItem("accessToken");
+              window.localStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("refreshToken");
+              window.location.href = "/login";
+            }
           } else {
-            console.log(response, "ok");
             // window.location.href = "https://mail.google.com/";
             return;
           }
@@ -394,7 +387,13 @@ const MyAccount = () => {
     )
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
+          if (Number(response.status) == 401) {
+            window.localStorage.removeItem("accessToken");
+            window.sessionStorage.removeItem("accessToken");
+            window.localStorage.removeItem("refreshToken");
+            window.sessionStorage.removeItem("refreshToken");
+            window.location.href = "/login";
+          }
         } else {
           fetchProfile();
           return;
@@ -426,7 +425,13 @@ const MyAccount = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
+          if (Number(response.status) == 401) {
+            window.localStorage.removeItem("accessToken");
+            window.sessionStorage.removeItem("accessToken");
+            window.localStorage.removeItem("refreshToken");
+            window.sessionStorage.removeItem("refreshToken");
+            window.location.href = "/login";
+          }
         } else {
           fetchProfile();
           form.forEach((element) => {
@@ -441,23 +446,9 @@ const MyAccount = () => {
       });
   };
 
-  // function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
-  //   const file = event.target.files?.[0];
-  //   if (!file) return;
-
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     const base64String = reader.result as string;
-  //     console.log("Decoded image:", base64String);
-  //     // You can also display it in an <img> tag
-  //   };
-  //   reader.readAsDataURL(file); // Converts file to base64 string
-  // }
-
   const updateProfile = (e: HTMLFormElement) => {
     const form = e.querySelectorAll("input");
     const formData = new FormData(e);
-    console.log(form);
 
     // Handle password match
     const password = formData.get("password");
@@ -481,7 +472,7 @@ const MyAccount = () => {
     } else {
       formData.delete("profile_img"); // Optionally clean it up
     }
-    
+
     for (let [key, value] of formData.entries()) {
       if (value instanceof File) {
         console.log(
@@ -506,7 +497,13 @@ const MyAccount = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
+          if (Number(response.status) == 401) {
+            window.localStorage.removeItem("accessToken");
+            window.sessionStorage.removeItem("accessToken");
+            window.localStorage.removeItem("refreshToken");
+            window.sessionStorage.removeItem("refreshToken");
+            window.location.href = "/login";
+          }
         } else {
           fetchProfile();
           return;
@@ -515,6 +512,74 @@ const MyAccount = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
+  };
+
+  const handleOpenDetail = (id: string) => {
+    setOpenDetail(true);
+    orders.forEach((order) => {
+      if (order.id == id) {
+        setDetailOrder(order);
+      }
+    });
+
+    // Calculate total offer value
+    const totalOfferValue = orders.reduce((total, order) => {
+      return order.order_items.reduce((orderTotal, item) => {
+        if (item.product.has_offer && item.product.offer_value) {
+          // Multiply offer_value by quantity to get total discount for this item
+          return orderTotal + item.product.offer_value * item.product.quantity;
+        }
+        return orderTotal;
+      }, total);
+    }, 0);
+
+    setTotalDiscount(totalOfferValue);
+  };
+
+  const handleSetCancel = (id: string | number) => {
+    setCancel({ state: true, id: id });
+  };
+
+  const cancelOrder = async () => {
+    if (!cancel.id) {
+      console.warn("No order ID to cancel.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.malalshammobel.com/order/${cancel.id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${
+              window.localStorage.getItem("accessToken") ||
+              window.sessionStorage.getItem("accessToken")
+            }`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: "Retroactive" }),
+        }
+      );
+
+      if (!response.ok) {
+        if (Number(response.status) == 401) {
+          window.localStorage.removeItem("accessToken");
+          window.sessionStorage.removeItem("accessToken");
+          window.localStorage.removeItem("refreshToken");
+          window.sessionStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+        const errorText = await response.text();
+        console.error("Failed response:", response.status, errorText);
+        throw new Error("Failed to cancel order");
+      }
+
+      const data = await response.json();
+      console.log("Order canceled:", data);
+    } catch (error) {
+      console.error("Error canceling order:", error);
+    }
   };
 
   return (
@@ -636,7 +701,6 @@ const MyAccount = () => {
                                 if (retro.status == "Confirmed") {
                                   numConf++;
                                 }
-                                console.log(orders.length);
                                 if (i == orders.length - 1) {
                                   return numConf;
                                 }
@@ -658,7 +722,6 @@ const MyAccount = () => {
                                 if (retro.status == "Retroactive") {
                                   numRetro++;
                                 }
-                                console.log(orders.length);
                                 if (i == orders.length - 1) {
                                   return numRetro;
                                 }
@@ -713,7 +776,12 @@ const MyAccount = () => {
                               return (
                                 <tr
                                   key={i}
-                                  className="item duration-300 border-b border-line"
+                                  className={
+                                    "item duration-300 " +
+                                    (orders.length - 1 == i
+                                      ? ""
+                                      : "border-b border-line")
+                                  }
                                 >
                                   <td className="py-3">
                                     <div className="info flex flex-col">
@@ -767,289 +835,103 @@ const MyAccount = () => {
                     </div>
                   </div>
                   <div className="list_order">
-                    <div className="order_item mt-5 border border-line rounded-lg box-shadow-xs">
-                      <div className="flex flex-wrap items-center justify-between gap-4 p-5 border-b border-line">
-                        <div className="flex items-center gap-2">
-                          <strong className="text-title">
-                            Payment Status:
-                          </strong>
-                          <strong className="order_number text-button uppercase">
-                            s184989823
-                          </strong>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <strong className="text-title">Order status:</strong>
-                          <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-purple text-purple caption1 font-semibold">
-                            Delivery
-                          </span>
-                        </div>
-                      </div>
-                      <div className="list_prd px-5">
-                        <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
-                          <Link
-                            href={"/product/default"}
-                            className="flex items-center gap-5"
-                          >
-                            <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
-                              <Image
-                                src={"/images/product/1000x1000.png"}
-                                width={1000}
-                                height={1000}
-                                alt={"Contrasting sheepskin sweatshirt"}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div>
-                              <div className="prd_name text-title">
-                                Contrasting sheepskin sweatshirt
-                              </div>
-                              <div className="caption1 text-secondary mt-2">
-                                <span className="prd_size uppercase">XL</span>
-                                <span>/</span>
-                                <span className="prd_color capitalize">
-                                  Yellow
-                                </span>
-                              </div>
-                            </div>
-                          </Link>
-                          <div className="text-title">
-                            <span className="prd_quantity">1</span>
-                            <span> X </span>
-                            <span className="prd_price">$45.00</span>
-                          </div>
-                        </div>
-                        <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
-                          <Link
-                            href={"/product/default"}
-                            className="flex items-center gap-5"
-                          >
-                            <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
-                              <Image
-                                src={"/images/product/1000x1000.png"}
-                                width={1000}
-                                height={1000}
-                                alt={"Contrasting sheepskin sweatshirt"}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div>
-                              <div className="prd_name text-title">
-                                Contrasting sheepskin sweatshirt
-                              </div>
-                              <div className="caption1 text-secondary mt-2">
-                                <span className="prd_size uppercase">XL</span>
-                                <span>/</span>
-                                <span className="prd_color capitalize">
-                                  White
-                                </span>
-                              </div>
-                            </div>
-                          </Link>
-                          <div className="text-title">
-                            <span className="prd_quantity">2</span>
-                            <span> X </span>
-                            <span className="prd_price">$70.00</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-4 p-5">
-                        <button
-                          className="button-main"
-                          onClick={() => setOpenDetail(true)}
+                    {orders.map((order) => {
+                      return (
+                        <div
+                          key={order.id}
+                          className="order_item mt-5 border border-line rounded-lg box-shadow-xs"
                         >
-                          Order Details
-                        </button>
-                        <button className="button-main bg-surface border border-line hover:bg-black text-black hover:text-white">
-                          Cancel Order
-                        </button>
-                      </div>
-                    </div>
-                    <div className="order_item mt-5 border border-line rounded-lg box-shadow-xs">
-                      <div className="flex flex-wrap items-center justify-between gap-4 p-5 border-b border-line">
-                        <div className="flex items-center gap-2">
-                          <strong className="text-title">Order Number:</strong>
-                          <strong className="order_number text-button uppercase">
-                            s184989824
-                          </strong>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <strong className="text-title">Order status:</strong>
-                          <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-yellow text-yellow caption1 font-semibold">
-                            Pending
-                          </span>
-                        </div>
-                      </div>
-                      <div className="list_prd px-5">
-                        <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
-                          <Link
-                            href={"/product/default"}
-                            className="flex items-center gap-5"
-                          >
-                            <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
-                              <Image
-                                src={"/images/product/1000x1000.png"}
-                                width={1000}
-                                height={1000}
-                                alt={"Contrasting sheepskin sweatshirt"}
-                                className="w-full h-full object-cover"
-                              />
+                          <div className="flex flex-wrap items-center justify-between gap-4 p-5 border-b border-line">
+                            <div className="flex items-center gap-2">
+                              <strong className="text-title">
+                                Payment Status:
+                              </strong>
+                              <strong className="order_number text-button uppercase">
+                                {order.payment_status}
+                              </strong>
                             </div>
-                            <div>
-                              <div className="prd_name text-title">
-                                Contrasting sheepskin sweatshirt
-                              </div>
-                              <div className="caption1 text-secondary mt-2">
-                                <span className="prd_size uppercase">L</span>
-                                <span>/</span>
-                                <span className="prd_color capitalize">
-                                  Pink
-                                </span>
-                              </div>
+                            <div className="flex items-center gap-2">
+                              <strong className="text-title">
+                                Order status:
+                              </strong>
+                              <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-purple text-purple caption1 font-semibold">
+                                {order.status}
+                              </span>
                             </div>
-                          </Link>
-                          <div className="text-title">
-                            <span className="prd_quantity">1</span>
-                            <span> X </span>
-                            <span className="prd_price">$69.00</span>
+                          </div>
+                          <div className="list_prd px-5">
+                            {order.order_items.map((item) => {
+                              return (
+                                <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
+                                  <Link
+                                    href={
+                                      "/product/variable?id=" + item.product.id
+                                    }
+                                    className="flex items-center gap-5"
+                                  >
+                                    <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
+                                      <Image
+                                        src={item.product.images[0].img}
+                                        width={1000}
+                                        height={1000}
+                                        alt={item.product.name}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                    <div>
+                                      <div className="prd_name text-title">
+                                        {item.product.name}
+                                      </div>
+                                      <div className="caption1 text-secondary mt-2">
+                                        {item.product.size && (
+                                          <>
+                                            <span className="prd_size uppercase">
+                                              {item.product.size}
+                                            </span>
+                                            <span> / </span>
+                                          </>
+                                        )}
+                                        <span className="prd_color capitalize">
+                                          {item.color}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </Link>
+                                  <div className="text-title">
+                                    <span className="prd_quantity">
+                                      {item.product.quantity}
+                                    </span>
+                                    <span> X </span>
+                                    <span className="prd_price">
+                                      $
+                                      {item.product.new_price
+                                        ? item.product.new_price
+                                        : item.product.price}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <div className="flex flex-wrap gap-4 p-5">
+                            <button
+                              className="button-main"
+                              onClick={() => handleOpenDetail(order.id)}
+                            >
+                              Order Details
+                            </button>
+                            <button
+                              className="button-main bg-surface border border-line hover:bg-black text-black hover:text-white"
+                              onClick={() => {
+                                handleSetCancel(order.id);
+                              }}
+                            >
+                              Cancel Order
+                            </button>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex flex-wrap gap-4 p-5">
-                        <button
-                          className="button-main"
-                          onClick={() => setOpenDetail(true)}
-                        >
-                          Order Details
-                        </button>
-                        <button className="button-main bg-surface border border-line hover:bg-black text-black hover:text-white">
-                          Cancel Order
-                        </button>
-                      </div>
-                    </div>
-                    <div className="order_item mt-5 border border-line rounded-lg box-shadow-xs">
-                      <div className="flex flex-wrap items-center justify-between gap-4 p-5 border-b border-line">
-                        <div className="flex items-center gap-2">
-                          <strong className="text-title">Order Number:</strong>
-                          <strong className="order_number text-button uppercase">
-                            s184989824
-                          </strong>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <strong className="text-title">Order status:</strong>
-                          <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-success text-success caption1 font-semibold">
-                            Completed
-                          </span>
-                        </div>
-                      </div>
-                      <div className="list_prd px-5">
-                        <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
-                          <Link
-                            href={"/product/default"}
-                            className="flex items-center gap-5"
-                          >
-                            <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
-                              <Image
-                                src={"/images/product/1000x1000.png"}
-                                width={1000}
-                                height={1000}
-                                alt={"Contrasting sheepskin sweatshirt"}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div>
-                              <div className="prd_name text-title">
-                                Contrasting sheepskin sweatshirt
-                              </div>
-                              <div className="caption1 text-secondary mt-2">
-                                <span className="prd_size uppercase">L</span>
-                                <span>/</span>
-                                <span className="prd_color capitalize">
-                                  White
-                                </span>
-                              </div>
-                            </div>
-                          </Link>
-                          <div className="text-title">
-                            <span className="prd_quantity">1</span>
-                            <span> X </span>
-                            <span className="prd_price">$32.00</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-4 p-5">
-                        <button
-                          className="button-main"
-                          onClick={() => setOpenDetail(true)}
-                        >
-                          Order Details
-                        </button>
-                        <button className="button-main bg-surface border border-line hover:bg-black text-black hover:text-white">
-                          Cancel Order
-                        </button>
-                      </div>
-                    </div>
-                    <div className="order_item mt-5 border border-line rounded-lg box-shadow-xs">
-                      <div className="flex flex-wrap items-center justify-between gap-4 p-5 border-b border-line">
-                        <div className="flex items-center gap-2">
-                          <strong className="text-title">Order Number:</strong>
-                          <strong className="order_number text-button uppercase">
-                            s184989824
-                          </strong>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <strong className="text-title">Order status:</strong>
-                          <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-red text-red caption1 font-semibold">
-                            Canceled
-                          </span>
-                        </div>
-                      </div>
-                      <div className="list_prd px-5">
-                        <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
-                          <Link
-                            href={"/product/default"}
-                            className="flex items-center gap-5"
-                          >
-                            <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
-                              <Image
-                                src={"/images/product/1000x1000.png"}
-                                width={1000}
-                                height={1000}
-                                alt={"Contrasting sheepskin sweatshirt"}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div>
-                              <div className="prd_name text-title">
-                                Contrasting sheepskin sweatshirt
-                              </div>
-                              <div className="caption1 text-secondary mt-2">
-                                <span className="prd_size uppercase">M</span>
-                                <span>/</span>
-                                <span className="prd_color capitalize">
-                                  Black
-                                </span>
-                              </div>
-                            </div>
-                          </Link>
-                          <div className="text-title">
-                            <span className="prd_quantity">1</span>
-                            <span> X </span>
-                            <span className="prd_price">$49.00</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-4 p-5">
-                        <button
-                          className="button-main"
-                          onClick={() => setOpenDetail(true)}
-                        >
-                          Order Details
-                        </button>
-                        <button className="button-main bg-surface border border-line hover:bg-black text-black hover:text-white">
-                          Cancel Order
-                        </button>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </div>
                 </div>
                 <div
@@ -1357,7 +1239,6 @@ const MyAccount = () => {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      // console.log("test")
                       updateProfile(e.currentTarget);
                     }}
                   >
@@ -1561,42 +1442,63 @@ const MyAccount = () => {
                 <strong className="text-button-uppercase text-secondary">
                   Contact Information
                 </strong>
-                <h6 className="heading6 order_name mt-2">Tony nguyen</h6>
+                <h6 className="heading6 order_name mt-2">
+                  {detailOrder?.user.first_name} {detailOrder?.user.last_name}
+                </h6>
                 <h6 className="heading6 order_phone mt-2">
-                  (+12) 345 - 678910
+                  {detailOrder?.user.phone_number}
                 </h6>
                 <h6 className="heading6 normal-case order_email mt-2">
-                  hi.avitex@gmail.com
+                  {detailOrder?.user.email}
                 </h6>
               </div>
-              <div className="info_item">
+              {/* <div className="info_item">
                 <strong className="text-button-uppercase text-secondary">
                   Payment method
                 </strong>
-                <h6 className="heading6 order_payment mt-2">cash delivery</h6>
-              </div>
-              <div className="info_item">
-                <strong className="text-button-uppercase text-secondary">
-                  Shipping address
-                </strong>
-                <h6 className="heading6 order_shipping_address mt-2">
-                  2163 Phillips Gap Rd, West Jefferson, North Carolina, US
-                </h6>
-              </div>
+                <h6 className="heading6 order_payment mt-2">{detailOrder?.user}</h6>
+              </div> */}
               <div className="info_item">
                 <strong className="text-button-uppercase text-secondary">
                   Billing address
                 </strong>
                 <h6 className="heading6 order_billing_address mt-2">
-                  2163 Phillips Gap Rd, West Jefferson, North Carolina, US
+                  {detailOrder?.user.address.house_num}{" "}
+                  {detailOrder?.user.address.street_name} Rd <br />
+                  {detailOrder?.user.address.city},{" "}
+                  {detailOrder?.user.address.zip_code}
                 </h6>
               </div>
               <div className="info_item">
                 <strong className="text-button-uppercase text-secondary">
-                  Company
+                  Payment Status
+                </strong>
+                <h6 className="heading6 order_shipping_address mt-2">
+                  {detailOrder?.payment_status}
+                </h6>
+              </div>
+              <div className="info_item">
+                <strong className="text-button-uppercase text-secondary">
+                  Delivery
                 </strong>
                 <h6 className="heading6 order_company mt-2">
-                  Avitex Technology
+                  {detailOrder?.status}
+                </h6>
+              </div>
+              <div className="info_item">
+                <strong className="text-button-uppercase text-secondary">
+                  Order Date
+                </strong>
+                <h6 className="heading6 order_company mt-2">
+                  {detailOrder?.created_at}
+                </h6>
+              </div>
+              <div className="info_item">
+                <strong className="text-button-uppercase text-secondary">
+                  order Note
+                </strong>
+                <h6 className="heading6 order_company mt-2">
+                  {detailOrder?.notes ? detailOrder?.notes : "no notes writen"}
                 </h6>
               </div>
             </div>
@@ -1604,68 +1506,51 @@ const MyAccount = () => {
           <div className="list p-10">
             <h5 className="heading5">Items</h5>
             <div className="list_prd">
-              <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
-                <Link
-                  href={"/product/default"}
-                  className="flex items-center gap-5"
-                >
-                  <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
-                    <Image
-                      src={"/images/product/1000x1000.png"}
-                      width={1000}
-                      height={1000}
-                      alt={"Contrasting sheepskin sweatshirt"}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="prd_name text-title">
-                      Contrasting sheepskin sweatshirt
-                    </div>
-                    <div className="caption1 text-secondary mt-2">
-                      <span className="prd_size uppercase">XL</span>
-                      <span>/</span>
-                      <span className="prd_color capitalize">Yellow</span>
-                    </div>
-                  </div>
-                </Link>
-                <div className="text-title">
-                  <span className="prd_quantity">1</span>
-                  <span> X </span>
-                  <span className="prd_price">$45.00</span>
-                </div>
-              </div>
-              <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
-                <Link
-                  href={"/product/default"}
-                  className="flex items-center gap-5"
-                >
-                  <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
-                    <Image
-                      src={"/images/product/1000x1000.png"}
-                      width={1000}
-                      height={1000}
-                      alt={"Contrasting sheepskin sweatshirt"}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="prd_name text-title">
-                      Contrasting sheepskin sweatshirt
-                    </div>
-                    <div className="caption1 text-secondary mt-2">
-                      <span className="prd_size uppercase">XL</span>
-                      <span>/</span>
-                      <span className="prd_color capitalize">White</span>
+              {detailOrder?.order_items.map((item) => {
+                return (
+                  <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
+                    <Link
+                      href={"/product/variable?id=" + item.product.id}
+                      className="flex items-center gap-5"
+                    >
+                      <div className="bg-img flex-shrink-0 md:w-[100px] w-20 aspect-square rounded-lg overflow-hidden">
+                        <Image
+                          src={item.product.images[0].img}
+                          width={1000}
+                          height={1000}
+                          alt={item.product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <div className="prd_name text-title">
+                          {item.product.name}
+                        </div>
+                        <div className="caption1 text-secondary mt-2">
+                          {item.product.size && (
+                            <>
+                              <span className="prd_size uppercase">
+                                {item.product.size}
+                              </span>
+                              <span> / </span>
+                            </>
+                          )}
+                          <span className="prd_color capitalize">
+                            {item.color}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                    <div className="text-title">
+                      <span className="prd_quantity">
+                        {item.product.quantity}
+                      </span>
+                      <span> X </span>
+                      <span className="prd_price">${item.product.price}</span>
                     </div>
                   </div>
-                </Link>
-                <div className="text-title">
-                  <span className="prd_quantity">2</span>
-                  <span> X </span>
-                  <span className="prd_price">$70.00</span>
-                </div>
-              </div>
+                );
+              })}
             </div>
             <div className="flex items-center justify-between mt-5">
               <strong className="text-title">Shipping</strong>
@@ -1673,11 +1558,47 @@ const MyAccount = () => {
             </div>
             <div className="flex items-center justify-between mt-4">
               <strong className="text-title">Discounts</strong>
-              <strong className="order_discounts text-title">-$80.00</strong>
+              <strong className="order_discounts text-title">
+                -${totalDiscount}
+              </strong>
             </div>
             <div className="flex items-center justify-between mt-5 pt-5 border-t border-line">
               <h5 className="heading5">Subtotal</h5>
-              <h5 className="order_total heading5">$105.00</h5>
+              <h5 className="order_total heading5">${detailOrder?.total}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className={`modal-order-detail-block flex items-center justify-center`}
+        onClick={() => setCancel((prev) => ({ ...prev, state: false }))}
+      >
+        <div
+          className={`modal-order-detail-main w-fit max-w-[460px] bg-white rounded-2xl ${
+            cancel.state == true ? "open" : ""
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="info p-10 text-center">
+            <h5 className="heading5">Order Details</h5>
+            <div className="list_info gap-10 gap-y-8 mt-5">
+              <div className="info_item">
+                <h6 className="heading6 order_name mt-2">
+                  Are you sure, You want to cancel this order ?
+                </h6>
+                <h6 className="heading6 order_name mt-2">
+                  This operation is not reversable and you will get your money
+                  back.
+                </h6>
+                <button
+                  onClick={() => {
+                    cancelOrder();
+                  }}
+                  className="button-main mt-6"
+                >
+                  Cancel Order
+                </button>
+              </div>
             </div>
           </div>
         </div>

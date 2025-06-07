@@ -69,7 +69,13 @@ const Checkout = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        if (Number(response.status) == 401) {
+          window.localStorage.removeItem("accessToken");
+          window.sessionStorage.removeItem("accessToken");
+          window.localStorage.removeItem("refreshToken");
+          window.sessionStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
       }
 
       const data = await response.json();
@@ -109,7 +115,13 @@ const Checkout = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
+          if (Number(response.status) == 401) {
+            window.localStorage.removeItem("accessToken");
+            window.sessionStorage.removeItem("accessToken");
+            window.localStorage.removeItem("refreshToken");
+            window.sessionStorage.removeItem("refreshToken");
+            window.location.href = "/login";
+          }
         } else {
           console.log(response, "ok");
           // window.location.href = "https://mail.google.com/";
@@ -155,7 +167,13 @@ const Checkout = () => {
       )
         .then((response) => {
           if (!response.ok) {
-            console.log(response);
+            if (Number(response.status) == 401) {
+              window.localStorage.removeItem("accessToken");
+              window.sessionStorage.removeItem("accessToken");
+              window.localStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("refreshToken");
+              window.location.href = "/login";
+            }
           } else {
             console.log(response, "ok");
             // window.location.href = "https://mail.google.com/";
@@ -214,7 +232,13 @@ const Checkout = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
+          if (Number(response.status) == 401) {
+            window.localStorage.removeItem("accessToken");
+            window.sessionStorage.removeItem("accessToken");
+            window.localStorage.removeItem("refreshToken");
+            window.sessionStorage.removeItem("refreshToken");
+            window.location.href = "/login";
+          }
         } else {
           fetchProfile();
           form.forEach((element) => {
@@ -253,7 +277,7 @@ const Checkout = () => {
         if (!response.ok) {
           console.log(response);
           throw new Error("Failed to submit order");
-        }else if (response.ok){
+        } else if (response.ok) {
           return response.json(); // <-- important fix here
         }
       })
@@ -303,8 +327,13 @@ const Checkout = () => {
       })
         .then((response) => {
           if (!response.ok) {
-            console.log(response);
-            throw new Error("Failed to submit order");
+            if (Number(response.status) == 401) {
+              window.localStorage.removeItem("accessToken");
+              window.sessionStorage.removeItem("accessToken");
+              window.localStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("refreshToken");
+              window.location.href = "/login";
+            }
           }
           return response.json(); // <-- important fix here
         })
@@ -776,9 +805,7 @@ const Checkout = () => {
                 <div className="total-cart-block pt-5 flex justify-between">
                   <div className="heading5">Total</div>
                   <div className="heading5 total-cart">
-                    $
-                    {(totalCart - Number(discount)) +
-                      Number(ship)}
+                    ${totalCart - Number(discount) + Number(ship)}
                   </div>
                 </div>
                 <textarea

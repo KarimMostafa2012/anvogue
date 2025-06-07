@@ -22,7 +22,7 @@ const SearchResult = () => {
   const router = useRouter();
 
   const handleSearch = (value: string) => {
-    router.push(`/search-result?query=${value}`);
+    router.push(`/shop?product_name=${value}`);
     setSearchKeyword("");
   };
 
@@ -30,7 +30,7 @@ const SearchResult = () => {
   let query = searchParams.get("query") as string;
 
   if (query === null) {
-    query = "dress";
+    query = "";
   } else {
     filteredData = productData.filter(
       (product) =>

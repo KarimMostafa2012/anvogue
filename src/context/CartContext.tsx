@@ -139,9 +139,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           "Content-Type": "application/json",
         },
       });
-      if (!response.ok) throw new Error("Failed to load cart");
+      if (!response.ok) {
+        if (Number(response.status) == 401) {
+          window.localStorage.removeItem("accessToken");
+          window.sessionStorage.removeItem("accessToken");
+          window.localStorage.removeItem("refreshToken");
+          window.sessionStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+        throw new Error("Failed to load cart");
+      }
       const data = await response.json();
-      console.log(data)
 
       // Transform API response to ensure required fields
       const transformedCartItems = data.map((item: any) => ({
@@ -155,7 +163,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         price: item.product.price,
         new_price: item.product.new_price,
       }));
-      console.log(transformedCartItems)
 
       dispatch({ type: "LOAD_CART", payload: transformedCartItems });
     } catch (error) {
@@ -173,7 +180,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     selectedColor: string,
     quantity?: number
   ) => {
-    console.log(quantity);
     try {
       dispatch({ type: "SET_LOADING", payload: true });
       const response = await fetch("https://api.malalshammobel.com/cart/", {
@@ -194,7 +200,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to add item to cart");
+      if (!response.ok) {
+        if (Number(response.status) == 401) {
+          window.localStorage.removeItem("accessToken");
+          window.sessionStorage.removeItem("accessToken");
+          window.localStorage.removeItem("refreshToken");
+          window.sessionStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+        throw new Error("Failed to add item to cart");
+      }
 
       const newCartItem = await response.json();
 
@@ -228,13 +243,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // ... (keep removeFromCart and updateCart functions the same as before)
   const removeFromCart = async (itemId: string) => {
-    console.log(
-      `item id that removed: https://api.malalshammobel.com/cart/${itemId}/`
-    );
     try {
       dispatch({ type: "SET_LOADING", payload: true });
       const itemToRemove = cartState.cartArray.find(
-        (item) => item.id === itemId
+        (item) => item.cartItemId === itemId
       );
       if (!itemToRemove?.cartItemId) throw new Error("Cart item not found");
 
@@ -243,14 +255,26 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${window.localStorage.getItem("accessToken") ? window.localStorage.getItem("accessToken") : window.sessionStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${
+              window.localStorage.getItem("accessToken")
+                ? window.localStorage.getItem("accessToken")
+                : window.sessionStorage.getItem("accessToken")
+            }`,
             "Content-Type": "application/json",
           },
         }
       );
-      console.log(response)
 
-      if (!response.ok) throw new Error("Failed to remove item from cart");
+      if (!response.ok) {
+        if (Number(response.status) == 401) {
+          window.localStorage.removeItem("accessToken");
+          window.sessionStorage.removeItem("accessToken");
+          window.localStorage.removeItem("refreshToken");
+          window.sessionStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+        throw new Error("Failed to remove item from cart");
+      }
 
       dispatch({ type: "REMOVE_FROM_CART", payload: itemId });
     } catch (error) {
@@ -263,6 +287,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       });
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
+      loadCart();
     }
   };
 
@@ -278,7 +303,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         (item) => item.id === itemId
       );
       if (!itemToUpdate?.cartItemId) throw new Error("Cart item not found");
-      console.log(itemToUpdate.cartItemId);
+
       const response = await fetch(
         `https://api.malalshammobel.com/cart/${itemToUpdate.cartItemId}/`,
         {
@@ -299,7 +324,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       );
 
-      if (!response.ok) throw new Error("Failed to update cart item");
+      if (!response.ok) {
+        if (Number(response.status) == 401) {
+          window.localStorage.removeItem("accessToken");
+          window.sessionStorage.removeItem("accessToken");
+          window.localStorage.removeItem("refreshToken");
+          window.sessionStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+        throw new Error("Failed to update cart item");
+      }
 
       dispatch({
         type: "UPDATE_CART",

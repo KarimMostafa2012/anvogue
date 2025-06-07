@@ -11,6 +11,8 @@ import ReactPaginate from "react-paginate";
 import { useTranslation } from "react-i18next";
 import { getAllCategories } from "@/redux/slices/categorySlice";
 import { ProductType } from "@/type/ProductType";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useDebounce } from "use-debounce";
 
 interface Params {
   product_name?: string;
@@ -66,30 +68,32 @@ const HandlePagination: React.FC<PaginationProps> = ({
 const ShopSidebarList = ({
   data,
   productPerPage,
-  dataType,
 }: {
   data: ProductType[];
   productPerPage: Number;
-  dataType: string | null;
 }) => {
-  const [viewType, setViewType] = useState<"grid" | "list" | "marketplace">(
-    "grid"
-  );
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [viewType, setViewType] = useState<"grid" | "list" | "marketplace">("grid");
   const [params, setParams] = useState<Params>({
     lang: "en",
     page_size: 12,
     page: 1,
   });
-  const [showOnlySale, setShowOnlySale] = useState(params.has_offer ? true : false);
+  const [showOnlySale, setShowOnlySale] = useState(false);
   const [sortOption, setSortOption] = useState("");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
+  const [debouncedPriceRange] = useDebounce(priceRange, 500);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [showMore, setShowMore] = useState<boolean | null>(null);
+  const [productName, setProductName] = useState<string>("");
+  const [debouncedProductName] = useDebounce(productName, 500);
+  const [colors, setColors] = useState<{ id: string; product: number; color: string }[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const currentLanguage = useSelector((state: RootState) => state.language);
   const { t } = useTranslation();
-  let colors: { id: string; product: number; color: string }[] = [];
-  let colorCounter = 0;
 
   const dispatch = useDispatch<AppDispatch>();
   const { products, count, loading, error } = useSelector(
@@ -97,83 +101,133 @@ const ShopSidebarList = ({
   );
   const { categories } = useSelector((state: RootState) => state.categories);
 
-  products.forEach((prod) => {
-    prod.colors.forEach((col: any) => {
-      if (colorCounter < 1000) {
-        colors[colorCounter] = col;
-        colorCounter++;
-      }
-    });
-  });
-  // console.log(colors)
+  // Fetch colors from API
+  useEffect(() => {
+    fetch("https://api.malalshammobel.com/products/get/colors/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setColors(data))
+      .catch((error) => console.error("Error fetching colors:", error));
+  }, []);
+
+  // Parse initial URL parameters on mount and when searchParams change
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    
+    setSelectedCategory(params.get("category"));
+    setSelectedColor(params.get("color"));
+    setProductName(params.get("product_name") || "");
+    
+    const initialMin = params.has("min_price")
+      ? Math.max(0, Number(params.get("min_price")))
+      : 0;
+    const initialMax = params.has("max_price")
+      ? Math.min(10000, Number(params.get("max_price")))
+      : 10000;
+    setPriceRange({ min: initialMin, max: initialMax });
+
+    setSortOption(params.get("sort") || "");
+    setShowOnlySale(params.get("sale") === "true");
+
+    const initialPage = params.has("page")
+      ? Math.max(0, Number(params.get("page")) - 1)
+      : 0;
+    setCurrentPage(initialPage);
+  }, [searchParams]);
+
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    
+    if (selectedCategory) params.set("category", selectedCategory);
+    if (selectedColor) params.set("color", selectedColor);
+    if (debouncedProductName) params.set("product_name", debouncedProductName);
+    if (debouncedPriceRange.min > 0) params.set("min_price", debouncedPriceRange.min.toString());
+    if (debouncedPriceRange.max < 10000) params.set("max_price", (debouncedPriceRange.max == 0 ? "" : debouncedPriceRange.max).toString());
+    if (sortOption) params.set("sort", sortOption);
+    if (showOnlySale) params.set("sale", "true");
+    if (currentPage > 0) params.set("page", (currentPage + 1).toString());
+
+    const newUrl = `${pathname}?${params.toString()}`;
+    const currentUrl = `${pathname}${window.location.search}`;
+    
+    if (newUrl !== currentUrl) {
+      router.replace(newUrl, { scroll: false });
+    }
+  }, [
+    selectedCategory,
+    selectedColor,
+    debouncedProductName,
+    debouncedPriceRange,
+    sortOption,
+    showOnlySale,
+    currentPage,
+    pathname,
+    router,
+  ]);
 
   // Reset currentPage to 0 when filters change
   useEffect(() => {
     setCurrentPage(0);
-  }, [selectedCategory, priceRange, selectedColor, sortOption, showOnlySale]);
+  }, [selectedCategory, priceRange, selectedColor, sortOption, showOnlySale, debouncedProductName]);
 
+  // Fetch categories
   useEffect(() => {
-    dispatch(
-      getAllCategories({
-        lang: currentLanguage,
-      })
-    );
+    dispatch(getAllCategories({ lang: currentLanguage }));
   }, [dispatch, currentLanguage]);
 
-  // Update params when filters, sorting, or pagination change
+  // Update API params when filters change
   useEffect(() => {
     setParams({
       lang: currentLanguage,
-      page_size: 12, // Fixed page size for API
-      page: currentPage + 1, // API pages are 1-based
+      page_size: 12,
+      page: currentPage + 1,
       category: selectedCategory || undefined,
-      min_price: priceRange.min > 0 ? priceRange.min : undefined,
-      max_price: priceRange.max < 1000 ? priceRange.max : undefined,
+      min_price: debouncedPriceRange.min > 0 ? debouncedPriceRange.min : undefined,
+      max_price: debouncedPriceRange.max < 10000 ? debouncedPriceRange.max : undefined,
       color: selectedColor || undefined,
-      sort:
-        sortOption === "priceHighToLow"
-          ? "-price"
-          : sortOption === "priceLowToHigh"
-          ? "price"
-          : undefined,
+      sort: sortOption === "priceHighToLow"
+        ? "-price"
+        : sortOption === "priceLowToHigh"
+        ? "price"
+        : undefined,
       has_offer: showOnlySale || undefined,
+      product_name: debouncedProductName || undefined,
     });
   }, [
     currentPage,
     selectedCategory,
-    priceRange,
+    debouncedPriceRange,
     selectedColor,
     sortOption,
     showOnlySale,
     currentLanguage,
+    debouncedProductName,
   ]);
 
-  // Fetch products when params change
+  // Fetch products when API params change
   useEffect(() => {
-    // console.log("Fetching with params:", params);
     dispatch(getAllProducts({ params }));
   }, [dispatch, params]);
-
-  // Calculate category counts
-  const categoryCounts = products.reduce((acc, product) => {
-    if (product.category) {
-      acc[product.category] = (acc[product.category] || 0) + 1;
-    }
-    return acc;
-  }, {} as Record<string, number>);
 
   // Clear all filters
   const clearAllFilters = () => {
     setShowOnlySale(false);
-    setPriceRange({ min: 0, max: 100 });
+    setPriceRange({ min: 0, max: 10000 });
     setSelectedCategory(null);
     setSelectedColor(null);
     setSortOption("");
     setCurrentPage(0);
+    setProductName("");
+    router.replace(pathname, { scroll: false });
   };
 
-  // Pure server-side pagination
-  const pageCount = Math.ceil((count ?? 0) / (params.page_size || 6));
+  // Calculate page count for pagination
+  const pageCount = Math.ceil((count ?? 0) / (params.page_size || 12));
 
   return (
     <>
@@ -198,6 +252,16 @@ const ShopSidebarList = ({
         <div className="container">
           <div className="flex max-md:flex-wrap max-md:flex-col-reverse gap-y-8">
             <div className="sidebar lg:w-1/4 md:w-1/3 w-full md:pe-12">
+              <div className="search-box mb-6">
+                <input
+                  type="text"
+                  placeholder={t("Search products...")}
+                  className="w-full p-2 border border-gray-300 rounded border-[rgba(0,0,0,0.1)] focus-within:outline-none focus:outline-none"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                />
+              </div>
+              
               <div className="filter-type pb-8 border-b border-line">
                 <div className="heading6">{t("Product Type")}</div>
                 <div className="list-type mt-4">
@@ -216,11 +280,11 @@ const ShopSidebarList = ({
                       <div className="text-secondary has-line-before hover:text-black capitalize">
                         {t(item.name)}
                       </div>
-                      {/* <div className="text-secondary2">({categoryCounts[item.name] || 0})</div> */}
                     </div>
                   ))}
                 </div>
               </div>
+              
               <div className="filter-price pb-8 border-b border-gray-200 mt-8">
                 <div className="text-lg font-semibold text-gray-800 mb-4">
                   {t("Price Range")}
@@ -240,7 +304,7 @@ const ShopSidebarList = ({
                         onChange={(e) =>
                           setPriceRange({
                             ...priceRange,
-                            min: Number(e.target.value),
+                            min: Math.max(0, Number(e.target.value)),
                           })
                         }
                         className="focus:ring-primary-500 focus:border-primary-500 block w-full pl-7 pr-4 py-2 sm:text-sm border-gray-300 rounded-md"
@@ -268,21 +332,22 @@ const ShopSidebarList = ({
                         onChange={(e) =>
                           setPriceRange({
                             ...priceRange,
-                            max: Number(e.target.value),
+                            max: Math.min(10000, Number(e.target.value)),
                           })
                         }
                         className="focus:ring-primary-500 border focus:border-primary-500 block w-full pl-7 pr-4 py-2 sm:text-sm border-gray-300 rounded-md"
-                        placeholder="1000"
+                        placeholder="10000"
                         min="0"
                       />
                     </div>
                   </div>
                 </div>
               </div>
+              
               <div className="filter-color pb-8 border-b border-line mt-8">
                 <div className="heading6">{t("Colors")}</div>
                 <div className="list-color flex items-center flex-wrap gap-3 gap-y-4 mt-4">
-                  {colors.map((color, i) => (
+                  {colors.slice(0, showMore ? colors.length : 59).map((color, i) => (
                     <div
                       key={i}
                       className={`color-item flex items-center justify-center gap-2 rounded-full border border-line ${
@@ -301,15 +366,22 @@ const ShopSidebarList = ({
                     </div>
                   ))}
                 </div>
-                <button className="block w-full text-center font-medium text-[14px] mt-2">
-                  {t("Show more")}
-                </button>
+                {colors.length > 59 && (
+                  <button
+                    className="block w-full text-center font-medium text-[14px] mt-2"
+                    onClick={() => setShowMore(!showMore)}
+                  >
+                    {showMore ? t("Show less") : t("Show more")}
+                  </button>
+                )}
               </div>
+              
               {(selectedCategory ||
                 selectedColor ||
                 showOnlySale ||
                 priceRange.min > 0 ||
-                priceRange.max < 1000) && (
+                productName ||
+                priceRange.max < 10000) && (
                 <button
                   onClick={clearAllFilters}
                   className="text-sm text-blue-500 hover:underline mt-4"
@@ -318,6 +390,7 @@ const ShopSidebarList = ({
                 </button>
               )}
             </div>
+            
             <div className="list-product-block lg:w-3/4 md:w-2/3 w-full md:ps-3">
               <div className="filter-heading flex items-center justify-between gap-5 flex-wrap">
                 <div className="left flex has-line items-center flex-wrap gap-5">
@@ -365,10 +438,7 @@ const ShopSidebarList = ({
                   </div>
                 </div>
                 <div className="right flex items-center gap-3">
-                  <label
-                    htmlFor="select-filter"
-                    className="caption1 capitalize"
-                  >
+                  <label htmlFor="select-filter" className="caption1 capitalize">
                     {t("Sort by")}
                   </label>
                   <div className="select-block relative">
@@ -405,8 +475,9 @@ const ShopSidebarList = ({
                 {(selectedCategory ||
                   selectedColor ||
                   showOnlySale ||
+                  productName ||
                   priceRange.min > 0 ||
-                  priceRange.max < 1000) && (
+                  priceRange.max < 10000) && (
                   <button
                     onClick={clearAllFilters}
                     className="text-sm text-blue-500 hover:underline"
@@ -475,52 +546,3 @@ const ShopSidebarList = ({
 };
 
 export default ShopSidebarList;
-
-// <div key={product.id} className="product-card bg-white rounded-lg overflow-hidden shadow-md">
-//   <div className="product-image relative">
-//     {product.images.length > 0 && (
-//       <img
-//         src={product.images[0].img}
-//         alt={product.name}
-//         className="w-full h-48 object-cover"
-//       />
-//     )}
-//     {product.has_offer && (
-//       <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-//         Sale
-//       </div>
-//     )}
-//   </div>
-//   <div className="product-details p-4">
-//     <h3 className="product-name font-medium text-lg mb-1">{product.name}</h3>
-//     <div className="product-price flex items-center gap-2">
-//       <span className="current-price font-bold">${product.price}</span>
-//     </div>
-//     <div className="product-colors flex mt-2">
-//       {product.colors.map((color: { color: string | undefined; }, index: React.Key | null | undefined) => (
-//         <div
-//           key={index}
-//           className="w-4 h-4 rounded-full border border-gray-300 mr-1"
-//           style={{ backgroundColor: color.color }}
-//           title={color.color}
-//         ></div>
-//       ))}
-//     </div>
-//     <div className="product-rating mt-2">
-//       {[...Array(5)].map((_, i) => (
-//         <Icon.Star
-//           key={i}
-//           size={16}
-//           weight={i < Math.floor(product.average_rate) ? "fill" : "regular"}
-//           className="text-yellow-400 inline"
-//         />
-//       ))}
-//       <span className="text-xs text-gray-500 ml-1">
-//         ({product.average_rate.toFixed(1)})
-//       </span>
-//     </div>
-//     <button className="mt-3 w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition">
-//       Add to Cart
-//     </button>
-//   </div>
-// </div>

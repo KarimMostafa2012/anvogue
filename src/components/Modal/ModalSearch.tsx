@@ -15,7 +15,7 @@ const ModalSearch = () => {
     const router = useRouter()
 
     const handleSearch = (value: string) => {
-        router.push(`/search-result?query=${value}`)
+        router.push(`/shop?product_name=${value}`)
         closeModalSearch()
         setSearchKeyword('')
     }
