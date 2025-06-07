@@ -589,8 +589,8 @@ const MenuYoga = () => {
                                                             </li>
                                                             <li>
                                                                 <Link
-                                                                    href={'/search-result'}
-                                                                    className={`link text-secondary duration-300 ${pathname === '/search-result' ? 'active' : ''}`}
+                                                                    href={'/shop'}
+                                                                    className={`link text-secondary duration-300 ${pathname === '/shop' ? 'active' : ''}`}
                                                                 >
                                                                     Search Result
                                                                 </Link>
@@ -1477,8 +1477,8 @@ const MenuYoga = () => {
                                                                 </li>
                                                                 <li>
                                                                     <Link
-                                                                        href={'/search-result'}
-                                                                        className={`text-secondary duration-300 ${pathname === '/search-result' ? 'active' : ''}`}
+                                                                        href={'/shop'}
+                                                                        className={`text-secondary duration-300 ${pathname === '/shop' ? 'active' : ''}`}
                                                                     >
                                                                         Search Result
                                                                     </Link>

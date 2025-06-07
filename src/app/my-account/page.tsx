@@ -69,9 +69,10 @@ type Order = {
 };
 
 const MyAccount = () => {
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [activeTab, setActiveTab] = useState<string | undefined>("dashboard");
   const [activeAddress, setActiveAddress] = useState<string | null>("billing");
-  const [activeOrders, setActiveOrders] = useState<string | undefined>("all");
+  const [activeOrders, setActiveOrders] = useState<string | undefined>("");
   const [detailOrder, setDetailOrder] = useState<Order | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [openDetail, setOpenDetail] = useState<boolean | undefined>(false);
@@ -84,7 +85,7 @@ const MyAccount = () => {
   const [totalDiscount, setTotalDiscount] = useState<number>(0);
   //   const router = useRouter();
   const searchParams = useSearchParams();
-
+  let numConf = 0;
   const handleActiveAddress = (order: string) => {
     setActiveAddress((prevOrder) => (prevOrder === order ? null : order));
   };
@@ -255,6 +256,15 @@ const MyAccount = () => {
         });
     }
   }, [profile.verified]);
+
+  useEffect(() => {
+    if (activeOrders != "") {
+      const filtered = orders.filter((order) => order.status === activeOrders);
+      setFilteredOrders(filtered);
+    } else {
+      setFilteredOrders(orders);
+    }
+  }, [activeOrders, orders]);
 
   const activate = () => {
     fetch("https://api.malalshammobel.com/auth/activation/", {
@@ -697,7 +707,9 @@ const MyAccount = () => {
                         <h5 className="heading5 mt-1">
                           {orders.length > 0
                             ? orders.map((retro, i) => {
-                                let numConf = 0;
+                                if (i == 0) {
+                                  numConf = 0;
+                                }
                                 if (retro.status == "Confirmed") {
                                   numConf++;
                                 }
@@ -718,12 +730,14 @@ const MyAccount = () => {
                         <h5 className="heading5 mt-1">
                           {orders.length > 0
                             ? orders.map((retro, i) => {
-                                let numRetro = 0;
+                                if (i == 0) {
+                                  numConf = 0;
+                                }
                                 if (retro.status == "Retroactive") {
-                                  numRetro++;
+                                  numConf++;
                                 }
                                 if (i == orders.length - 1) {
-                                  return numRetro;
+                                  return numConf;
                                 }
                               })
                             : 0}
@@ -767,9 +781,9 @@ const MyAccount = () => {
                             </th>
                           </tr>
                         </thead>
-                        {orders.length > 0 ? (
+                        {filteredOrders.length > 0 ? (
                           <tbody>
-                            {orders.map((order, i) => {
+                            {filteredOrders.map((order, i) => {
                               if (i > 4) {
                                 return;
                               }
@@ -778,7 +792,7 @@ const MyAccount = () => {
                                   key={i}
                                   className={
                                     "item duration-300 " +
-                                    (orders.length - 1 == i
+                                    (filteredOrders.length - 1 == i
                                       ? ""
                                       : "border-b border-line")
                                   }
@@ -815,16 +829,19 @@ const MyAccount = () => {
                   <h6 className="heading6">Your Orders</h6>
                   <div className="w-full overflow-x-auto">
                     <div className="menu-tab grid grid-cols-4 max-lg:w-[500px] border-b border-line mt-3">
-                      {["all", "confirmed", "delivered", "retroactive"].map(
+                      {["all", "Confirmed", "Delivered", "Retroactive"].map(
                         (item, index) => (
                           <button
                             key={index}
                             className={`item relative px-3 py-2.5 text-secondary text-center duration-300 hover:text-black border-b-2 ${
-                              activeOrders === item
+                              (activeOrders == "" ? "all" : activeOrders) ===
+                              item
                                 ? "active border-black"
                                 : "border-transparent"
                             }`}
-                            onClick={() => handleActiveOrders(item)}
+                            onClick={() =>
+                              handleActiveOrders(item == "all" ? "" : item)
+                            }
                           >
                             <span className="relative text-button z-[1]">
                               {item}
@@ -835,7 +852,7 @@ const MyAccount = () => {
                     </div>
                   </div>
                   <div className="list_order">
-                    {orders.map((order) => {
+                    {filteredOrders.map((order) => {
                       return (
                         <div
                           key={order.id}
@@ -920,14 +937,16 @@ const MyAccount = () => {
                             >
                               Order Details
                             </button>
-                            <button
-                              className="button-main bg-surface border border-line hover:bg-black text-black hover:text-white"
-                              onClick={() => {
-                                handleSetCancel(order.id);
-                              }}
-                            >
-                              Cancel Order
-                            </button>
+                            {order?.status.toLowerCase() != "retroactive" && (
+                              <button
+                                className="button-main bg-surface border border-line hover:bg-black text-black hover:text-white"
+                                onClick={() => {
+                                  handleSetCancel(order.id);
+                                }}
+                              >
+                                Cancel Order
+                              </button>
+                            )}
                           </div>
                         </div>
                       );

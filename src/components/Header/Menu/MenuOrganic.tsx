@@ -29,7 +29,7 @@ const MenuOrganic = () => {
     const router = useRouter()
 
     const handleSearch = (value: string) => {
-        router.push(`/search-result?query=${value}`)
+        router.push(`/shop?product_name=${value}`)
         setSearchKeyword('')
     }
 
@@ -692,8 +692,8 @@ const MenuOrganic = () => {
                                                                     </li>
                                                                     <li>
                                                                         <Link
-                                                                            href={'/search-result'}
-                                                                            className={`link text-secondary duration-300 ${pathname === '/search-result' ? 'active' : ''}`}
+                                                                            href={'/shop'}
+                                                                            className={`link text-secondary duration-300 ${pathname === '/shop' ? 'active' : ''}`}
                                                                         >
                                                                             Search Result
                                                                         </Link>
@@ -1556,8 +1556,8 @@ const MenuOrganic = () => {
                                                                 </li>
                                                                 <li>
                                                                     <Link
-                                                                        href={'/search-result'}
-                                                                        className={`text-secondary duration-300 ${pathname === '/search-result' ? 'active' : ''}`}
+                                                                        href={'/shop'}
+                                                                        className={`text-secondary duration-300 ${pathname === '/shop' ? 'active' : ''}`}
                                                                     >
                                                                         Search Result
                                                                     </Link>

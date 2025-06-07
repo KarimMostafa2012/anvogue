@@ -19,13 +19,14 @@ const Compare = () => {
   const { compareState } = useCompare();
   const { cartState, addToCart, updateCart } = useCart();
   const { openModalCart } = useModalCartContext();
+  const [activeColors, setActiveColors] = useState<{ [id: string]: string }>({});
 
   const handleAddToCart = (productItem: ProductType) => {
     if (!cartState.cartArray.find((item) => item.id === productItem.id)) {
-      addToCart( productItem, productItem.colors[0].color, 1);
-      updateCart(productItem.id, productItem.quantityPurchase, "", undefined);
+      addToCart(productItem, activeColors[productItem.id] || productItem.colors[0].color, 1);
+      updateCart(productItem.id, 1, activeColors[productItem.id] || productItem.colors[0].color, productItem.size);
     } else {
-      updateCart(productItem.id, productItem.quantityPurchase, "", undefined);
+      updateCart(productItem.id, 1, activeColors[productItem.id] || productItem.colors[0].color, productItem.size);
     }
     openModalCart();
   };
@@ -90,9 +91,6 @@ const Compare = () => {
                   </div>
                   <div className="item text-button flex items-center h-[60px] px-8 w-full border-b border-line">
                     Colors
-                  </div>
-                  <div className="item text-button flex items-center h-[60px] px-8 w-full border-b border-line">
-                    Metarial
                   </div>
                   <div className="item text-button flex items-center h-[60px] px-8 w-full border-b border-line">
                     Add To Cart
@@ -173,22 +171,11 @@ const Compare = () => {
                           {item.colors.map((colorItem, i) => (
                             <span
                               key={i}
-                              className={`w-6 h-6 rounded-full`}
+                              className={"w-6 h-6 rounded-full border border-[rgba(0,0,0,0.4)] hover:border-[rgba(0,0,0,0.8)] cursor-pointer duration-300 " + (activeColors[item.id] == colorItem.color ? "!border-2" : "")}
                               style={{ backgroundColor: `${colorItem.color}` }}
+                              onClick={()=>setActiveColors((prev) => ({...prev,[item.id]: colorItem.color,}))}
                             ></span>
                           ))}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                  <tr className={`flex w-full items-center`}>
-                    {compareState.compareArray.map((item, index) => (
-                      <td
-                        className="w-full border border-line h-[60px] border-t-0 border-r-0"
-                        key={index}
-                      >
-                        <div className="h-full flex items-center justify-center capitalize">
-                          Cotton
                         </div>
                       </td>
                     ))}

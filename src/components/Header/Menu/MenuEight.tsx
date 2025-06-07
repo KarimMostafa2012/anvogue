@@ -257,7 +257,7 @@ const MenuEight = () => {
   }, []);
 
   const handleSearch = (value: string) => {
-    router.push(`/search-result?query=${value}`);
+    router.push(`/shop?product_name=${value}`);
     setSearchKeyword("");
   };
 
@@ -332,7 +332,8 @@ const MenuEight = () => {
                 />
                 <button
                   className="search-button button-main bg-black h-full flex items-center px-7 rounded-none rounded-r"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     handleSearch(searchKeyword);
                   }}
                 >

@@ -273,7 +273,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
   }, []);
 
   const handleSearch = (value: string) => {
-    router.push(`/search-result?query=${value}`);
+    router.push(`/shop?product_name=${value}`);
     setSearchKeyword("");
   };
 
@@ -300,12 +300,8 @@ const MenuOne: React.FC<Props> = ({ props }) => {
     };
   }, [lastScrollPosition]);
 
-  const handleGenderClick = (gender: string) => {
-    router.push(`/shop/breadcrumb1?gender=${gender}`);
-  };
-
-  const handleSubCategoryClick = (category: number) => {
-    router.push(`/shop/breadcrumb1?subCategory=${category}`);
+  const handleSubCategoryClick = (category: string) => {
+    router.push(`/shop?sub_category=${category}`);
   };
 
   const handleTypeClick = (type: string) => {
@@ -384,7 +380,8 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                               <div
                                                 onClick={() =>
                                                   handleSubCategoryClick(
-                                                    subCatName.id
+                                                    subCatName.translations.en
+                                                      .name
                                                   )
                                                 }
                                                 className={`link text-secondary duration-300 cursor-pointer`}
@@ -1049,6 +1046,11 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                   type="text"
                   placeholder="What are you looking for?"
                   className=" h-12 rounded-lg border border-line text-sm w-full pl-10 pr-4"
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && handleSearch(searchKeyword)
+                  }
                 />
               </div>
               <div className="list-nav mt-6">
@@ -1378,7 +1380,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             <ul>
                               <li>
                                 <div
-                                  onClick={() => handleGenderClick("men")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
                                   Starting From 50% Off
@@ -1410,7 +1411,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               </li>
                               <li>
                                 <div
-                                  onClick={() => handleGenderClick("men")}
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
                                   View All
@@ -1517,7 +1517,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             <ul>
                               <li>
                                 <div
-                                  onClick={() => handleGenderClick("women")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
                                   Starting From 60% Off
@@ -1549,7 +1548,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               </li>
                               <li>
                                 <div
-                                  onClick={() => handleGenderClick("women")}
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
                                   View All
@@ -2197,11 +2195,17 @@ const MenuOne: React.FC<Props> = ({ props }) => {
             </span>
           </Link>
           <Link
-            href={"/search-result"}
+            href={"/shop"}
             className="menu_bar-link flex flex-col items-center gap-1"
+            onClick={(e) => { e.stopPropagation() }}
           >
             <Icon.MagnifyingGlass weight="bold" className="text-2xl" />
-            <span className="menu_bar-title caption2 font-semibold">
+            <span
+              className="menu_bar-title caption2 font-semibold"
+              onClick={() => {
+                handleSearch(searchKeyword);
+              }}
+            >
               Search
             </span>
           </Link>

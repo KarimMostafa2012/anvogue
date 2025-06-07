@@ -37,7 +37,7 @@ const MenuCosmeticOne: React.FC<Props> = ({ props }) => {
     const { t } = useTranslation();
 
     const handleSearch = (value: string) => {
-        router.push(`/search-result?query=${value}`)
+        router.push(`/shop?product_name=${value}`)
         setSearchKeyword('')
     }
 
@@ -619,8 +619,8 @@ const MenuCosmeticOne: React.FC<Props> = ({ props }) => {
                                                             </li>
                                                             <li>
                                                                 <Link
-                                                                    href={'/search-result'}
-                                                                    className={`link text-secondary duration-300 ${pathname === '/search-result' ? 'active' : ''}`}
+                                                                    href={'/shop'}
+                                                                    className={`link text-secondary duration-300 ${pathname === '/shop' ? 'active' : ''}`}
                                                                 >
                                                                     Search Result
                                                                 </Link>
@@ -1508,8 +1508,8 @@ const MenuCosmeticOne: React.FC<Props> = ({ props }) => {
                                                                 </li>
                                                                 <li>
                                                                     <Link
-                                                                        href={'/search-result'}
-                                                                        className={`text-secondary duration-300 ${pathname === '/search-result' ? 'active' : ''}`}
+                                                                        href={'/shop'}
+                                                                        className={`text-secondary duration-300 ${pathname === '/shop' ? 'active' : ''}`}
                                                                     >
                                                                         Search Result
                                                                     </Link>

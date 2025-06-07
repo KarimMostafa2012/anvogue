@@ -86,10 +86,12 @@ const ShopSidebarList = ({
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
   const [debouncedPriceRange] = useDebounce(priceRange, 500);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [showMore, setShowMore] = useState<boolean | null>(null);
   const [productName, setProductName] = useState<string>("");
   const [debouncedProductName] = useDebounce(productName, 500);
+  const [debouncedSubCategory] = useDebounce(selectedSubCategory, 500);
   const [colors, setColors] = useState<{ id: string; product: number; color: string }[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const currentLanguage = useSelector((state: RootState) => state.language);
@@ -121,6 +123,7 @@ const ShopSidebarList = ({
     setSelectedCategory(params.get("category"));
     setSelectedColor(params.get("color"));
     setProductName(params.get("product_name") || "");
+    setSelectedSubCategory(params.get("sub_category") || "");
     
     const initialMin = params.has("min_price")
       ? Math.max(0, Number(params.get("min_price")))
@@ -146,6 +149,7 @@ const ShopSidebarList = ({
     if (selectedCategory) params.set("category", selectedCategory);
     if (selectedColor) params.set("color", selectedColor);
     if (debouncedProductName) params.set("product_name", debouncedProductName);
+    if (debouncedSubCategory) params.set("sub_category", debouncedSubCategory);
     if (debouncedPriceRange.min > 0) params.set("min_price", debouncedPriceRange.min.toString());
     if (debouncedPriceRange.max < 10000) params.set("max_price", (debouncedPriceRange.max == 0 ? "" : debouncedPriceRange.max).toString());
     if (sortOption) params.set("sort", sortOption);
@@ -162,6 +166,7 @@ const ShopSidebarList = ({
     selectedCategory,
     selectedColor,
     debouncedProductName,
+    debouncedSubCategory,
     debouncedPriceRange,
     sortOption,
     showOnlySale,
@@ -173,7 +178,7 @@ const ShopSidebarList = ({
   // Reset currentPage to 0 when filters change
   useEffect(() => {
     setCurrentPage(0);
-  }, [selectedCategory, priceRange, selectedColor, sortOption, showOnlySale, debouncedProductName]);
+  }, [selectedCategory, priceRange, selectedColor, sortOption, showOnlySale, debouncedProductName,debouncedSubCategory]);
 
   // Fetch categories
   useEffect(() => {
@@ -187,6 +192,7 @@ const ShopSidebarList = ({
       page_size: 12,
       page: currentPage + 1,
       category: selectedCategory || undefined,
+      sub_category: selectedSubCategory || undefined,
       min_price: debouncedPriceRange.min > 0 ? debouncedPriceRange.min : undefined,
       max_price: debouncedPriceRange.max < 10000 ? debouncedPriceRange.max : undefined,
       color: selectedColor || undefined,
@@ -207,6 +213,7 @@ const ShopSidebarList = ({
     showOnlySale,
     currentLanguage,
     debouncedProductName,
+    debouncedSubCategory,
   ]);
 
   // Fetch products when API params change
