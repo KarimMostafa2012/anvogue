@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
 import * as Icon from "@phosphor-icons/react/dist/ssr";
@@ -15,22 +15,25 @@ interface Props {
 }
 
 const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
+    const languages = [
+        { key: "ar", name: 'العربية' },
+        { key: "en", name: 'English' },
+        { key: "de", name: 'Deutsch' },
+        { key: "ckb", name: 'Kurdî' },
+        { key: "uk", name: 'український' },
+    ];
     const [isOpenLanguage, setIsOpenLanguage] = useState(false)
-    const [selectedLanguage, setSelectedLanguage] = useState<string>("English")
+    const currentLanguage = useSelector((state: RootState) => state.language);
+    const [selectedLanguage, setSelectedLanguage] = useState<string>("Deutsch")
     const dispatch = useDispatch<AppDispatch>()
     const handleChangeLanguage = (language: string) => {
         dispatch(changeLanguage(language));
     };
-    const currentLanguage = useSelector((state: RootState) => state.language);
     const { t } = useTranslation();
-
-    const languages = [
-        { key: "ar", name: "Arabic" },
-        { key: "en", name: "English" },
-        { key: "de", name: "German" },
-        { key: "ckb", name: "Central Kurdish" },
-        { key: "uk", name: "Ukrainian" },
-    ];
+    console.log(currentLanguage)
+    useEffect(() => {
+        setSelectedLanguage(languages.find(item => item.key === currentLanguage)?.name || "Deutsch")
+    }, [currentLanguage])
 
     return (
         <>
@@ -58,7 +61,7 @@ const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
                             </div>
                         </div>
                         <div className="text-center text-button-uppercase text-white flex items-center">
-                            {slogan}
+                            {t('header.slogan')}
                         </div>
                         <div className="right-content flex items-center gap-5 max-md:hidden">
                             <Link href={'https://www.facebook.com/'} target='_blank'>

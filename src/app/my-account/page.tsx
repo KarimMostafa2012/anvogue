@@ -583,6 +583,37 @@ const MyAccount = () => {
         const errorText = await response.text();
         console.error("Failed response:", response.status, errorText);
         throw new Error("Failed to cancel order");
+      } else {
+        setCancel({ state: false, id: cancel.id });
+        fetch("https://api.malalshammobel.com/order/", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${
+              window.localStorage.getItem("accessToken")
+                ? window.localStorage.getItem("accessToken")
+                : window.sessionStorage.getItem("accessToken")
+            }`,
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              if (Number(response.status) == 401) {
+                window.localStorage.removeItem("accessToken");
+                window.sessionStorage.removeItem("accessToken");
+                window.localStorage.removeItem("refreshToken");
+                window.sessionStorage.removeItem("refreshToken");
+                window.location.href = "/login";
+              }
+            }
+            return response.json();
+          })
+          .then((data) => {
+            setOrders(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       }
 
       const data = await response.json();

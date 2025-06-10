@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { countdownTime } from "@/store/countdownTime";
 import CountdownTimeType from "@/type/CountdownType";
+import { useTranslation } from 'next-i18next';
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
@@ -20,6 +21,7 @@ const ModalCart = ({
 }: {
   serverTimeLeft: CountdownTimeType;
 }) => {
+  const { t } = useTranslation();
   const [timeLeft, setTimeLeft] = useState(serverTimeLeft);
   const dispatch = useAppDispatch();
 
@@ -84,7 +86,7 @@ const ModalCart = ({
           }}
         >
           <div className="left w-1/2 border-r border-line py-6 max-md:hidden">
-            <div className="heading5 px-6 pb-3">You May Also Like</div>
+            <div className="heading5 px-6 pb-3">{t('modal.cart.youMayAlsoLike')}</div>
             <div className="list px-6">
               {cartState.cartArray.map((product, i) => (
                 <div
@@ -134,7 +136,7 @@ const ModalCart = ({
           </div>
           <div className="right cart-block md:w-1/2 w-full py-6 relative overflow-hidden">
             <div className="heading px-6 pb-3 flex items-center justify-between relative">
-              <div className="heading5">Shopping Cart</div>
+              <div className="heading5">{t('modal.cart.title')}</div>
               <div
                 className="close-btn absolute right-6 top-0 w-6 h-6 rounded-full bg-surface flex items-center justify-center duration-300 cursor-pointer hover:bg-black hover:text-white"
                 onClick={closeModalCart}
@@ -171,7 +173,7 @@ const ModalCart = ({
                             className="remove-cart-btn caption1 font-semibold text-red underline cursor-pointer"
                             onClick={() => removeFromCart(product.cartItemId)}
                           >
-                            Remove
+                            {t('modal.cart.removeItem')}
                           </div>
                         </div>
                         <div className="flex items-center justify-between gap-2 mt-3 w-full">
@@ -203,25 +205,25 @@ const ModalCart = ({
                   onClick={() => handleActiveTab("note")}
                 >
                   <Icon.NotePencil className="text-xl" />
-                  <div className="caption1">Note</div>
+                  <div className="caption1">{t('modal.cart.note')}</div>
                 </div>
                 <div
                   className="item flex items-center gap-3 cursor-pointer"
                   onClick={() => handleActiveTab("shipping")}
                 >
                   <Icon.Truck className="text-xl" />
-                  <div className="caption1">Shipping</div>
+                  <div className="caption1">{t('modal.cart.shipping')}</div>
                 </div>
                 <div
                   className="item flex items-center gap-3 cursor-pointer"
                   onClick={() => handleActiveTab("coupon")}
                 >
                   <Icon.Tag className="text-xl" />
-                  <div className="caption1">Coupon</div>
+                  <div className="caption1">{t('modal.cart.coupon')}</div>
                 </div>
               </div>
               <div className="flex items-center justify-between pt-6 px-6">
-                <div className="heading5">Subtotal</div>
+                <div className="heading5">{t('modal.cart.subtotal')}</div>
                 <div className="heading5">${totalCart}</div>
               </div>
               <div className="block-button text-center p-6">
@@ -231,21 +233,21 @@ const ModalCart = ({
                     className="button-main basis-1/2 bg-white border border-black text-black text-center uppercase"
                     onClick={closeModalCart}
                   >
-                    View cart
+                    {t('modal.cart.viewCart')}
                   </Link>
                   <Link
                     href={"/checkout"}
                     className="button-main basis-1/2 text-center uppercase"
                     onClick={closeModalCart}
                   >
-                    Check Out
+                    {t('modal.cart.checkout')}
                   </Link>
                 </div>
                 <div
                   onClick={closeModalCart}
                   className="text-button-uppercase mt-4 text-center has-line-before cursor-pointer inline-block"
                 >
-                  Or continue shopping
+                  {t('modal.cart.continueShopping')}
                 </div>
               </div>
               <div
@@ -256,7 +258,7 @@ const ModalCart = ({
                 <div className="px-6 py-4 border-b border-line">
                   <div className="item flex items-center gap-3 cursor-pointer">
                     <Icon.NotePencil className="text-xl" />
-                    <div className="caption1">Note</div>
+                    <div className="caption1">{t('modal.cart.note')}</div>
                   </div>
                 </div>
                 <div className="form pt-4 px-6">
@@ -264,7 +266,7 @@ const ModalCart = ({
                     name="form-note"
                     id="form-note"
                     rows={4}
-                    placeholder="Add special instructions for your order..."
+                    placeholder={t('modal.cart.addSpecialInstructions')}
                     className="caption1 py-3 px-4 bg-surface border-line rounded-md w-full"
                   ></textarea>
                 </div>
@@ -273,13 +275,13 @@ const ModalCart = ({
                     className="button-main w-full text-center"
                     onClick={() => setActiveTab("")}
                   >
-                    Save
+                    {t('modal.cart.save')}
                   </div>
                   <div
                     onClick={() => setActiveTab("")}
                     className="text-button-uppercase mt-4 text-center has-line-before cursor-pointer inline-block"
                   >
-                    Cancel
+                    {t('modal.cart.cancel')}
                   </div>
                 </div>
               </div>
@@ -291,7 +293,7 @@ const ModalCart = ({
                 <div className="px-6 py-4 border-b border-line">
                   <div className="item flex items-center gap-3 cursor-pointer">
                     <Icon.Truck className="text-xl" />
-                    <div className="caption1">Estimate shipping rates</div>
+                    <div className="caption1">{t('modal.cart.estimateShipping')}</div>
                   </div>
                 </div>
                 <div className="form pt-4 px-6">
@@ -300,7 +302,7 @@ const ModalCart = ({
                       htmlFor="select-country"
                       className="caption1 text-secondary"
                     >
-                      Country/region
+                      {t('modal.cart.countryRegion')}
                     </label>
                     <div className="select-block relative mt-2">
                       <select
@@ -310,12 +312,12 @@ const ModalCart = ({
                         defaultValue={"Country/region"}
                       >
                         <option value="Country/region" disabled>
-                          Country/region
+                          {t('modal.cart.countryRegion')}
                         </option>
-                        <option value="France">France</option>
-                        <option value="Spain">Spain</option>
-                        <option value="UK">UK</option>
-                        <option value="USA">USA</option>
+                        <option value="France">{t('modal.cart.countries.france')}</option>
+                        <option value="Spain">{t('modal.cart.countries.spain')}</option>
+                        <option value="UK">{t('modal.cart.countries.uk')}</option>
+                        <option value="USA">{t('modal.cart.countries.usa')}</option>
                       </select>
                       <Icon.CaretDown
                         size={12}
@@ -328,7 +330,7 @@ const ModalCart = ({
                       htmlFor="select-state"
                       className="caption1 text-secondary"
                     >
-                      State
+                      {t('modal.cart.state')}
                     </label>
                     <div className="select-block relative mt-2">
                       <select
@@ -338,12 +340,12 @@ const ModalCart = ({
                         defaultValue={"State"}
                       >
                         <option value="State" disabled>
-                          State
+                          {t('modal.cart.state')}
                         </option>
-                        <option value="Paris">Paris</option>
-                        <option value="Madrid">Madrid</option>
-                        <option value="London">London</option>
-                        <option value="New York">New York</option>
+                        <option value="Paris">{t('modal.cart.states.paris')}</option>
+                        <option value="Madrid">{t('modal.cart.states.madrid')}</option>
+                        <option value="London">{t('modal.cart.states.london')}</option>
+                        <option value="New York">{t('modal.cart.states.newYork')}</option>
                       </select>
                       <Icon.CaretDown
                         size={12}
@@ -356,13 +358,13 @@ const ModalCart = ({
                       htmlFor="select-code"
                       className="caption1 text-secondary"
                     >
-                      Postal/Zip Code
+                      {t('modal.cart.postalZipCode')}
                     </label>
                     <input
                       className="border-line px-5 py-3 w-full rounded-xl mt-3"
                       id="select-code"
                       type="text"
-                      placeholder="Postal/Zip Code"
+                      placeholder={t('modal.cart.postalZipCode')}
                     />
                   </div>
                 </div>
@@ -371,13 +373,13 @@ const ModalCart = ({
                     className="button-main w-full text-center"
                     onClick={() => setActiveTab("")}
                   >
-                    Calculator
+                    {t('modal.cart.calculate')}
                   </div>
                   <div
                     onClick={() => setActiveTab("")}
                     className="text-button-uppercase mt-4 text-center has-line-before cursor-pointer inline-block"
                   >
-                    Cancel
+                    {t('modal.cart.cancel')}
                   </div>
                 </div>
               </div>
@@ -389,7 +391,7 @@ const ModalCart = ({
                 <div className="px-6 py-4 border-b border-line">
                   <div className="item flex items-center gap-3 cursor-pointer">
                     <Icon.Tag className="text-xl" />
-                    <div className="caption1">Add A Coupon Code</div>
+                    <div className="caption1">{t('modal.cart.addCouponCode')}</div>
                   </div>
                 </div>
                 <div className="form pt-4 px-6">
@@ -398,13 +400,13 @@ const ModalCart = ({
                       htmlFor="select-discount"
                       className="caption1 text-secondary"
                     >
-                      Enter Code
+                      {t('modal.cart.enterCode')}
                     </label>
                     <input
                       className="border-line px-5 py-3 w-full rounded-xl mt-3"
                       id="select-discount"
                       type="text"
-                      placeholder="Discount code"
+                      placeholder={t('modal.cart.discountCode')}
                     />
                   </div>
                 </div>
@@ -413,13 +415,13 @@ const ModalCart = ({
                     className="button-main w-full text-center"
                     onClick={() => setActiveTab("")}
                   >
-                    Apply
+                    {t('modal.cart.apply')}
                   </div>
                   <div
                     onClick={() => setActiveTab("")}
                     className="text-button-uppercase mt-4 text-center has-line-before cursor-pointer inline-block"
                   >
-                    Cancel
+                    {t('modal.cart.cancel')}
                   </div>
                 </div>
               </div>

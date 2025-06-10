@@ -6,8 +6,10 @@ import Image from 'next/image'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { useModalCompareContext } from '@/context/ModalCompareContext'
 import { useCompare } from '@/context/CompareContext'
+import { useTranslation } from 'next-i18next';
 
 const ModalCompare = () => {
+    const { t } = useTranslation();
     const { isModalOpen, closeModalCompare } = useModalCompareContext();
     const { compareState, removeFromCompare } = useCompare()
 
@@ -26,7 +28,7 @@ const ModalCompare = () => {
                     </div>
                     <div className="container h-full flex items-center w-full">
                         <div className="content-main flex items-center justify-between xl:gap-10 gap-6 w-full max-md:flex-wrap">
-                            <div className="heading5 flex-shrink-0 max-md:w-full">Compare <br className='max-md:hidden' />Products</div>
+                            <div className="heading5 flex-shrink-0 max-md:w-full">{t('modal.compare.title')}</div>
                             <div className="list-product flex items-center w-full gap-4">
                                 {compareState.compareArray.slice(0, 3).map((product) => (
                                     <div key={product.id} className='item p-3 border border-line rounded-xl relative'>
@@ -60,15 +62,15 @@ const ModalCompare = () => {
                                                 className='button-main whitespace-nowrap'
                                                 onClick={(e) => {
                                                     e.stopPropagation()
-                                                    alert('Minimum 2 products required to compare!')
+                                                    alert(t('modal.compare.minimumProductsRequired'))
                                                 }}
                                             >
-                                                Compare Products
+                                                {t('modal.compare.compareProducts')}
                                             </a>
                                         </>
                                     ) : (
                                         <>
-                                            <Link href={'/compare'} onClick={closeModalCompare} className='button-main whitespace-nowrap'>Compare Products</Link>
+                                            <Link href={'/compare'} onClick={closeModalCompare} className='button-main whitespace-nowrap'>{t('modal.compare.compareProducts')}</Link>
                                         </>
                                     )
                                 }
@@ -79,7 +81,7 @@ const ModalCompare = () => {
                                     }}
                                     className="button-main whitespace-nowrap border border-black bg-white text-black"
                                 >
-                                    Clear All Products
+                                    {t('modal.compare.clearAllProducts')}
                                 </div>
                             </div>
                         </div>

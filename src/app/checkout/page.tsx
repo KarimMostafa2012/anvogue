@@ -42,10 +42,11 @@ const Checkout = () => {
   let discount = searchParams.get("discount");
   let ship = searchParams.get("ship");
 
-  const { cartState } = useCart();
+  const { cartState, loadCart } = useCart();
   let [totalCart, setTotalCart] = useState<number>(0);
   const [openDetail, setOpenDetail] = useState<boolean | undefined>(false);
   const [newForm, setNewForm] = useState<boolean | undefined>(false);
+  const [balancePay, setBalancePay] = useState<boolean | undefined>(false);
   const [profile, setProfile] = useState<UserProfile>({});
   const [activeAddress, setActiveAddress] = useState<string | null>(
     "mainShipping"
@@ -263,6 +264,7 @@ const Checkout = () => {
   );
 
   const pyamentEndPoint = (orderId: string) => {
+    console.log(orderId)
     fetch("https://api.malalshammobel.com/payment/stripe/process/", {
       method: "POST",
       headers: {
@@ -278,6 +280,7 @@ const Checkout = () => {
           console.log(response);
           throw new Error("Failed to submit order");
         } else if (response.ok) {
+          console.log(response);
           return response.json(); // <-- important fix here
         }
       })
@@ -347,6 +350,11 @@ const Checkout = () => {
           console.error("Error:", error);
         });
     }
+  };
+
+  const refetch = () => {
+    loadCart();
+    setBalancePay(true);
   };
 
   return (
@@ -827,6 +835,40 @@ const Checkout = () => {
         </div>
       </div>
       <Footer />
+      {balancePay && (
+        <div
+          className={`modal-order-detail-block flex items-center justify-center`}
+          onClick={() => setBalancePay(false)}
+        >
+          <div
+            className={`modal-order-detail-main w-fit max-w-[460px] bg-white rounded-2xl ${
+              balancePay == true ? "open" : ""
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="info p-10 text-center">
+              <h5 className="heading5">Order Details</h5>
+              <div className="list_info gap-10 gap-y-8 mt-5">
+                <div className="info_item">
+                  <h6 className="heading6 order_name mt-2">
+                    The value of the wallet is {profile.balance}, {totalCart - Number(discount) + Number(ship)} has been
+                    deducted.
+                  </h6>
+                  <button
+                    onClick={() => {
+                      setBalancePay(false);
+                      refetch()
+                    }}
+                    className="button-main mt-6"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

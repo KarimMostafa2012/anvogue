@@ -8,8 +8,10 @@ import * as Icon from "@phosphor-icons/react/dist/ssr";
 import productData from '@/data/Product.json'
 import Product from '../Product/Product';
 import { useModalSearchContext } from '@/context/ModalSearchContext'
+import { useTranslation } from 'next-i18next';
 
 const ModalSearch = () => {
+    const { t } = useTranslation();
     const { isModalOpen, closeModalSearch } = useModalSearchContext();
     const [searchKeyword, setSearchKeyword] = useState('');
     const router = useRouter()
@@ -36,7 +38,7 @@ const ModalSearch = () => {
                         />
                         <input
                             type="text"
-                            placeholder='Searching...'
+                            placeholder={t('modal.search.placeholder')}
                             className='text-button-lg h-14 rounded-2xl border border-line w-full pl-6 pr-12'
                             value={searchKeyword}
                             onChange={(e) => setSearchKeyword(e.target.value)}
@@ -44,36 +46,36 @@ const ModalSearch = () => {
                         />
                     </div>
                     <div className="keyword mt-8">
-                        <div className="heading5">Feature keywords Today</div>
+                        <div className="heading5">{t('modal.search.featureKeywords')}</div>
                         <div className="list-keyword flex items-center flex-wrap gap-3 mt-4">
                             <div
                                 className="item px-4 py-1.5 border border-line rounded-full cursor-pointer duration-300 hover:bg-black hover:text-white"
                                 onClick={() => handleSearch('dress')}
                             >
-                                Dress
+                                {t('dress')}
                             </div>
                             <div
                                 className="item px-4 py-1.5 border border-line rounded-full cursor-pointer duration-300 hover:bg-black hover:text-white"
                                 onClick={() => handleSearch('t-shirt')}
                             >
-                                T-shirt
+                                {t('t-shirt')}
                             </div>
                             <div
                                 className="item px-4 py-1.5 border border-line rounded-full cursor-pointer duration-300 hover:bg-black hover:text-white"
                                 onClick={() => handleSearch('underwear')}
                             >
-                                Underwear
+                                {t('underwear')}
                             </div>
                             <div
                                 className="item px-4 py-1.5 border border-line rounded-full cursor-pointer duration-300 hover:bg-black hover:text-white"
                                 onClick={() => handleSearch('top')}
                             >
-                                Top
+                                {t('top')}
                             </div>
                         </div>
                     </div>
                     <div className="list-recent mt-8">
-                        <div className="heading6">Recently viewed products</div>
+                        <div className="heading6">{t('modal.search.recentlyViewed')}</div>
                         <div className="list-product pb-5 hide-product-sold grid xl:grid-cols-4 sm:grid-cols-2 gap-7 mt-4">
                             {productData.slice(0, 4).map((product) => (
                                 <Product key={product.id} data={product} type='grid' />

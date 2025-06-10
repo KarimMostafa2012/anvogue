@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -75,7 +75,9 @@ const ShopSidebarList = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [viewType, setViewType] = useState<"grid" | "list" | "marketplace">("grid");
+  const [viewType, setViewType] = useState<"grid" | "list" | "marketplace">(
+    "grid"
+  );
   const [params, setParams] = useState<Params>({
     lang: "en",
     page_size: 12,
@@ -86,16 +88,24 @@ const ShopSidebarList = ({
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
   const [debouncedPriceRange] = useDebounce(priceRange, 500);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(
+    null
+  );
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [showMore, setShowMore] = useState<boolean | null>(null);
-  const [productName, setProductName] = useState<string>("");
-  const [debouncedProductName] = useDebounce(productName, 500);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [debouncedSubCategory] = useDebounce(selectedSubCategory, 500);
-  const [colors, setColors] = useState<{ id: string; product: number; color: string }[]>([]);
+  const [colors, setColors] = useState<
+    { id: string; product: number; color: string }[]
+  >([]);
   const [currentPage, setCurrentPage] = useState(0);
   const currentLanguage = useSelector((state: RootState) => state.language);
   const { t } = useTranslation();
+
+  // Get product_name directly from URL params
+  const productName = searchParams.get("product_name") || "";
+  const [debouncedProductName] = useDebounce(productName, 300);
 
   const dispatch = useDispatch<AppDispatch>();
   const { products, count, loading, error } = useSelector(
@@ -118,54 +128,51 @@ const ShopSidebarList = ({
 
   // Parse initial URL parameters on mount and when searchParams change
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    
-    setSelectedCategory(params.get("category"));
-    setSelectedColor(params.get("color"));
-    setProductName(params.get("product_name") || "");
-    setSelectedSubCategory(params.get("sub_category") || "");
-    
-    const initialMin = params.has("min_price")
-      ? Math.max(0, Number(params.get("min_price")))
-      : 0;
-    const initialMax = params.has("max_price")
-      ? Math.min(10000, Number(params.get("max_price")))
-      : 10000;
-    setPriceRange({ min: initialMin, max: initialMax });
+    const category = searchParams.get("category");
+    const color = searchParams.get("color");
+    const subCategory = searchParams.get("sub_category") || "";
+    const minPrice = searchParams.get("min_price");
+    const maxPrice = searchParams.get("max_price");
+    const sort = searchParams.get("sort") || "";
+    const sale = searchParams.get("sale");
+    const page = searchParams.get("page");
 
-    setSortOption(params.get("sort") || "");
-    setShowOnlySale(params.get("sale") === "true");
+    setSelectedCategory(category);
+    setSelectedColor(color);
+    setSelectedSubCategory(subCategory);
 
-    const initialPage = params.has("page")
-      ? Math.max(0, Number(params.get("page")) - 1)
-      : 0;
-    setCurrentPage(initialPage);
+    setPriceRange({
+      min: minPrice ? Math.max(0, Number(minPrice)) : 0,
+      max: maxPrice ? Math.min(10000, Number(maxPrice)) : 10000,
+    });
+
+    setSortOption(sort);
+    setShowOnlySale(sale === "true");
+    setCurrentPage(page ? Math.max(0, Number(page) - 1) : 0);
   }, [searchParams]);
 
   // Update URL when filters change
-  useEffect(() => {
-    const params = new URLSearchParams();
-    
-    if (selectedCategory) params.set("category", selectedCategory);
-    if (selectedColor) params.set("color", selectedColor);
-    if (debouncedProductName) params.set("product_name", debouncedProductName);
-    if (debouncedSubCategory) params.set("sub_category", debouncedSubCategory);
-    if (debouncedPriceRange.min > 0) params.set("min_price", debouncedPriceRange.min.toString());
-    if (debouncedPriceRange.max < 10000) params.set("max_price", (debouncedPriceRange.max == 0 ? "" : debouncedPriceRange.max).toString());
-    if (sortOption) params.set("sort", sortOption);
-    if (showOnlySale) params.set("sale", "true");
-    if (currentPage > 0) params.set("page", (currentPage + 1).toString());
+  const updateUrl = useCallback(() => {
+    const newParams = new URLSearchParams();
 
-    const newUrl = `${pathname}?${params.toString()}`;
-    const currentUrl = `${pathname}${window.location.search}`;
-    
-    if (newUrl !== currentUrl) {
-      router.replace(newUrl, { scroll: false });
-    }
+    if (selectedCategory) newParams.set("category", selectedCategory);
+    if (selectedColor) newParams.set("color", selectedColor);
+    if (productName) newParams.set("product_name", productName);
+    if (debouncedSubCategory)
+      newParams.set("sub_category", debouncedSubCategory);
+    if (debouncedPriceRange.min > 0)
+      newParams.set("min_price", debouncedPriceRange.min.toString());
+    if (debouncedPriceRange.max < 10000)
+      newParams.set("max_price", debouncedPriceRange.max.toString());
+    if (sortOption) newParams.set("sort", sortOption);
+    if (showOnlySale) newParams.set("sale", "true");
+    if (currentPage > 0) newParams.set("page", (currentPage + 1).toString());
+
+    router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
   }, [
     selectedCategory,
     selectedColor,
-    debouncedProductName,
+    productName,
     debouncedSubCategory,
     debouncedPriceRange,
     sortOption,
@@ -175,10 +182,22 @@ const ShopSidebarList = ({
     router,
   ]);
 
+  useEffect(() => {
+    updateUrl();
+  }, [updateUrl]);
+
   // Reset currentPage to 0 when filters change
   useEffect(() => {
     setCurrentPage(0);
-  }, [selectedCategory, priceRange, selectedColor, sortOption, showOnlySale, debouncedProductName,debouncedSubCategory]);
+  }, [
+    selectedCategory,
+    priceRange,
+    selectedColor,
+    sortOption,
+    showOnlySale,
+    productName,
+    debouncedSubCategory,
+  ]);
 
   // Fetch categories
   useEffect(() => {
@@ -192,15 +211,18 @@ const ShopSidebarList = ({
       page_size: 12,
       page: currentPage + 1,
       category: selectedCategory || undefined,
-      sub_category: selectedSubCategory || undefined,
-      min_price: debouncedPriceRange.min > 0 ? debouncedPriceRange.min : undefined,
-      max_price: debouncedPriceRange.max < 10000 ? debouncedPriceRange.max : undefined,
+      sub_category: debouncedSubCategory || undefined,
+      min_price:
+        debouncedPriceRange.min > 0 ? debouncedPriceRange.min : undefined,
+      max_price:
+        debouncedPriceRange.max < 10000 ? debouncedPriceRange.max : undefined,
       color: selectedColor || undefined,
-      sort: sortOption === "priceHighToLow"
-        ? "-price"
-        : sortOption === "priceLowToHigh"
-        ? "price"
-        : undefined,
+      sort:
+        sortOption === "priceHighToLow"
+          ? "-price"
+          : sortOption === "priceLowToHigh"
+          ? "price"
+          : undefined,
       has_offer: showOnlySale || undefined,
       product_name: debouncedProductName || undefined,
     });
@@ -229,8 +251,26 @@ const ShopSidebarList = ({
     setSelectedColor(null);
     setSortOption("");
     setCurrentPage(0);
-    setProductName("");
     router.replace(pathname, { scroll: false });
+  };
+
+  // Handle search input changes
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    if (e.target.value) {
+      newParams.set("product_name", e.target.value);
+    } else {
+      newParams.delete("product_name");
+    }
+    router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+  };
+
+  // Handle suggestion selection
+  const handleSuggestionClick = (suggestion: string) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("product_name", suggestion);
+    router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+    setShowSuggestions(false);
   };
 
   // Calculate page count for pagination
@@ -243,11 +283,11 @@ const ShopSidebarList = ({
           <div className="container lg:pt-[134px] pt-24 pb-10 relative">
             <div className="main-content w-full h-full flex flex-col items-center justify-center relative z-[1]">
               <div className="text-content">
-                <div className="heading2 text-center">{t("Shop")}</div>
+                <div className="heading2 text-center">{t('shop.title')}</div>
                 <div className="link flex items-center justify-center gap-1 caption1 mt-3">
-                  <Link href="/">{t("Homepage")}</Link>
+                  <Link href="/">{t('shop.homepage')}</Link>
                   <Icon.CaretRight size={14} className="text-secondary2" />
-                  <div className="text-secondary2 capitalize">{t("Shop")}</div>
+                  <div className="text-secondary2 capitalize">{t('shop.title')}</div>
                 </div>
               </div>
             </div>
@@ -259,18 +299,38 @@ const ShopSidebarList = ({
         <div className="container">
           <div className="flex max-md:flex-wrap max-md:flex-col-reverse gap-y-8">
             <div className="sidebar lg:w-1/4 md:w-1/3 w-full md:pe-12">
-              <div className="search-box mb-6">
+              <div className="search-box mb-6 relative">
                 <input
                   type="text"
-                  placeholder={t("Search products...")}
+                  placeholder={t('shop.sidebar.searchPlaceholder')}
                   className="w-full p-2 border border-gray-300 rounded border-[rgba(0,0,0,0.1)] focus-within:outline-none focus:outline-none"
                   value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
+                  onChange={handleSearchChange}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                 />
+                {loading && productName && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <Icon.SpinnerGap className="animate-spin" size={20} />
+                  </div>
+                )}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+                    {suggestions.map((suggestion, index) => (
+                      <div
+                        key={index}
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handleSuggestionClick(suggestion)}
+                      >
+                        {suggestion}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-              
+
               <div className="filter-type pb-8 border-b border-line">
-                <div className="heading6">{t("Product Type")}</div>
+                <div className="heading6">{t('shop.sidebar.categories')}</div>
                 <div className="list-type mt-4">
                   {categories.map((item, index) => (
                     <div
@@ -278,11 +338,11 @@ const ShopSidebarList = ({
                       className={`item flex items-center justify-between cursor-pointer ${
                         selectedCategory === item.name ? "text-black" : ""
                       }`}
-                      onClick={() =>
-                        setSelectedCategory(
-                          item.name === selectedCategory ? null : item.name
-                        )
-                      }
+                      onClick={() => {
+                        const newParams = new URLSearchParams(searchParams.toString());
+                        newParams.set("category", item.name);
+                        router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+                      }}
                     >
                       <div className="text-secondary has-line-before hover:text-black capitalize">
                         {t(item.name)}
@@ -291,15 +351,15 @@ const ShopSidebarList = ({
                   ))}
                 </div>
               </div>
-              
+
               <div className="filter-price pb-8 border-b border-gray-200 mt-8">
                 <div className="text-lg font-semibold text-gray-800 mb-4">
-                  {t("Price Range")}
+                  {t('shop.sidebar.priceRange')}
                 </div>
                 <div className="price-block flex items-center justify-between gap-4 mt-4">
                   <div className="min flex-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {t("Min price")}
+                      {t('shop.sidebar.minPrice')}
                     </label>
                     <div className="relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -327,7 +387,7 @@ const ShopSidebarList = ({
 
                   <div className="max flex-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {t("Max price")}
+                      {t('shop.sidebar.maxPrice')}
                     </label>
                     <div className="relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -350,9 +410,9 @@ const ShopSidebarList = ({
                   </div>
                 </div>
               </div>
-              
+
               <div className="filter-color pb-8 border-b border-line mt-8">
-                <div className="heading6">{t("Colors")}</div>
+                <div className="heading6">{t('shop.sidebar.colors')}</div>
                 <div className="list-color flex items-center flex-wrap gap-3 gap-y-4 mt-4">
                   {colors.slice(0, showMore ? colors.length : 59).map((color, i) => (
                     <div
@@ -360,11 +420,15 @@ const ShopSidebarList = ({
                       className={`color-item flex items-center justify-center gap-2 rounded-full border border-line ${
                         selectedColor === color.color ? "border-black" : ""
                       }`}
-                      onClick={() =>
-                        setSelectedColor(
-                          color.color === selectedColor ? null : color.color
-                        )
-                      }
+                      onClick={() => {
+                        const newParams = new URLSearchParams(searchParams.toString());
+                        if (selectedColor === color.color) {
+                          newParams.delete("color");
+                        } else {
+                          newParams.set("color", color.color);
+                        }
+                        router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+                      }}
                     >
                       <div
                         className="color w-5 h-5 rounded-full border-[1px] border-[rgba(0,0,0,0.4)]"
@@ -378,27 +442,61 @@ const ShopSidebarList = ({
                     className="block w-full text-center font-medium text-[14px] mt-2"
                     onClick={() => setShowMore(!showMore)}
                   >
-                    {showMore ? t("Show less") : t("Show more")}
+                    {showMore ? t('shop.sidebar.showLess') : t('shop.sidebar.showMore')}
                   </button>
                 )}
               </div>
-              
-              {(selectedCategory ||
-                selectedColor ||
-                showOnlySale ||
-                priceRange.min > 0 ||
-                productName ||
-                priceRange.max < 10000) && (
-                <button
+
+              <div className="sale-block mt-8">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="sale"
+                    checked={showOnlySale}
+                    onChange={(e) => {
+                      const newParams = new URLSearchParams(searchParams.toString());
+                      if (e.target.checked) {
+                        newParams.set("sale", "true");
+                      } else {
+                        newParams.delete("sale");
+                      }
+                      router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+                    }}
+                  />
+                  <label htmlFor="sale" className="text-title cursor-pointer">
+                    {t('shop.sidebar.saleItems')}
+                  </label>
+                </div>
+              </div>
+
+              <div className="clear-all mt-8">
+                <div
+                  className="button-main w-full text-center"
                   onClick={clearAllFilters}
-                  className="text-sm text-blue-500 hover:underline mt-4"
                 >
-                  {t("Clear All Filters")}
-                </button>
-              )}
+                  {t('shop.sidebar.clearAll')}
+                </div>
+              </div>
             </div>
-            
+
             <div className="list-product-block lg:w-3/4 md:w-2/3 w-full md:ps-3">
+              {productName && (
+                <div className="mb-4 text-lg">
+                  {t('shop.showingResultsFor')}:{" "}
+                  <span className="font-semibold">"{productName}"</span>
+                  <button
+                    onClick={() => {
+                      const newParams = new URLSearchParams(searchParams.toString());
+                      newParams.delete("product_name");
+                      router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+                    }}
+                    className="ml-2 text-blue-500 hover:underline text-sm"
+                  >
+                    {t('shop.clearSearch')}
+                  </button>
+                </div>
+              )}
+
               <div className="filter-heading flex items-center justify-between gap-5 flex-wrap">
                 <div className="left flex has-line items-center flex-wrap gap-5">
                   <div className="choose-layout flex items-center gap-2">
@@ -427,26 +525,10 @@ const ShopSidebarList = ({
                       </div>
                     </div>
                   </div>
-                  <div className="check-sale flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      name="filterSale"
-                      id="filter-sale"
-                      className="border-line"
-                      checked={showOnlySale}
-                      onChange={() => setShowOnlySale(!showOnlySale)}
-                    />
-                    <label
-                      htmlFor="filter-sale"
-                      className="caption1 cursor-pointer"
-                    >
-                      {t("Show only products on sale")}
-                    </label>
-                  </div>
                 </div>
                 <div className="right flex items-center gap-3">
                   <label htmlFor="select-filter" className="caption1 capitalize">
-                    {t("Sort by")}
+                    {t('shop.sortBy')}
                   </label>
                   <div className="select-block relative">
                     <select
@@ -454,15 +536,19 @@ const ShopSidebarList = ({
                       name="select-filter"
                       className="caption1 py-2 ps-3 md:pe-20 pe-10 rounded-lg border border-line"
                       value={sortOption}
-                      onChange={(e) => setSortOption(e.target.value)}
+                      onChange={(e) => {
+                        const newParams = new URLSearchParams(searchParams.toString());
+                        if (e.target.value) {
+                          newParams.set("sort", e.target.value);
+                        } else {
+                          newParams.delete("sort");
+                        }
+                        router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+                      }}
                     >
-                      <option value="">{t("Default Sorting")}</option>
-                      <option value="priceHighToLow">
-                        {t("Price High To Low")}
-                      </option>
-                      <option value="priceLowToHigh">
-                        {t("Price Low To High")}
-                      </option>
+                      <option value="">{t('shop.sort.default')}</option>
+                      <option value="priceHighToLow">{t('shop.sort.priceHighToLow')}</option>
+                      <option value="priceLowToHigh">{t('shop.sort.priceLowToHigh')}</option>
                     </select>
                     <Icon.CaretDown
                       size={12}
@@ -476,7 +562,7 @@ const ShopSidebarList = ({
                 <div className="total-product">
                   {count ?? 0}
                   <span className="text-secondary ps-1">
-                    {t("Products Found")}
+                    {t('shop.productsFound')}
                   </span>
                 </div>
                 {(selectedCategory ||
@@ -489,7 +575,7 @@ const ShopSidebarList = ({
                     onClick={clearAllFilters}
                     className="text-sm text-blue-500 hover:underline"
                   >
-                    {t("Clear All Filters")}
+                    {t('shop.clearAllFilters')}
                   </button>
                 )}
               </div>
@@ -504,18 +590,18 @@ const ShopSidebarList = ({
                 } mt-7`}
               >
                 {loading ? (
-                  <div className="loading-container">
+                  <div className="loading-container col-span-full text-center py-10">
                     <Icon.SpinnerGap
                       size={32}
-                      className="spinner text-secondary2 mb-4"
+                      className="spinner text-secondary2 mb-4 mx-auto animate-spin"
                     />
                     <div className="loading-text text-secondary2 font-semibold">
-                      {t("Loading products...")}
+                      {t('shop.loadingProducts')}
                     </div>
                   </div>
                 ) : error ? (
                   <div className="col-span-full text-center py-10 text-red-500">
-                    {t("Error")}: {error}
+                    {t('shop.error')}: {error}
                   </div>
                 ) : products.length > 0 ? (
                   products.map((product) => (
@@ -523,8 +609,22 @@ const ShopSidebarList = ({
                   ))
                 ) : (
                   <div className="no-data-product col-span-full text-center py-10">
-                    {t(
-                      "No products match your current filters. Try adjusting or clearing filters."
+                    {productName ? (
+                      <>
+                        {t('shop.noProductsFoundFor')} "{productName}"
+                        <button
+                          onClick={() => {
+                            const newParams = new URLSearchParams(searchParams.toString());
+                            newParams.delete("product_name");
+                            router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+                          }}
+                          className="block mx-auto mt-2 text-blue-500 hover:underline"
+                        >
+                          {t('shop.clearSearchAndTryAgain')}
+                        </button>
+                      </>
+                    ) : (
+                      t('shop.noProductsMatchFilters')
                     )}
                   </div>
                 )}

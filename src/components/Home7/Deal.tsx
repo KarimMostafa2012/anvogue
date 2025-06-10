@@ -8,6 +8,7 @@ import { countdownTime } from "@/store/countdownTime";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "@/redux/slices/productSlice";
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   start: number;
@@ -15,6 +16,8 @@ interface Props {
 }
 
 const Deal: React.FC<Props> = ({ start, limit }) => {
+  const { t } = useTranslation();
+  const currentLanguage = useSelector((state: RootState) => state.language);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -39,7 +42,7 @@ const Deal: React.FC<Props> = ({ start, limit }) => {
 
   useEffect(() => {
     // console.log("Fetching with params:", params);
-    dispatch(getAllProducts({ params: { lang: "en", has_offer: true } }));
+    dispatch(getAllProducts({ params: { lang: currentLanguage, has_offer: true } }));
   }, [dispatch]);
 
   return (
@@ -48,13 +51,13 @@ const Deal: React.FC<Props> = ({ start, limit }) => {
         <div className="container">
           <div className="heading flex items-center justify-between gap-5 flex-wrap">
             <div className="left flex items-center gap-6 gap-y-3 flex-wrap">
-              <div className="heading3">Deals of the day</div>
+              <div className="heading3">{t('slider.collections.deals')}</div>
             </div>
             <Link
-              href={"/shop/?has_offer=true"}
+              href={"/shop?sale=true"}
               className="text-button pb-1 border-b-2 border-black"
             >
-              View All Deals
+              {t('slider.collections.viewAllDeals')}
             </Link>
           </div>
 

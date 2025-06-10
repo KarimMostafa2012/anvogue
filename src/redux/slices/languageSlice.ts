@@ -3,7 +3,7 @@ import i18n from "../../utils/i18n";
 import { localStorageUtil } from "@/utils/localStorage";
 
 // Load initial language from localStorage or default to 'en'
-const initialState = localStorageUtil.get("language") || "en";
+const initialState = localStorageUtil.get("language") || "de";
 
 const languageSlice = createSlice({
     name: 'language',
@@ -13,6 +13,7 @@ const languageSlice = createSlice({
             const selectedLanguage = action.payload;
             i18n.changeLanguage(selectedLanguage);
             localStorageUtil.set("language", selectedLanguage);
+            console.log(selectedLanguage);
             return selectedLanguage;
         },
     },

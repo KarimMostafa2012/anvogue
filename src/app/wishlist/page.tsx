@@ -9,6 +9,7 @@ import Product from "@/components/Product/Product";
 import { useWishlist } from "@/context/WishlistContext";
 import HandlePagination from "@/components/Other/HandlePagination";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
+import {WishlistItem} from "@/context/WishlistContext"
 
 const Wishlist = () => {
   const { wishlistState } = useWishlist();
@@ -32,14 +33,7 @@ const Wishlist = () => {
   };
 
   // Filter product data by type
-  let filteredData = wishlistState.wishlistArray.filter((product) => {
-    let isTypeMatched = true;
-    if (type) {
-      isTypeMatched = product.type === type;
-    }
-
-    return isTypeMatched;
-  });
+  let filteredData = wishlistState.wishlistArray;
 
   const totalProducts = filteredData.length;
   const selectedType = type;
@@ -47,36 +41,39 @@ const Wishlist = () => {
   if (filteredData.length === 0) {
     filteredData = [
       {
-        id: "no-data",
-        category: "no-data",
-        sub_category: {
-          id: 1,
-          category: {
+        id: 0,
+        product: {
+          id: "no-data",
+          category: "no-data",
+          sub_category: {
             id: 1,
+            category: {
+              id: 1,
+              name: "test",
+            },
             name: "test",
           },
-          name: "test",
+          type: "no-data",
+          name: "no-data",
+          gender: "no-data",
+          new: false,
+          has_offer: false,
+          rate: 0,
+          new_price: 0,
+          price: 0,
+          offer_value: 0,
+          brand: "no-data",
+          sold: 0,
+          quantity: 0,
+          quantityPurchase: 0,
+          size: 0,
+          colors: [],
+          thumbImage: [],
+          images: [],
+          description: "no-data",
+          action: "no-data",
+          slug: "no-data",
         },
-        type: "no-data",
-        name: "no-data",
-        gender: "no-data",
-        new: false,
-        has_offer: false,
-        rate: 0,
-        new_price: 0,
-        price: 0,
-        offer_value: 0,
-        brand: "no-data",
-        sold: 0,
-        quantity: 0,
-        quantityPurchase: 0,
-        size: 0,
-        colors: [],
-        thumbImage: [],
-        images: [],
-        description: "no-data",
-        action: "no-data",
-        slug: "no-data",
       },
     ];
   }
@@ -85,23 +82,39 @@ const Wishlist = () => {
   let sortedData = [...filteredData];
 
   if (sortOption === "soldQuantityHighToLow") {
-    filteredData = sortedData.sort((a, b) => b.sold - a.sold);
+    filteredData = sortedData.sort((a, b) => b.product.sold - a.product.sold);
   }
 
   if (sortOption === "discountHighToLow") {
     filteredData = sortedData.sort(
       (a, b) =>
-        Math.floor(100 - (b.new_price ? b.new_price : Number(b.price) / Number(b.price)) * 100) -
-        Math.floor(100 - (a.new_price ? a.new_price : Number(a.price) / Number(a.price)) * 100)
+        Math.floor(
+          100 -
+            (b.product.new_price
+              ? b.product.new_price
+              : Number(b.product.price) / Number(b.product.price)) *
+              100
+        ) -
+        Math.floor(
+          100 -
+            (a.product.new_price
+              ? a.product.new_price
+              : Number(a.product.price) / Number(a.product.price)) *
+              100
+        )
     );
   }
 
   if (sortOption === "priceHighToLow") {
-    filteredData = sortedData.sort((a, b) => Number(b.price) - Number(a.price));
+    filteredData = sortedData.sort(
+      (a, b) => Number(b.product.price) - Number(a.product.price)
+    );
   }
 
   if (sortOption === "priceLowToHigh") {
-    filteredData = sortedData.sort((a, b) => Number(a.price) - Number(b.price));
+    filteredData = sortedData.sort(
+      (a, b) => Number(a.product.price) - Number(b.product.price)
+    );
   }
 
   // Find page number base on filteredData
@@ -113,7 +126,7 @@ const Wishlist = () => {
   }
 
   // Get product data for current page
-  let currentProducts: ProductType[];
+  let currentProducts: WishlistItem[];
 
   if (filteredData.length > 0) {
     currentProducts = filteredData.slice(offset, offset + productsPerPage);
@@ -183,42 +196,6 @@ const Wishlist = () => {
                 </div>
               </div>
               <div className="right flex items-center gap-3">
-                <div className="select-block filter-type relative">
-                  <select
-                    className="caption1 py-2 pl-3 md:pr-12 pr-8 rounded-lg border border-line capitalize"
-                    name="select-type"
-                    id="select-type"
-                    onChange={(e) => handleType(e.target.value)}
-                    value={type === undefined ? "Type" : type}
-                  >
-                    <option value="Type" disabled>
-                      Type
-                    </option>
-                    {[
-                      "t-shirt",
-                      "dress",
-                      "top",
-                      "swimwear",
-                      "shirt",
-                      "underwear",
-                      "sets",
-                      "accessories",
-                    ].map((item, index) => (
-                      <option
-                        key={index}
-                        className={`item cursor-pointer ${
-                          type === item ? "active" : ""
-                        }`}
-                      >
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  <Icon.CaretDown
-                    size={12}
-                    className="absolute top-1/2 -translate-y-1/2 md:right-4 right-2"
-                  />
-                </div>
                 <div className="select-block relative">
                   <select
                     id="select-filter"
@@ -288,12 +265,12 @@ const Wishlist = () => {
               className={`list-product hide-product-sold grid lg:grid-cols-${layoutCol} sm:grid-cols-3 grid-cols-2 sm:gap-[30px] gap-[20px] mt-7`}
             >
               {currentProducts.map((item) =>
-                item.id === "no-data" ? (
+                item.product.id === "no-data" ? (
                   <div key={item.id} className="no-data-product">
                     No products match the selected criteria.
                   </div>
                 ) : (
-                  <Product key={item.id} data={item} type="grid" />
+                  <Product key={item.id} data={item.product} type="grid" />
                 )
               )}
             </div>

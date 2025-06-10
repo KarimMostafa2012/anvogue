@@ -15,9 +15,11 @@ import { useModalSearchContext } from '@/context/ModalSearchContext';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'next-i18next';
 
 
 const MenuTwo = () => {
+    const { t } = useTranslation();
     const pathname = usePathname()
     const router = useRouter()
     const { openLoginPopup, handleLoginPopup } = useLoginPopup()
@@ -82,13 +84,13 @@ const MenuTwo = () => {
                                         className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 
                                             ${pathname.includes('/homepages/') ? 'active' : ''}`}
                                     >
-                                        Demo
+                                        {t('header.demo')}
                                     </Link>
                                     <div className="sub-menu absolute py-3 px-5 -left-10 w-max grid grid-cols-4 gap-5 bg-white rounded-b-xl">
                                         <ul>
                                             <li>
                                                 <Link href="/" className='text-secondary duration-300'>
-                                                    Home Fashion 1
+                                                    {t('header.homepages.fashion1')}
                                                 </Link>
                                             </li>
                                             <li>
@@ -96,7 +98,7 @@ const MenuTwo = () => {
                                                     href="/homepages/fashion2"
                                                     className={`text-secondary duration-300 ${pathname === '/homepages/fashion2' ? 'active' : ''}`}
                                                 >
-                                                    Home Fashion 2
+                                                    {t('header.homepages.fashion2')}
                                                 </Link>
                                             </li>
                                             <li>
@@ -104,22 +106,22 @@ const MenuTwo = () => {
                                                     href="/homepages/fashion3"
                                                     className={`text-secondary duration-300 ${pathname === '/homepages/fashion3' ? 'active' : ''}`}
                                                 >
-                                                    Home Fashion 3
+                                                    {t('header.homepages.fashion3')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/fashion4" className='text-secondary duration-300'>
-                                                    Home Fashion 4
+                                                    {t('header.homepages.fashion4')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/fashion5" className='text-secondary duration-300'>
-                                                    Home Fashion 5
+                                                    {t('header.homepages.fashion5')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/fashion6" className='text-secondary duration-300'>
-                                                    Home Fashion 6
+                                                    {t('header.homepages.fashion6')}
                                                 </Link>
                                             </li>
                                         </ul>
@@ -129,93 +131,93 @@ const MenuTwo = () => {
                                                     href="/homepages/fashion7"
                                                     className={`text-secondary duration-300 ${pathname === '/homepages/fashion7' ? 'active' : ''}`}
                                                 >
-                                                    Home Fashion 7
+                                                    {t('header.homepages.fashion7')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/fashion8" className='text-secondary duration-300'>
-                                                    Home Fashion 8
+                                                    {t('header.homepages.fashion8')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/fashion9" className='text-secondary duration-300'>
-                                                    Home Fashion 9
+                                                    {t('header.homepages.fashion9')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/fashion10" className='text-secondary duration-300'>
-                                                    Home Fashion 10
+                                                    {t('header.homepages.fashion10')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/fashion11" className='text-secondary duration-300'>
-                                                    Home Fashion 11
+                                                    {t('header.homepages.fashion11')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/underwear" className='text-secondary duration-300'>
-                                                    Home Underwear
+                                                    {t('header.homepages.underwear')}
                                                 </Link>
                                             </li>
                                         </ul>
                                         <ul>
                                             <li>
                                                 <Link href="/homepages/cosmetic1" className='text-secondary duration-300'>
-                                                    Home Cosmetic 1
+                                                    {t('header.homepages.cosmetic1')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/cosmetic2" className='text-secondary duration-300'>
-                                                    Home Cosmetic 2
+                                                    {t('header.homepages.cosmetic2')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/cosmetic3" className={`text-secondary duration-300 ${pathname === '/homepages/cosmetic3' ? 'active' : ''}`}>
-                                                    Home Cosmetic 3
+                                                    {t('header.homepages.cosmetic3')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/pet" className='text-secondary duration-300'>
-                                                    Home Pet Store
+                                                    {t('header.homepages.pet')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/jewelry" className='text-secondary duration-300'>
-                                                    Home Jewelry
+                                                    {t('header.homepages.jewelry')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/furniture" className='text-secondary duration-300'>
-                                                    Home Furniture
+                                                    {t('header.homepages.furniture')}
                                                 </Link>
                                             </li>
                                         </ul>
                                         <ul>
                                             <li>
                                                 <Link href="/homepages/watch" className='text-secondary duration-300'>
-                                                    Home Watch
+                                                    {t('header.homepages.watch')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/toys" className='text-secondary duration-300'>
-                                                    Home Toys Kid
+                                                    {t('header.homepages.toys')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link
                                                     href="/homepages/yoga"
                                                     className={`text-secondary duration-300 ${pathname === '/homepages/yoga' ? 'active' : ''}`}>
-                                                    Home Yoga
+                                                    {t('header.homepages.yoga')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/organic" className='text-secondary duration-300'>
-                                                    Home Organic
+                                                    {t('header.homepages.organic')}
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href="/homepages/marketplace" className='text-secondary duration-300'>
-                                                    Home Marketplace
+                                                    {t('header.homepages.marketplace')}
                                                 </Link>
                                             </li>
                                         </ul>
@@ -223,66 +225,65 @@ const MenuTwo = () => {
                                 </li>
                                 <li className='h-full'>
                                     <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
-                                        Features
+                                        {t('header.features')}
                                     </Link>
                                     <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                                         <div className="container">
                                             <div className="flex justify-between py-8">
                                                 <div className="nav-link basis-2/3 grid grid-cols-4 gap-y-8">
                                                     <div className="nav-item">
-                                                        <div className="text-button-uppercase pb-2">For Men</div>
+                                                        <div className="text-button-uppercase pb-2">{t('header.features.forMen')}</div>
                                                         <ul>
-                                                            <li>
-                                                                <div
-                                                                    onClick={() => handleGenderClick('men')}
-                                                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                                                >
-                                                                    Starting From 50% Off
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div
-                                                                    onClick={() => handleTypeClick('outerwear')}
-                                                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                                                >
-                                                                    Outerwear | Coats
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div
-                                                                    onClick={() => handleTypeClick('sweater')}
-                                                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                                                >
-                                                                    Sweaters | Cardigans
-                                                                </div>
-                                                            </li>
                                                             <li>
                                                                 <div
                                                                     onClick={() => handleTypeClick('shirt')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Shirt | Sweatshirts
+                                                                    {t('header.features.shirts')}
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleGenderClick('men')}
+                                                                    onClick={() => handleTypeClick('jacket')}
+                                                                    className={`link text-secondary duration-300 cursor-pointer`}
+                                                                >
+                                                                    {t('header.features.jackets')}
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div
+                                                                    onClick={() => handleTypeClick('pants')}
+                                                                    className={`link text-secondary duration-300 cursor-pointer`}
+                                                                >
+                                                                    {t('header.features.pants')}
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div
+                                                                    onClick={() => handleTypeClick('accessories')}
+                                                                    className={`link text-secondary duration-300 cursor-pointer`}
+                                                                >
+                                                                    {t('header.features.accessories')}
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div
                                                                     className={`link text-secondary duration-300 cursor-pointer view-all-btn`}
                                                                 >
-                                                                    View All
+                                                                    {t('header.features.viewAll')}
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                     <div className="nav-item">
-                                                        <div className="text-button-uppercase pb-2">Massimo Dutti</div>
+                                                        <div className="text-button-uppercase pb-2">{t('header.features.massimoDutti')}</div>
                                                         <ul>
                                                             <li>
                                                                 <div
                                                                     onClick={() => handleTypeClick('shirt')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Shirt | Clothes
+                                                                    {t('header.features.shirt')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -290,7 +291,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('top')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Top | Overshirts
+                                                                    {t('header.features.top')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -298,7 +299,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('t-shirt')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    T-shirts | Clothes
+                                                                    {t('header.features.tshirt')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -306,7 +307,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('swimwear')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Swimwear | Underwear
+                                                                    {t('header.features.swimwear')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -410,14 +411,14 @@ const MenuTwo = () => {
                                                         </ul>
                                                     </div>
                                                     <div className="nav-item">
-                                                        <div className="text-button-uppercase pb-2">For Women</div>
+                                                        <div className="text-button-uppercase pb-2">{t('header.features.forWomen')}</div>
                                                         <ul>
                                                             <li>
                                                                 <div
                                                                     onClick={() => handleGenderClick('women')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Starting From 60% Off
+                                                                    {t('header.features.startingFrom60')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -425,7 +426,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('dress')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Dresses | Jumpsuits
+                                                                    {t('header.features.dresses')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -433,7 +434,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('t-shirt')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    T-shirts | Sweatshirts
+                                                                    {t('header.features.tshirts')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -441,28 +442,27 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('accessories')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Accessories | Jewelry
+                                                                    {t('header.features.accessoriesJewelry')}
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleGenderClick('women')}
-                                                                    className={`link text-secondary duration-300 view-all-btn`}
+                                                                    className={`link text-secondary duration-300 cursor-pointer view-all-btn`}
                                                                 >
-                                                                    View All
+                                                                    {t('header.features.viewAll')}
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                     <div className="nav-item">
-                                                        <div className="text-button-uppercase pb-2">For Kid</div>
+                                                        <div className="text-button-uppercase pb-2">{t('header.features.forKid')}</div>
                                                         <ul>
                                                             <li>
                                                                 <div
                                                                     onClick={() => handleTypeClick('bed')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Kids Bed
+                                                                    {t('header.features.kidsBed')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -470,7 +470,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('toy')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Boy{String.raw`'s`} Toy
+                                                                    {t('header.features.boysToy')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -478,7 +478,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('blanket')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Baby Blanket
+                                                                    {t('header.features.babyBlanket')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -486,28 +486,26 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('clothing')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Newborn Clothing
+                                                                    {t('header.features.newbornClothing')}
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleCategoryClick('toys-kid')}
-                                                                    className={`link text-secondary duration-300 view-all-btn`}
+                                                                    className={`link text-secondary duration-300 cursor-pointer view-all-btn`}
                                                                 >
-                                                                    View All
+                                                                    {t('header.features.viewAll')}
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                     <div className="nav-item">
-                                                        <div className="text-button-uppercase pb-2">For Home</div>
+                                                        <div className="text-button-uppercase pb-2">{t('header.features.forHome')}</div>
                                                         <ul>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleCategoryClick('furniture')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Furniture | Decor
+                                                                    {t('header.features.furnitureDecor')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -515,7 +513,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('table')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Table | Living Room
+                                                                    {t('header.features.tableLivingRoom')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -523,7 +521,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('chair')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Chair | Work Room
+                                                                    {t('header.features.chairWorkRoom')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -531,51 +529,66 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('lighting')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Lighting | Bed Room
+                                                                    {t('header.features.lightingBedRoom')}
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleCategoryClick('furniture')}
-                                                                    className={`link text-secondary duration-300 view-all-btn`}
+                                                                    className={`link text-secondary duration-300 cursor-pointer view-all-btn`}
                                                                 >
-                                                                    View All
+                                                                    {t('header.features.viewAll')}
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div className="banner-ads-block pl-2.5 basis-1/3">
-                                                    <div className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer" onClick={() => handleTypeClick('swimwear')}>
+                                                    <div
+                                                        className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer"
+                                                        onClick={() => handleTypeClick('swimwear')}
+                                                    >
                                                         <div className="text-content py-14 pl-8 relative z-[1]">
-                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">Save $10</div>
-                                                            <div className="heading6 mt-2">Dive into Savings <br />on Swimwear</div>
+                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
+                                                                {t('header.features.save10')}
+                                                            </div>
+                                                            <div className="heading6 mt-2">
+                                                                {t('header.features.diveIntoSavings')} <br />
+                                                                {t('header.features.onSwimwear')}
+                                                            </div>
                                                             <div className="body1 mt-3 text-secondary">
-                                                                Starting at <span className='text-red'>$59.99</span>
+                                                                {t('header.features.startingAt')} <span className="text-red">$59.99</span>
                                                             </div>
                                                         </div>
                                                         <Image
-                                                            src={'/images/slider/bg2-2.png'}
+                                                            src={"/images/slider/bg2-2.png"}
                                                             width={200}
                                                             height={100}
-                                                            alt='bg-img'
-                                                            className='basis-1/3 absolute right-0 top-0 duration-700'
+                                                            alt="bg-img"
+                                                            className="basis-1/3 absolute right-0 top-0 duration-700"
                                                         />
                                                     </div>
-                                                    <div className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer mt-8" onClick={() => handleTypeClick('accessories')}>
+                                                    <div
+                                                        className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer mt-8"
+                                                        onClick={() => handleTypeClick('accessories')}
+                                                    >
                                                         <div className="text-content py-14 pl-8 relative z-[1]">
-                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">Save $10</div>
-                                                            <div className="heading6 mt-2">20% off <br />accessories</div>
+                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
+                                                                {t('header.features.save10')}
+                                                            </div>
+                                                            <div className="heading6 mt-2">
+                                                                20% {t('header.features.off')} <br />
+                                                                {t('header.features.accessories')}
+                                                            </div>
                                                             <div className="body1 mt-3 text-secondary">
-                                                                Starting at <span className='text-red'>$59.99</span>
+                                                                {t('header.features.startingAt')} <span className="text-red">$59.99</span>
                                                             </div>
                                                         </div>
                                                         <Image
-                                                            src={'/images/other/bg-feature.png'}
+                                                            src={"/images/other/bg-feature.png"}
                                                             width={200}
                                                             height={100}
-                                                            alt='bg-img'
-                                                            className='basis-1/3 absolute right-0 top-0 duration-700'
+                                                            alt="bg-img"
+                                                            className="basis-1/3 absolute right-0 top-0 duration-700"
                                                         />
                                                     </div>
                                                 </div>
@@ -1073,7 +1086,7 @@ const MenuTwo = () => {
                                             ${openLoginPopup ? 'open' : ''}`}
                                     >
                                         <Link href={'/login'} className="button-main w-full text-center">Login</Link>
-                                        <div className="text-secondary text-center mt-3 pb-4">Don’t have an account?
+                                        <div className="text-secondary text-center mt-3 pb-4">Don't have an account?
                                             <Link href={'/register'} className='text-black pl-1 hover:underline'>Register</Link>
                                         </div>
                                         <Link href={'/my-account'} className="button-main bg-white text-black border border-black w-full text-center">Dashboard</Link>
@@ -1408,14 +1421,14 @@ const MenuTwo = () => {
                                                         </ul>
                                                     </div>
                                                     <div className="nav-item">
-                                                        <div className="text-button-uppercase pb-1">For Women</div>
+                                                        <div className="text-button-uppercase pb-2">{t('header.features.forWomen')}</div>
                                                         <ul>
                                                             <li>
                                                                 <div
                                                                     onClick={() => handleGenderClick('women')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Starting From 60% Off
+                                                                    {t('header.features.startingFrom60')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1423,7 +1436,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('dress')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Dresses | Jumpsuits
+                                                                    {t('header.features.dresses')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1431,7 +1444,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('t-shirt')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    T-shirts | Sweatshirts
+                                                                    {t('header.features.tshirts')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1439,28 +1452,27 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('accessories')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Accessories | Jewelry
+                                                                    {t('header.features.accessoriesJewelry')}
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleGenderClick('women')}
-                                                                    className={`link text-secondary duration-300 view-all-btn`}
+                                                                    className={`link text-secondary duration-300 cursor-pointer view-all-btn`}
                                                                 >
-                                                                    View All
+                                                                    {t('header.features.viewAll')}
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                     <div className="nav-item">
-                                                        <div className="text-button-uppercase pb-1">For Kid</div>
+                                                        <div className="text-button-uppercase pb-2">{t('header.features.forKid')}</div>
                                                         <ul>
                                                             <li>
                                                                 <div
                                                                     onClick={() => handleTypeClick('bed')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Kids Bed
+                                                                    {t('header.features.kidsBed')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1468,7 +1480,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('toy')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Boy{String.raw`'s`} Toy
+                                                                    {t('header.features.boysToy')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1476,7 +1488,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('blanket')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Baby Blanket
+                                                                    {t('header.features.babyBlanket')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1484,28 +1496,26 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('clothing')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Newborn Clothing
+                                                                    {t('header.features.newbornClothing')}
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleCategoryClick('toys-kid')}
-                                                                    className={`link text-secondary duration-300 view-all-btn`}
+                                                                    className={`link text-secondary duration-300 cursor-pointer view-all-btn`}
                                                                 >
-                                                                    View All
+                                                                    {t('header.features.viewAll')}
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                     <div className="nav-item">
-                                                        <div className="text-button-uppercase pb-1">For Home</div>
+                                                        <div className="text-button-uppercase pb-2">{t('header.features.forHome')}</div>
                                                         <ul>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleCategoryClick('furniture')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Furniture | Decor
+                                                                    {t('header.features.furnitureDecor')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1513,7 +1523,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('table')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Table | Living Room
+                                                                    {t('header.features.tableLivingRoom')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1521,7 +1531,7 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('chair')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Chair | Work Room
+                                                                    {t('header.features.chairWorkRoom')}
                                                                 </div>
                                                             </li>
                                                             <li>
@@ -1529,51 +1539,66 @@ const MenuTwo = () => {
                                                                     onClick={() => handleTypeClick('lighting')}
                                                                     className={`link text-secondary duration-300 cursor-pointer`}
                                                                 >
-                                                                    Lighting | Bed Room
+                                                                    {t('header.features.lightingBedRoom')}
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div
-                                                                    onClick={() => handleCategoryClick('furniture')}
-                                                                    className={`link text-secondary duration-300 view-all-btn`}
+                                                                    className={`link text-secondary duration-300 cursor-pointer view-all-btn`}
                                                                 >
-                                                                    View All
+                                                                    {t('header.features.viewAll')}
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div className="banner-ads-block grid sm:grid-cols-2 items-center gap-6 pt-6">
-                                                    <div className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden" onClick={() => handleTypeClick('swimwear')}>
+                                                <div className="banner-ads-block pl-2.5 basis-1/3">
+                                                    <div
+                                                        className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer"
+                                                        onClick={() => handleTypeClick('swimwear')}
+                                                    >
                                                         <div className="text-content py-14 pl-8 relative z-[1]">
-                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">Save $10</div>
-                                                            <div className="heading6 mt-2">Dive into Savings <br />on Swimwear</div>
+                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
+                                                                {t('header.features.save10')}
+                                                            </div>
+                                                            <div className="heading6 mt-2">
+                                                                {t('header.features.diveIntoSavings')} <br />
+                                                                {t('header.features.onSwimwear')}
+                                                            </div>
                                                             <div className="body1 mt-3 text-secondary">
-                                                                Starting at <span className='text-red'>$59.99</span>
+                                                                {t('header.features.startingAt')} <span className="text-red">$59.99</span>
                                                             </div>
                                                         </div>
                                                         <Image
-                                                            src={'/images/slider/bg2-2.png'}
+                                                            src={"/images/slider/bg2-2.png"}
                                                             width={200}
                                                             height={100}
-                                                            alt='bg-img'
-                                                            className='basis-1/3 absolute right-0 top-0'
+                                                            alt="bg-img"
+                                                            className="basis-1/3 absolute right-0 top-0 duration-700"
                                                         />
                                                     </div>
-                                                    <div className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden" onClick={() => handleTypeClick('accessories')}>
+                                                    <div
+                                                        className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer mt-8"
+                                                        onClick={() => handleTypeClick('accessories')}
+                                                    >
                                                         <div className="text-content py-14 pl-8 relative z-[1]">
-                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">Save $10</div>
-                                                            <div className="heading6 mt-2">20% off <br />accessories</div>
+                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
+                                                                {t('header.features.save10')}
+                                                            </div>
+                                                            <div className="heading6 mt-2">
+                                                                20% {t('header.features.off')} <br />
+                                                                {t('header.features.accessories')}
+                                                            </div>
                                                             <div className="body1 mt-3 text-secondary">
-                                                                Starting at <span className='text-red'>$59.99</span>
+                                                                {t('header.features.startingAt')} <span className="text-red">$59.99</span>
                                                             </div>
                                                         </div>
                                                         <Image
-                                                            src={'/images/other/bg-feature.png'}
+                                                            src={"/images/other/bg-feature.png"}
                                                             width={200}
                                                             height={100}
-                                                            alt='bg-img'
-                                                            className='basis-1/3 absolute right-0 top-0'
+                                                            alt="bg-img"
+                                                            className="basis-1/3 absolute right-0 top-0 duration-700"
                                                         />
                                                     </div>
                                                 </div>

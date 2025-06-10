@@ -3,16 +3,18 @@
 import React, { useState } from 'react'
 import Link from 'next/link';
 import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { useTranslation } from 'next-i18next';
 
 interface Props {
     props: string;
 }
 
 const TopNavThree: React.FC<Props> = ({ props }) => {
+    const { t } = useTranslation();
     const [isOpenLanguage, setIsOpenLanguage] = useState(false)
     const [isOpenCurrence, setIsOpenCurrence] = useState(false)
-    const [language, setLanguage] = useState('English')
-    const [currence, setCurrence] = useState('USD')
+    const [language, setLanguage] = useState(t('header.languages.english'))
+    const [currence, setCurrence] = useState(t('header.currencies.usd'))
 
     return (
         <>
@@ -23,22 +25,22 @@ const TopNavThree: React.FC<Props> = ({ props }) => {
                             <ul className='flex items-center gap-5'>
                                 <li>
                                     <Link href={'/pages/about'} className='caption2 hover:underline'>
-                                        About
+                                        {t('header.about')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href={'/pages/contact'} className='caption2 hover:underline'>
-                                        Contact
+                                        {t('header.contact')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href={'/pages/store-list'} className='caption2 hover:underline'>
-                                        Store Location
+                                        {t('header.storeLocation')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href={'/pages/faqs'} className='caption2 hover:underline'>
-                                        Help
+                                        {t('header.help')}
                                     </Link>
                                 </li>
                             </ul>
@@ -55,7 +57,11 @@ const TopNavThree: React.FC<Props> = ({ props }) => {
                                     <p className="selected caption2">{language}</p>
                                     <ul className={`list-option bg-white ${isOpenLanguage ? 'open' : ''}`}>
                                         {
-                                            ['English', 'Espana', 'France'].map((item, index) => (
+                                            [
+                                                t('header.languages.english'),
+                                                t('header.languages.spanish'),
+                                                t('header.languages.french')
+                                            ].map((item, index) => (
                                                 <li key={index} className="caption2" onClick={() => setLanguage(item)}>{item}</li>
                                             ))
                                         }
@@ -74,7 +80,11 @@ const TopNavThree: React.FC<Props> = ({ props }) => {
                                     <p className="selected caption2">{currence}</p>
                                     <ul className={`list-option bg-white ${isOpenCurrence ? 'open' : ''}`}>
                                         {
-                                            ['USD', 'EUR', 'GBP'].map((item, index) => (
+                                            [
+                                                t('header.currencies.usd'),
+                                                t('header.currencies.eur'),
+                                                t('header.currencies.gbp')
+                                            ].map((item, index) => (
                                                 <li key={index} className="caption2" onClick={() => setCurrence(item)}>{item}</li>
                                             ))
                                         }

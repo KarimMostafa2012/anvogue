@@ -72,6 +72,50 @@ export const getAllProducts = createAsyncThunk<
   }
 });
 
+export const newArrivals = createAsyncThunk<
+  ProductResponse | ProductType[],
+  GetAllProductsParams
+>("products/newArrivals", async ({ params }) => {
+  try {
+    const { data } = await axios.get<ProductResponse | ProductType[]>(
+      `${baseUrl}/home/new-arrivals/`,
+      {
+        params,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Fetched Products:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+});
+
+export const bestSelling = createAsyncThunk<
+  ProductResponse | ProductType[],
+  GetAllProductsParams
+>("products/bestSelling", async ({ params }) => {
+  try {
+    const { data } = await axios.get<ProductResponse | ProductType[]>(
+      `${baseUrl}/home/best-selling/`,
+      {
+        params,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Fetched Products:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+});
+
 // Get product by ID
 export const getProductById = createAsyncThunk<Product, GetOneProductParams>(
   "products/getById",
@@ -197,7 +241,6 @@ interface ProductState {
   statusCode: number | null;
 }
 
-
 const initialState: ProductState = {
   products: [],
   product: null,
@@ -223,7 +266,7 @@ const productSlice = createSlice({
       state.next = null;
       state.prev = null;
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -248,6 +291,56 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch products";
+        state.products = [];
+      })
+
+      .addCase(newArrivals.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(newArrivals.fulfilled, (state, action) => {
+        state.loading = false;
+        if ("results" in action.payload) {
+          state.products = action.payload.results;
+          state.count = action.payload.count;
+          state.next = action.payload.next;
+          state.prev = action.payload.previous;
+        } else {
+          state.products = action.payload;
+          state.count = null;
+          state.next = null;
+          state.prev = null;
+        }
+        state.error = null;
+      })
+      .addCase(newArrivals.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch products";
+        state.products = [];
+      })
+
+      .addCase(bestSelling.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(bestSelling.fulfilled, (state, action) => {
+        state.loading = false;
+        if ("results" in action.payload) {
+          state.products = action.payload.results;
+          state.count = action.payload.count;
+          state.next = action.payload.next;
+          state.prev = action.payload.previous;
+        } else {
+          state.products = action.payload;
+          state.count = null;
+          state.next = null;
+          state.prev = null;
+        }
+        state.error = null;
+      })
+      .addCase(bestSelling.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch products";
         state.products = [];
@@ -327,7 +420,7 @@ const productSlice = createSlice({
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to delete product";
-      })
+      });
   },
 });
 

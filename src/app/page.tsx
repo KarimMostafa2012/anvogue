@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import TopNavOne from "@/components/Header/TopNav/TopNavOne";
 import MenuEight from "@/components/Header/Menu/MenuEight";
@@ -15,6 +17,7 @@ import Footer from "@/components/Footer/Footer";
 import ModalNewsletter from "@/components/Modal/ModalNewsletter";
 
 export default function Home() {
+
   return (
     <>
       <TopNavOne

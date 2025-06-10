@@ -13,8 +13,10 @@ import { useCompare } from "@/context/CompareContext";
 import { useModalCompareContext } from "@/context/ModalCompareContext";
 import Rate from "../Other/Rate";
 import ModalSizeguide from "./ModalSizeguide";
+import { useTranslation } from 'next-i18next';
 
 const ModalQuickview = () => {
+  const { t } = useTranslation();
   const [photoIndex, setPhotoIndex] = useState(0);
   const [openPopupImg, setOpenPopupImg] = useState(false);
   const [openSizeGuide, setOpenSizeGuide] = useState<boolean>(false);
@@ -41,20 +43,8 @@ const ModalQuickview = () => {
     setActiveSize(undefined);
   }, [selectedProduct]);
 
-  const handleOpenSizeGuide = () => {
-    setOpenSizeGuide(true);
-  };
-
-  const handleCloseSizeGuide = () => {
-    setOpenSizeGuide(false);
-  };
-
   const handleActiveColor = (item: string) => {
     setActiveColor(item);
-  };
-
-  const handleActiveSize = (item: number | undefined) => {
-    setActiveSize(item);
   };
 
   const handleIncreaseQuantity = () => {
@@ -85,20 +75,27 @@ const ModalQuickview = () => {
   };
 
   const handleAddToWishlist = () => {
-    if (selectedProduct) {
-      if (
-        wishlistState.wishlistArray.some(
-          (item) => item.id === selectedProduct.id
-        )
-      ) {
-        removeFromWishlist(selectedProduct.id);
-      } else {
-        addToWishlist(selectedProduct);
-      }
+    if (!selectedProduct) return;
+
+    let itemToRemove;
+    if (
+      wishlistState.wishlistArray.some((item) => {
+        if (item.product.id == selectedProduct.id) {
+          itemToRemove = item.id;
+          console.log(itemToRemove);
+          return true;
+        }
+      })
+    ) {
+      console.log(itemToRemove);
+      removeFromWishlist(Number(itemToRemove));
+    } else {
+      // else, add to wishlist and set state to true
+      addToWishlist(selectedProduct);
     }
     openModalWishlist();
   };
-
+  
   const handleAddToCompare = () => {
     if (selectedProduct) {
       if (compareState.compareArray.length < 3) {
@@ -153,7 +150,7 @@ const ModalQuickview = () => {
             </div>
             <div className="right w-full px-4">
               <div className="heading pb-6 px-4 flex items-center justify-between relative">
-                <div className="heading5">Quick View</div>
+                <div className="heading5">{t('modal.quickview.title')}</div>
                 <div
                   className="close-btn absolute right-0 top-0 w-6 h-6 rounded-full bg-surface flex items-center justify-center duration-300 cursor-pointer hover:bg-black hover:text-white"
                   onClick={closeQuickview}
@@ -172,7 +169,7 @@ const ModalQuickview = () => {
                   <div
                     className={`add-wishlist-btn w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-lg duration-300 flex-shrink-0 hover:bg-black hover:text-white ${
                       wishlistState.wishlistArray.some(
-                        (item) => item.id === selectedProduct?.id
+                        (item) => item.product.id === selectedProduct?.id
                       )
                         ? "active"
                         : ""
@@ -180,7 +177,7 @@ const ModalQuickview = () => {
                     onClick={handleAddToWishlist}
                   >
                     {wishlistState.wishlistArray.some(
-                      (item) => item.id === selectedProduct?.id
+                      (item) => item.product.id === selectedProduct?.id
                     ) ? (
                       <>
                         <Icon.Heart
@@ -199,7 +196,7 @@ const ModalQuickview = () => {
                 <div className="flex items-center mt-3">
                   <Rate currentRate={selectedProduct?.rate} size={14} />
                   <span className="caption1 text-secondary">
-                    (1.234 reviews)
+                    {t('product.detail.reviews')}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 flex-wrap mt-5 pb-6 border-b border-line">
@@ -222,7 +219,7 @@ const ModalQuickview = () => {
                 <div className="list-action mt-6">
                   <div className="choose-color">
                     <div className="text-title">
-                      Colors:{" "}
+                      {t('product.detail.specifications.colors')}:{" "}
                       <span className="text-title color">{activeColor}</span>
                     </div>
                     <div className="list-color flex items-center gap-2 flex-wrap mt-3">
@@ -250,7 +247,7 @@ const ModalQuickview = () => {
                   <div className="choose-size mt-5">
                     <div className="heading flex items-center justify-between">
                       <div className="text-title">
-                        Size:{" "}
+                        {t('product.detail.specifications.size')}:{" "}
                         <span className="text-title size">{activeSize}</span>
                       </div>
                     </div>
@@ -262,10 +259,9 @@ const ModalQuickview = () => {
                         </div>
                     </div>
                   </div>
-                  <div className="text-title mt-5">Quantity:</div>
+                  <div className="text-title mt-5">{t('product.detail.quantity')}:</div>
                   <div className="choose-quantity flex items-center max-xl:flex-wrap lg:justify-between gap-5 mt-3">
                     <div className="quantity-block md:p-3 max-md:py-1.5 max-md:px-3 flex items-center justify-between rounded-lg border border-line sm:w-[180px] w-[120px] flex-shrink-0">
-                      {/* Example of changed quantity handlers */}
                       <Icon.Minus
                         onClick={handleDecreaseQuantity}
                         className={`${
@@ -282,12 +278,12 @@ const ModalQuickview = () => {
                       onClick={handleAddToCart}
                       className="button-main w-full text-center bg-white text-black border border-black"
                     >
-                      Add To Cart
+                      {t('modal.quickview.addToCart')}
                     </div>
                   </div>
                   <div className="button-block mt-5">
                     <div className="button-main w-full text-center">
-                      Buy It Now
+                      {t('modal.quickview.buyNow')}
                     </div>
                   </div>
                   <div className="flex items-center flex-wrap lg:gap-20 gap-8 gap-y-4 mt-5">
@@ -298,29 +294,29 @@ const ModalQuickview = () => {
                       <div className="compare-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
                         <Icon.ArrowsCounterClockwise className="heading6" />
                       </div>
-                      <span>Compare</span>
+                      <span>{t('modal.quickview.addToCompare')}</span>
                     </div>
                     <div className="share flex items-center gap-3 cursor-pointer">
                       <div className="share-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
                         <Icon.ShareNetwork weight="fill" className="heading6" />
                       </div>
-                      <span>Share Products</span>
+                      <span>{t('modal.quickview.shareProduct')}</span>
                     </div>
                   </div>
                   <div className="more-infor mt-6">
                     <div className="flex items-center gap-4 flex-wrap">
                       <div className="flex items-center gap-1">
                         <Icon.ArrowClockwise className="body1" />
-                        <div className="text-title">Delivery & Return</div>
+                        <div className="text-title">{t('product.detail.delivery.title')}</div>
                       </div>
                       <div className="flex items-center gap-1">
                         <Icon.Question className="body1" />
-                        <div className="text-title">Ask A Question</div>
+                        <div className="text-title">{t('product.detail.askQuestion')}</div>
                       </div>
                     </div>
                     <div className="flex items-center flex-wrap gap-1 mt-3">
                       <Icon.Timer className="body1" />
-                      <span className="text-title">Estimated Delivery:</span>
+                      <span className="text-title">{t('product.detail.delivery.estimated')}:</span>
                       <span className="text-secondary">
                         14 January - 18 January
                       </span>
@@ -329,21 +325,21 @@ const ModalQuickview = () => {
                       <Icon.Eye className="body1" />
                       <span className="text-title">38</span>
                       <span className="text-secondary">
-                        people viewing this product right now!
+                        {t('modal.quickview.peopleViewing')}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 mt-3">
-                      <div className="text-title">SKU:</div>
+                      <div className="text-title">{t('product.detail.specifications.sku')}:</div>
                       <div className="text-secondary">53453412</div>
                     </div>
                     <div className="flex items-center gap-1 mt-3">
-                      <div className="text-title">Categories:</div>
+                      <div className="text-title">{t('product.detail.specifications.categories')}:</div>
                       <div className="text-secondary">
                         {selectedProduct?.category}, {selectedProduct?.gender}
                       </div>
                     </div>
                     <div className="flex items-center gap-1 mt-3">
-                      <div className="text-title">Tag:</div>
+                      <div className="text-title">{t('product.detail.specifications.tag')}:</div>
                       <div className="text-secondary">
                         {selectedProduct?.type}
                       </div>
@@ -352,7 +348,7 @@ const ModalQuickview = () => {
                   <div className="list-payment mt-7">
                     <div className="main-content lg:pt-8 pt-6 lg:pb-6 pb-4 sm:px-4 px-3 border border-line rounded-xl relative max-md:w-2/3 max-sm:w-full">
                       <div className="heading6 px-5 bg-white absolute -top-[14px] left-1/2 -translate-x-1/2 whitespace-nowrap">
-                        Guranteed safe checkout
+                        {t('modal.quickview.guaranteedSafeCheckout')}
                       </div>
                       <div className="list grid grid-cols-6">
                         <div className="item flex items-center justify-center lg:px-3 px-1">

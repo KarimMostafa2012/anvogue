@@ -1,5 +1,5 @@
 {
-    "Shop": "Shop",
+    "Shop": "Geschäft",
     "Homepage": "Startseite",
     "t-shirt": "T-Shirt",
     "dress": "Kleid",
@@ -16,32 +16,512 @@
     "Colors": "Farben",
     "Show more": "Mehr anzeigen",
     "Clear All Filters": "Alle Filter löschen",
-    "Show only products on sale": "Nur Angebote anzeigen",
+    "Show only products on sale": "Nur reduzierte Produkte anzeigen",
     "Sort by": "Sortieren nach",
     "Default Sorting": "Standardsortierung",
     "Best Selling": "Bestseller",
     "Best Discount": "Bester Rabatt",
-    "Price High To Low": "Preis (absteigend)",
-    "Price Low To High": "Preis (aufsteigend)",
+    "Price High To Low": "Preis: absteigend",
+    "Price Low To High": "Preis: aufsteigend",
     "Products Found": "Produkte gefunden",
     "Loading products...": "Produkte werden geladen...",
     "Error": "Fehler",
-    "No products match your current filters. Try adjusting or clearing filters.": "Keine Produkte entsprechen Ihren Filtern. Versuchen Sie die Filter anzupassen oder zu löschen.",
+    "No products match your current filters. Try adjusting or clearing filters.": "Keine Produkte entsprechen Ihren Filtern. Versuchen Sie, die Filter anzupassen oder zu löschen.",
     "...": "...",
     "dir": "ltr",
     "textAlign": "left",
-    "Add to Cart": "In den Warenkorb",
-    "View Details": "Details anzeigen",
-    "Out of Stock": "Nicht vorrätig",
-    "In Stock": "Auf Lager",
-    "Quantity": "Menge",
-    "Description": "Beschreibung",
-    "Reviews": "Bewertungen",
-    "Related Products": "Ähnliche Produkte",
-    "Checkout": "Zur Kasse",
-    "Continue Shopping": "Einkaufen fortsetzen",
-    "Subtotal": "Zwischensumme",
-    "Shipping": "Versand",
-    "Total": "Gesamtbetrag",
-    "Discount": "Rabatt"
+    "common": {
+        "shop": "Geschäft",
+        "homepage": "Startseite",
+        "search": {
+            "placeholder": "Produkte suchen",
+            "clear": "Suche löschen",
+            "noResults": "Keine Produkte gefunden für",
+            "clearAndTryAgain": "Suche löschen und erneut versuchen"
+        },
+        "filters": {
+            "productType": "Produkttyp",
+            "priceRange": "Preisspanne",
+            "minPrice": "Mindestpreis",
+            "maxPrice": "Höchstpreis",
+            "colors": "Farben",
+            "showLess": "Weniger anzeigen",
+            "showMore": "Mehr anzeigen",
+            "clearAll": "Alle Filter löschen",
+            "onSale": "Nur reduzierte Produkte anzeigen",
+            "noMatch": "Keine Produkte entsprechen Ihren Filtern",
+            "tryAdjusting": "Filter anpassen oder löschen"
+        },
+        "sorting": {
+            "label": "Sortieren nach",
+            "default": "Standardsortierung",
+            "priceHighToLow": "Preis: absteigend",
+            "priceLowToHigh": "Preis: aufsteigend"
+        },
+        "products": {
+            "found": "Produkte gefunden",
+            "loading": "Produkte werden geladen",
+            "error": "Fehler"
+        },
+        "language": {
+            "select": "Sprache auswählen",
+            "options": {
+                "ar": "العربية",
+                "en": "English",
+                "de": "Deutsch",
+                "ckb": "Kurdî",
+                "uk": "український"
+            }
+        }
+    },
+    "slider": {
+        "sale": "Verkauf! Bis zu 50% Rabatt!",
+        "shopNow": "Jetzt einkaufen",
+        "collections": {
+            "summer": "Sommerschlussverkauf",
+            "newSeason": "Neue Saison, neue Garderobe!",
+            "fashion": "Mode für jeden Anlass",
+            "stylish": "Stylische Looks für jede Saison",
+            "yoga": "Entdecken Sie unsere Yoga-Kollektion",
+            "watches": {
+                "smart": "Entdecken Sie Smartwatches",
+                "finest": "Entdecken Sie die feinsten Uhren",
+                "elegance": "Entdecken Sie zeitlose Eleganz"
+            },
+            "pet": {
+                "perfectStore": "Der perfekte Laden für Ihr Haustier",
+                "unleash": "Ein glückliches, gesundes Haustier"
+            },
+            "toys": {
+                "smart": "Smartes Spielzeug im Angebot",
+                "blankets": "Decken für Neugeborene",
+                "kids": "Kinderspielzeug & Kleidung"
+            }
+        }
+    },
+    "product": {
+        "detail": {
+            "reviews": "(1.234 Bewertungen)",
+            "quantity": "Menge:",
+            "delivery": {
+                "title": "Lieferung & Rückgabe",
+                "estimated": "Voraussichtliche Lieferung:",
+                "freeShipping": "Kostenloser Versand",
+                "support": "Täglicher Support",
+                "returns": "100 Tage Rückgaberecht"
+            },
+            "specifications": {
+                "sku": "Artikelnummer:",
+                "categories": "Kategorien:",
+                "tag": "Tag:",
+                "rating": "Bewertung",
+                "outerShell": "Außenmaterial",
+                "lining": "Futter",
+                "size": "Größe",
+                "colors": "Farben",
+                "care": "Pflege"
+            },
+            "related": "Ähnliche Produkte",
+            "soldIt": "Verkauft:",
+            "askQuestion": "Frage stellen"
+        },
+        "countdown": {
+            "days": "Tage",
+            "hours": "Stunden",
+            "mins": "Minuten",
+            "secs": "Sekunden"
+        }
+    },
+    "testimonial": {
+        "customerReviews": "Kundenbewertungen",
+        "from": "Von"
+    },
+    "footer": {
+        "company": {
+            "mail": "E-Mail:",
+            "phone": "Telefon:",
+            "address": "Adresse:"
+        },
+        "navigation": {
+            "information": "Informationen",
+            "quickShop": "Schnellkauf",
+            "customerServices": "Kundenservice",
+            "newsletter": "Newsletter"
+        },
+        "links": {
+            "contactUs": "Kontakt",
+            "career": "Karriere",
+            "myAccount": "Mein Konto",
+            "orderReturns": "Bestellungen & Rückgaben",
+            "faqs": "Häufige Fragen",
+            "women": "Damen",
+            "men": "Herren",
+            "clothes": "Kleidung",
+            "accessories": "Accessoires",
+            "blog": "Blog",
+            "ordersFaqs": "Bestellungen FAQ",
+            "shipping": "Versand",
+            "privacyPolicy": "Datenschutz",
+            "returnRefund": "Rückgabe & Erstattung"
+        },
+        "newsletter": {
+            "signup": "Melden Sie sich für unseren Newsletter an und erhalten Sie 10% Rabatt auf Ihren ersten Einkauf",
+            "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein"
+        },
+        "bottom": {
+            "copyright": "©2023 Anvogue. Alle Rechte vorbehalten.",
+            "payment": "Zahlung:",
+            "language": {
+                "english": "Englisch",
+                "espana": "Spanisch",
+                "france": "Französisch"
+            },
+            "currency": {
+                "usd": "USD",
+                "eur": "EUR",
+                "gbp": "GBP"
+            }
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Anmelden",
+            "subtitle": "Anmelden",
+            "emailPlaceholder": "E-Mail-Adresse *",
+            "passwordPlaceholder": "Passwort *",
+            "rememberMe": "Angemeldet bleiben",
+            "forgotPassword": "Passwort vergessen?",
+            "loginButton": "Anmelden",
+            "newCustomer": {
+                "title": "Neuer Kunde",
+                "description": "Werden Sie Teil unserer wachsenden Familie von neuen Kunden! Melden Sie sich heute an und entdecken Sie eine Welt exklusiver Vorteile, Angebote und personalisierter Erlebnisse.",
+                "registerButton": "Registrieren"
+            }
+        },
+        "register": {
+            "title": "Registrieren",
+            "subtitle": "Registrieren",
+            "emailPlaceholder": "E-Mail-Adresse *",
+            "passwordPlaceholder": "Passwort *",
+            "confirmPasswordPlaceholder": "Passwort bestätigen *",
+            "registerButton": "Registrieren",
+            "existingCustomer": {
+                "title": "Bereits Kunde?",
+                "description": "Sie haben bereits ein Konto? Melden Sie sich an, um auf Ihr personalisiertes Einkaufserlebnis zuzugreifen.",
+                "loginButton": "Anmelden"
+            }
+        },
+        "forgotPassword": {
+            "title": "Passwort vergessen",
+            "subtitle": "Passwort vergessen",
+            "emailPlaceholder": "E-Mail-Adresse *",
+            "resetButton": "Passwort zurücksetzen",
+            "description": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts."
+        }
+    },
+    "account": {
+        "dashboard": {
+            "title": "Dashboard",
+            "welcome": "Willkommen in Ihrem Konto",
+            "quickLinks": "Schnellzugriff",
+            "recentOrders": "Letzte Bestellungen",
+            "accountDetails": "Kontodetails"
+        },
+        "orders": {
+            "title": "Meine Bestellungen",
+            "orderNumber": "Bestellnummer",
+            "date": "Datum",
+            "status": "Status",
+            "total": "Gesamt",
+            "actions": "Aktionen",
+            "viewDetails": "Details anzeigen",
+            "cancelOrder": "Bestellung stornieren",
+            "noOrders": "Keine Bestellungen gefunden"
+        },
+        "addresses": {
+            "title": "Meine Adressen",
+            "addNew": "Neue Adresse hinzufügen",
+            "edit": "Adresse bearbeiten",
+            "delete": "Adresse löschen",
+            "default": "Standardadresse",
+            "setDefault": "Als Standard festlegen",
+            "noAddresses": "Keine Adressen gefunden"
+        },
+        "profile": {
+            "title": "Mein Profil",
+            "personalInfo": "Persönliche Informationen",
+            "changePassword": "Passwort ändern",
+            "saveChanges": "Änderungen speichern",
+            "cancel": "Abbrechen"
+        }
+    },
+    "checkout": {
+        "title": "Kasse",
+        "billingDetails": "Rechnungsdetails",
+        "shippingDetails": "Versanddetails",
+        "orderSummary": "Bestellübersicht",
+        "paymentMethod": "Zahlungsmethode",
+        "placeOrder": "Bestellung aufgeben",
+        "subtotal": "Zwischensumme",
+        "shipping": "Versand",
+        "tax": "Steuer",
+        "total": "Gesamt",
+        "discount": "Rabatt",
+        "applyCoupon": "Gutschein einlösen",
+        "couponCode": "Gutscheincode",
+        "apply": "Anwenden",
+        "continueShopping": "Weiter einkaufen",
+        "proceedToPayment": "Zur Zahlung"
+    },
+    "cart": {
+        "title": "Warenkorb",
+        "empty": "Ihr Warenkorb ist leer",
+        "continueShopping": "Weiter einkaufen",
+        "updateCart": "Warenkorb aktualisieren",
+        "clearCart": "Warenkorb leeren",
+        "subtotal": "Zwischensumme",
+        "shipping": "Versand",
+        "tax": "Steuer",
+        "proceedToCheckout": "Zur Kasse gehen",
+        "removeItem": "Artikel entfernen",
+        "quantity": "Menge",
+        "price": "Preis",
+        "total": "Gesamt"
+    },
+    "modal": {
+        "cart": {
+            "title": "Warenkorb",
+            "youMayAlsoLike": "Das könnte Ihnen auch gefallen",
+            "removeItem": "Artikel entfernen",
+            "note": "Hinweis",
+            "shipping": "Versand",
+            "coupon": "Gutschein",
+            "subtotal": "Zwischensumme",
+            "viewCart": "Warenkorb anzeigen",
+            "checkout": "Zur Kasse",
+            "continueShopping": "Weiter einkaufen",
+            "empty": "Ihr Warenkorb ist leer",
+            "updateCart": "Warenkorb aktualisieren",
+            "clearCart": "Warenkorb leeren",
+            "proceedToCheckout": "Zur Kasse gehen",
+            "addSpecialInstructions": "Fügen Sie besondere Anweisungen für Ihre Bestellung hinzu...",
+            "estimateShipping": "Versandkosten schätzen",
+            "applyCoupon": "Gutschein einlösen",
+            "couponCode": "Gutscheincode",
+            "apply": "Anwenden",
+            "clearRecent": "Letzte Suchanfragen löschen"
+        },
+        "quickview": {
+            "title": "Schnellansicht",
+            "close": "Schließen",
+            "addToCart": "In den Warenkorb",
+            "addToWishlist": "Zur Wunschliste hinzufügen",
+            "addToCompare": "Zum Vergleich hinzufügen",
+            "buyNow": "Jetzt kaufen",
+            "shareProduct": "Produkt teilen",
+            "peopleViewing": "Personen sehen sich dieses Produkt gerade an!",
+            "guaranteedSafeCheckout": "Garantierte sichere Abwicklung"
+        },
+        "wishlist": {
+            "title": "Wunschliste",
+            "empty": "Ihre Wunschliste ist leer",
+            "continueShopping": "Weiter einkaufen",
+            "removeItem": "Artikel entfernen",
+            "addToCart": "In den Warenkorb"
+        },
+        "search": {
+            "title": "Suche",
+            "placeholder": "Nach Produkten suchen...",
+            "noResults": "Keine Ergebnisse gefunden",
+            "recentSearches": "Letzte Suchanfragen",
+            "clearRecent": "Letzte Suchanfragen löschen"
+        },
+        "sizeguide": {
+            "title": "Größentabelle",
+            "close": "Schließen",
+            "howToMeasure": "Wie man misst",
+            "sizeChart": "Größentabelle",
+            "measurements": "Maße",
+            "height": "Größe",
+            "weight": "Gewicht",
+            "cm": "cm",
+            "kg": "kg",
+            "suggestions": "Empfehlungen",
+            "size": "Größe",
+            "bust": "Brustumfang",
+            "waist": "Taillenumfang",
+            "lowHip": "Hüftumfang"
+        },
+        "newsletter": {
+            "title": "Newsletter",
+            "description": "Abonnieren Sie unseren Newsletter und erhalten Sie 10% Rabatt auf Ihren ersten Einkauf",
+            "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+            "subscribe": "Abonnieren",
+            "noThanks": "Nein, danke",
+            "specialOffer": "Sonderangebot",
+            "blackFridays": "Black Friday",
+            "newCustomersSave": "Neue Kunden sparen",
+            "withCode": "mit Code",
+            "copyCouponCode": "Gutscheincode kopieren",
+            "youMayAlsoLike": "Das könnte Ihnen auch gefallen",
+            "quickView": "Schnellansicht"
+        },
+        "compare": {
+            "title": "Produkte vergleichen",
+            "empty": "Keine Produkte zum Vergleichen",
+            "continueShopping": "Weiter einkaufen",
+            "removeItem": "Artikel entfernen",
+            "clearAll": "Alle löschen",
+            "compareProducts": "Produkte vergleichen",
+            "minimumProductsRequired": "Bitte fügen Sie mindestens 2 Produkte zum Vergleich hinzu",
+            "clearAllProducts": "Alle Produkte löschen"
+        }
+    },
+    "breadcrumb": {
+        "home": "Startseite",
+        "separator": ">"
+    },
+    "header": {
+        "home": "Startseite",
+        "shop": {
+            "title": "Geschäft",
+            "features": {
+                "title": "Shop-Funktionen",
+                "breadcrumbImg": "Shop-Brotkrumen-Bild",
+                "breadcrumb1": "Shop-Brotkrumen 1",
+                "breadcrumb2": "Shop-Brotkrumen 2",
+                "collection": "Shop-Kollektion",
+                "filterCanvas": "Shop-Filter-Leinwand",
+                "filterOptions": "Shop-Filteroptionen",
+                "filterDropdown": "Shop-Filter-Dropdown",
+                "sidebarList": "Shop-Seitenleistenliste"
+            },
+            "layout": {
+                "title": "Shop-Layout",
+                "default": "Shop-Standard",
+                "defaultGrid": "Shop-Standard-Raster",
+                "defaultList": "Shop-Standard-Liste",
+                "fullWidth": "Shop-Volle Breite",
+                "square": "Shop-Quadrat"
+            },
+            "products": {
+                "title": "Produktseiten",
+                "wishList": "Wunschliste",
+                "checkout": "Kasse",
+                "checkoutStyle2": "Kasse Stil 2"
+            }
+        },
+        "blog": "Blog",
+        "pages": "Seiten",
+        "about": "Über uns",
+        "contact": "Kontakt",
+        "storeLocation": "Geschäftsstandort",
+        "help": "Hilfe",
+        "slogan": "Kostenloser Versand für alle Bestellungen über 75$",
+        "languages": {
+            "english": "Englisch",
+            "spanish": "Spanisch",
+            "french": "Französisch",
+            "arabic": "Arabisch",
+            "german": "Deutsch",
+            "kurdish": "Kurdisch",
+            "ukrainian": "Ukrainisch"
+        },
+        "currencies": {
+            "usd": "USD",
+            "eur": "EUR",
+            "gbp": "GBP"
+        },
+        "features": {
+            "forMen": "Für Herren",
+            "forWomen": "Für Damen",
+            "forKid": "Für Kinder",
+            "forHome": "Für Zuhause",
+            "startingFrom50": "Ab 50% Rabatt",
+            "startingFrom60": "Ab 60% Rabatt",
+            "shirts": "Hemden",
+            "jackets": "Jacken",
+            "pants": "Hosen",
+            "accessories": "Accessoires",
+            "dresses": "Kleider",
+            "tshirts": "T-Shirts",
+            "accessoriesJewelry": "Accessoires & Schmuck",
+            "kidsBed": "Kinderbett",
+            "boysToy": "Jungenspielzeug",
+            "babyBlanket": "Babydecke",
+            "newbornClothing": "Neugeborenenkleidung",
+            "furnitureDecor": "Möbel & Dekoration",
+            "tableLivingRoom": "Tisch & Wohnzimmer",
+            "chairWorkRoom": "Stuhl & Arbeitszimmer",
+            "lightingBedRoom": "Beleuchtung & Schlafzimmer",
+            "viewAll": "Alle anzeigen",
+            "save10": "10$ sparen",
+            "diveIntoSavings": "Tauchen Sie in Ersparnisse ein",
+            "onSwimwear": "auf Bademode",
+            "startingAt": "Ab",
+            "off": "Rabatt",
+            "massimoDutti": "Massimo Dutti",
+            "shirt": "Hemd",
+            "top": "Top",
+            "tshirt": "T-Shirt",
+            "swimwear": "Bademode",
+            "skincare": "Hautpflege",
+            "facesSkin": "Gesichtshaut",
+            "eyesMakeup": "Augen-Make-up",
+            "lipPolish": "Lippenpolitur",
+            "hairCare": "Haarpflege",
+            "health": "Gesundheit",
+            "centedCandle": "Duftkerze",
+            "healthDrinks": "Gesundheitsgetränke",
+            "yogaClothes": "Yoga-Kleidung",
+            "yogaEquipment": "Yoga-Ausrüstung"
+        },
+        "blog": {
+            "default": "Standard",
+            "list": "Liste",
+            "grid": "Raster"
+        },
+        "pages": {
+            "about": "Über uns",
+            "contact": "Kontakt",
+            "storeList": "Geschäftsliste",
+            "notFound": "Seite nicht gefunden",
+            "faqs": "Häufige Fragen",
+            "comingSoon": "Demnächst",
+            "customerFeedbacks": "Kundenfeedback"
+        },
+        "mobile": {
+            "demo": "Demo",
+            "back": "Zurück",
+            "search": {
+                "placeholder": "Wonach suchen Sie?"
+            }
+        },
+        "demo": "Demo",
+        "homepages": {
+            "fashion1": "Mode-Startseite 1",
+            "fashion2": "Mode-Startseite 2",
+            "fashion3": "Mode-Startseite 3",
+            "fashion4": "Mode-Startseite 4",
+            "fashion5": "Mode-Startseite 5",
+            "fashion6": "Mode-Startseite 6",
+            "fashion7": "Mode-Startseite 7",
+            "fashion8": "Mode-Startseite 8",
+            "fashion9": "Mode-Startseite 9",
+            "fashion10": "Mode-Startseite 10",
+            "fashion11": "Mode-Startseite 11",
+            "underwear": "Unterwäsche-Startseite",
+            "cosmetic1": "Kosmetik-Startseite 1",
+            "cosmetic2": "Kosmetik-Startseite 2",
+            "cosmetic3": "Kosmetik-Startseite 3",
+            "pet": "Haustier-Startseite",
+            "jewelry": "Schmuck-Startseite",
+            "furniture": "Möbel-Startseite",
+            "watch": "Uhren-Startseite",
+            "toys": "Spielzeug-Startseite",
+            "yoga": "Yoga-Startseite",
+            "organic": "Bio-Startseite",
+            "marketplace": "Marktplatz-Startseite"
+        }
+    }
 }

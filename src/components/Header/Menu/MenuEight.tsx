@@ -16,6 +16,10 @@ import { useModalWishlistContext } from "@/context/ModalWishlistContext";
 import { useModalSearchContext } from "@/context/ModalSearchContext";
 import { useCart } from "@/context/CartContext";
 import { useSearchParams } from "next/navigation";
+import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts } from "@/redux/slices/productSlice";
+import { useTranslation } from "react-i18next";
 
 type Category = {
   id: number;
@@ -23,6 +27,7 @@ type Category = {
     id: number;
     icon: string;
   };
+  name: string;
   translations: {
     en: {
       name: string;
@@ -44,20 +49,14 @@ type Category = {
 
 type CategoryOfSub = {
   id: number;
-  name: {
-    en: string;
-    ar: string;
-    de: string;
-    ckb: string;
-    uk: string;
-  };
+  name: string;
 };
 
 type SubCategory = {
   id: number;
 
   category: CategoryOfSub;
-
+  name: string;
   translations: {
     en: {
       name: string;
@@ -77,7 +76,9 @@ type SubCategory = {
   };
 };
 
+
 const MenuEight = () => {
+  const currentLanguage = useSelector((state: RootState) => state.language);
   const pathname = usePathname();
   const { openLoginPopup, handleLoginPopup } = useLoginPopup();
   const { openSubMenuDepartment, handleSubMenuDepartment } =
@@ -95,6 +96,9 @@ const MenuEight = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   let shadowCat = "";
+  const dispatch = useDispatch<AppDispatch>();
+  const { products } = useSelector((state: RootState) => state.products);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (searchParams.get("uid") && searchParams.get("token")) {
@@ -123,7 +127,11 @@ const MenuEight = () => {
           console.error("Error:", error);
         });
     }
-    fetch("https://api.malalshammobel.com/products/category/", {
+  }, []);
+
+  useEffect(() => {
+    console.log("currentLanguage", currentLanguage);
+    fetch("https://api.malalshammobel.com/products/category/?lang=" + currentLanguage, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -144,15 +152,16 @@ const MenuEight = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
-
-  useEffect(() => {
-    fetch("https://api.malalshammobel.com/products/subcategory/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      "https://api.malalshammobel.com/products/subcategory/?lang=" +
+      currentLanguage,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           console.log(response);
@@ -168,17 +177,22 @@ const MenuEight = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
+  }, [t, currentLanguage]);
 
   useEffect(() => {
     if (window.sessionStorage.getItem("loggedIn") == "true") {
       setLoggedIn(true);
-    } else if (window.localStorage.getItem("accessToken") || window.sessionStorage.getItem("accessToken")) {
+    } else if (
+      window.localStorage.getItem("accessToken") ||
+      window.sessionStorage.getItem("accessToken")
+    ) {
       // auth/api/users/me/
       fetch("https://api.malalshammobel.com/auth/api/users/me/", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("accessToken") || window.sessionStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${window.localStorage.getItem("accessToken") ||
+            window.sessionStorage.getItem("accessToken")
+            }`,
           "Content-Type": "application/json",
         },
       })
@@ -192,7 +206,9 @@ const MenuEight = () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                refresh: window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken"),
+                refresh:
+                  window.localStorage.getItem("refreshToken") ||
+                  window.sessionStorage.getItem("refreshToken"),
               }),
             })
               .then((response) => {
@@ -206,8 +222,6 @@ const MenuEight = () => {
                 setLoggedIn(true);
                 window.localStorage.setItem("accessToken", data.access);
                 window.sessionStorage.setItem("accessToken", data.access);
-                window.localStorage.setItem("refreshToken", data.refresh);
-                window.sessionStorage.setItem("refreshToken", data.refresh);
                 window.sessionStorage.setItem("loggedIn", "true");
               })
               .catch((error) => {
@@ -225,14 +239,19 @@ const MenuEight = () => {
         .catch((error) => {
           console.error("Error:", error);
         });
-    } else if (window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken")) {
+    } else if (
+      window.localStorage.getItem("refreshToken") ||
+      window.sessionStorage.getItem("refreshToken")
+    ) {
       fetch("https://api.malalshammobel.com/auth/api/token/refresh/", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          refresh: window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken"),
+          refresh:
+            window.localStorage.getItem("refreshToken") ||
+            window.sessionStorage.getItem("refreshToken"),
         }),
       })
         .then((response) => {
@@ -246,8 +265,6 @@ const MenuEight = () => {
           setLoggedIn(true);
           window.localStorage.setItem("accessToken", data.access);
           window.sessionStorage.setItem("accessToken", data.access);
-          window.localStorage.setItem("refreshToken", data.refresh);
-          window.sessionStorage.setItem("refreshToken", data.refresh);
           window.sessionStorage.setItem("loggedIn", "true");
         })
         .catch((error) => {
@@ -256,9 +273,17 @@ const MenuEight = () => {
     }
   }, []);
 
+  useEffect(() => {
+    dispatch(
+      getAllProducts({
+        params: { lang: currentLanguage, has_offer: true, page_size: 2 },
+      })
+    );
+  }, [dispatch, t, currentLanguage]);
+
   const handleSearch = (value: string) => {
     router.push(`/shop?product_name=${value}`);
-    setSearchKeyword("");
+    setSearchKeyword(value);
   };
 
   const handleOpenSubNavMobile = (index: number) => {
@@ -295,9 +320,8 @@ const MenuEight = () => {
   return (
     <>
       <div
-        className={`header-menu style-eight ${
-          fixedHeader ? " fixed" : "relative"
-        } bg-white w-full md:h-[74px] h-[56px]`}
+        className={`header-menu style-eight ${fixedHeader ? " fixed" : "relative"
+          } bg-white w-full md:h-[74px] h-[56px]`}
       >
         <div className="container mx-auto h-full">
           <div className="header-main flex items-center justify-between h-full">
@@ -311,14 +335,6 @@ const MenuEight = () => {
               <div className="heading4">Anvogue</div>
             </Link>
             <div className="form-search w-2/3 pl-8 flex items-center h-[44px] max-lg:hidden">
-              <div className="category-block relative h-full">
-                <div className="category-btn bg-black relative flex items-center gap-6 py-2 px-4 h-full rounded-l w-fit cursor-pointer">
-                  <div className="text-button text-white whitespace-nowrap">
-                    All Categories
-                  </div>
-                  <Icon.CaretDown color="#ffffff" />
-                </div>
-              </div>
               <div className="w-full flex items-center h-full">
                 <input
                   type="text"
@@ -345,7 +361,7 @@ const MenuEight = () => {
               <div className="list-action flex items-center gap-4">
                 <div className="user-icon flex items-center justify-center cursor-pointer">
                   {!loggedIn ||
-                  window.sessionStorage.getItem("loggedIn") != "true" ? (
+                    window.sessionStorage.getItem("loggedIn") != "true" ? (
                     <>
                       <Icon.User
                         size={24}
@@ -354,11 +370,10 @@ const MenuEight = () => {
                       />
                       <div
                         className={`login-popup absolute top-[74px] w-[320px] p-7 rounded-xl bg-white box-shadow-sm 
-                                                        ${
-                                                          openLoginPopup
-                                                            ? "open"
-                                                            : ""
-                                                        }`}
+                          ${openLoginPopup
+                            ? "open"
+                            : ""
+                          }`}
                       >
                         <Link
                           href={"/login"}
@@ -426,18 +441,20 @@ const MenuEight = () => {
                   />
                 </div>
                 <div
-                  className={`sub-menu-department absolute top-[44px] left-0 right-0 h-max bg-white rounded-b-2xl ${
-                    openSubMenuDepartment ? "open" : ""
-                  }`}
+                  className={`sub-menu-department absolute top-[44px] left-0 right-0 h-max bg-white rounded-b-2xl ${openSubMenuDepartment ? "open" : ""
+                    }`}
                 >
                   {categories?.map((cat) => {
                     return (
                       <div key={cat.id} className="item block">
                         <Link
-                          href={"/shop/?category=" + cat.translations.en.name}
+                          href={{
+                            pathname: "/shop",
+                            query: { category: cat.name },
+                          }}
                           className="py-1.5 whitespace-nowrap inline-block"
                         >
-                          {cat.translations.en.name}
+                          {cat.name}
                         </Link>
                       </div>
                     );
@@ -450,11 +467,10 @@ const MenuEight = () => {
                     <Link
                       href="#!"
                       className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 
-                                            ${
-                                              pathname.includes("/")
-                                                ? "active"
-                                                : ""
-                                            }`}
+                                            ${pathname.includes("/")
+                          ? "active"
+                          : ""
+                        }`}
                     >
                       Home
                     </Link>
@@ -472,23 +488,23 @@ const MenuEight = () => {
                           <div className="nav-link basis-2/3 grid grid-cols-4 gap-y-8">
                             {subCategories?.map((subCat) => {
                               let i = 0;
-                              let show = shadowCat != subCat.category.name.en;
+                              let show = shadowCat != subCat.category.name;
                               let onTime = true;
                               shadowCat =
-                                shadowCat == subCat.category.name.en
+                                shadowCat == subCat.category.name
                                   ? shadowCat
-                                  : subCat.category.name.en;
+                                  : subCat.category.name;
                               return (
                                 show && (
                                   <div className="nav-item" key={subCat.id}>
                                     <div className="text-button-uppercase pb-2">
-                                      {subCat.category.name.en}
+                                      {subCat.category.name}
                                     </div>
                                     <ul>
                                       {subCategories.map((subCatName, k) => {
                                         if (
-                                          subCatName.category.name.en ==
-                                            shadowCat &&
+                                          subCatName.category.name ==
+                                          shadowCat &&
                                           i <= 4
                                         ) {
                                           i++;
@@ -497,16 +513,12 @@ const MenuEight = () => {
                                               <div
                                                 onClick={() =>
                                                   handleSubCategoryClick(
-                                                    subCatName.translations.en
-                                                      .name
+                                                    subCatName.name
                                                   )
                                                 }
                                                 className={`link text-secondary duration-300 cursor-pointer`}
                                               >
-                                                {
-                                                  subCatName.translations.en
-                                                    .name
-                                                }
+                                                {subCatName.name}
                                               </div>
                                             </li>
                                           );
@@ -516,7 +528,8 @@ const MenuEight = () => {
                                             <li key={subCatName.id}>
                                               <div
                                                 onClick={() => {
-                                                  window.location.href = "";
+                                                  window.location.href =
+                                                    "/shop";
                                                 }}
                                                 className={`link text-secondary duration-300 cursor-pointer`}
                                               >
@@ -531,365 +544,47 @@ const MenuEight = () => {
                                 )
                               );
                             })}
-                            {/* 
-                            <ul>
-                                    <li>
-                                      <div
-                                        onClick={() => handleGenderClick("men")}
-                                        className={`link text-secondary duration-300 cursor-pointer`}
-                                      >
-                                        {subCat.translations.en.name}
-                                      </div>
-                                    </li>
-                                  </ul>
-                                   */}
-
-                            {/* <div className="nav-item">
-                              <div className="text-button-uppercase pb-2">
-                                Massimo Dutti
-                              </div>
-                              <ul>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("shirt")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Shirt | Clothes
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("top")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Top | Overshirts
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("t-shirt")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    T-shirts | Clothes
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("swimwear")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Swimwear | Underwear
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() =>
-                                      handleCategoryClick("fashion")
-                                    }
-                                    className={`link text-secondary duration-300 view-all-btn`}
-                                  >
-                                    View All
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="nav-item">
-                              <div className="text-button-uppercase pb-2">
-                                Skincare
-                              </div>
-                              <ul>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("face")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Faces Skin
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("eye")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Eyes Makeup
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("lip")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Lip Polish
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("hair")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Hair Care
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() =>
-                                      handleCategoryClick("cosmetic")
-                                    }
-                                    className={`link text-secondary duration-300 view-all-btn`}
-                                  >
-                                    View All
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="nav-item">
-                              <div className="text-button-uppercase pb-2">
-                                Health
-                              </div>
-                              <ul>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("candle")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Cented Candle
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("drinks")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Health Drinks
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("clothes")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Yoga Clothes
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("mats")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Yoga Equipment
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleCategoryClick("yoga")}
-                                    className={`link text-secondary duration-300 view-all-btn`}
-                                  >
-                                    View All
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="nav-item">
-                              <div className="text-button-uppercase pb-2">
-                                For Women
-                              </div>
-                              <ul>
-                                <li>
-                                  <div
-                                    onClick={() => handleGenderClick("women")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Starting From 60% Off
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("dress")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Dresses | Jumpsuits
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("t-shirt")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    T-shirts | Sweatshirts
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() =>
-                                      handleTypeClick("accessories")
-                                    }
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Accessories | Jewelry
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleGenderClick("women")}
-                                    className={`link text-secondary duration-300 view-all-btn`}
-                                  >
-                                    View All
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="nav-item">
-                              <div className="text-button-uppercase pb-2">
-                                For Kid
-                              </div>
-                              <ul>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("bed")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Kids Bed
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("toy")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Boy{String.raw`'s`} Toy
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("blanket")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Baby Blanket
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("clothing")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Newborn Clothing
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() =>
-                                      handleCategoryClick("toys-kid")
-                                    }
-                                    className={`link text-secondary duration-300 view-all-btn`}
-                                  >
-                                    View All
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="nav-item">
-                              <div className="text-button-uppercase pb-2">
-                                For Home
-                              </div>
-                              <ul>
-                                <li>
-                                  <div
-                                    onClick={() =>
-                                      handleCategoryClick("furniture")
-                                    }
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Furniture | Decor
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("table")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Table | Living Room
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("chair")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Chair | Work Room
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() => handleTypeClick("lighting")}
-                                    className={`link text-secondary duration-300 cursor-pointer`}
-                                  >
-                                    Lighting | Bed Room
-                                  </div>
-                                </li>
-                                <li>
-                                  <div
-                                    onClick={() =>
-                                      handleCategoryClick("furniture")
-                                    }
-                                    className={`link text-secondary duration-300 view-all-btn`}
-                                  >
-                                    View All
-                                  </div>
-                                </li>
-                              </ul>
-                            </div> */}
                           </div>
                           <div className="banner-ads-block pl-2.5 basis-1/3">
-                            <div
-                              className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer"
-                              onClick={() => handleTypeClick("swimwear")}
-                            >
-                              <div className="text-content py-14 pl-8 relative z-[1]">
-                                <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                  Save $10
+                            {products.map((prod, i) => {
+                              return (
+                                <div
+                                  className={
+                                    "banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " +
+                                    (i == 1 && "mt-2")
+                                  }
+                                  onClick={() => handleTypeClick("swimwear")}
+                                >
+                                  <div className="text-content py-14 pl-8 relative z-[1]">
+                                    <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
+                                      save ${prod.offer_value}
+                                    </div>
+                                    <div className="heading6 mt-2">
+                                      {subCategories?.map((cat) => {
+                                        if (
+                                          cat.id == Number(prod.sub_category)
+                                        ) {
+                                          return cat.name;
+                                        }
+                                      })}
+                                    </div>
+                                    <div className="body1 mt-3 text-secondary">
+                                      starting at{" "}
+                                      <span className="text-red">
+                                        ${prod.new_price}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <Image
+                                    src={prod.images[0].img}
+                                    width={200}
+                                    height={100}
+                                    alt="bg-img"
+                                    className="basis-1/3 absolute right-0 top-0 duration-700"
+                                  />
                                 </div>
-                                <div className="heading6 mt-2">
-                                  Dive into Savings <br />
-                                  on Swimwear
-                                </div>
-                                <div className="body1 mt-3 text-secondary">
-                                  Starting at{" "}
-                                  <span className="text-red">$59.99</span>
-                                </div>
-                              </div>
-                              <Image
-                                src={"/images/slider/bg2-2.png"}
-                                width={200}
-                                height={100}
-                                alt="bg-img"
-                                className="basis-1/3 absolute right-0 top-0 duration-700"
-                              />
-                            </div>
-                            <div
-                              className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer mt-8"
-                              onClick={() => handleTypeClick("accessories")}
-                            >
-                              <div className="text-content py-14 pl-8 relative z-[1]">
-                                <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                  Save $10
-                                </div>
-                                <div className="heading6 mt-2">
-                                  20% off <br />
-                                  accessories
-                                </div>
-                                <div className="body1 mt-3 text-secondary">
-                                  Starting at{" "}
-                                  <span className="text-red">$59.99</span>
-                                </div>
-                              </div>
-                              <Image
-                                src={"/images/other/bg-feature.png"}
-                                width={200}
-                                height={100}
-                                alt="bg-img"
-                                className="basis-1/3 absolute right-0 top-0 duration-700"
-                              />
-                            </div>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
@@ -922,11 +617,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/default"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/default"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/default"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Defaults
                                   </Link>
@@ -934,11 +628,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/sale"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/sale"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/sale"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Sale
                                   </Link>
@@ -946,11 +639,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/countdown-timer"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/countdown-timer"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/countdown-timer"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Countdown Timer
                                   </Link>
@@ -958,11 +650,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/grouped"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/grouped"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/grouped"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Grouped
                                   </Link>
@@ -970,11 +661,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/bought-together"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/bought-together"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/bought-together"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Frequently Bought Together
                                   </Link>
@@ -982,11 +672,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/out-of-stock"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/out-of-stock"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/out-of-stock"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Out Of Stock
                                   </Link>
@@ -994,11 +683,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/variable"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/variable"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/variable"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Variable
                                   </Link>
@@ -1013,11 +701,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/external"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/external"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/external"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products External
                                   </Link>
@@ -1025,11 +712,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/on-sale"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/on-sale"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/on-sale"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products On Sale
                                   </Link>
@@ -1037,11 +723,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/discount"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/discount"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/discount"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products With Discount
                                   </Link>
@@ -1049,11 +734,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/sidebar"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/sidebar"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/sidebar"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products With Sidebar
                                   </Link>
@@ -1061,11 +745,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/fixed-price"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/fixed-price"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/fixed-price"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Fixed Price
                                   </Link>
@@ -1080,11 +763,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/thumbnail-left"}
-                                    className={`link text-secondary duration-300 cursor-pointer ${
-                                      pathname === "/product/thumbnail-left"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 cursor-pointer ${pathname === "/product/thumbnail-left"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Thumbnails Left
                                   </Link>
@@ -1092,11 +774,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/thumbnail-bottom"}
-                                    className={`link text-secondary duration-300 cursor-pointer ${
-                                      pathname === "/product/thumbnail-bottom"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 cursor-pointer ${pathname === "/product/thumbnail-bottom"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Thumbnails Bottom
                                   </Link>
@@ -1104,11 +785,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/one-scrolling"}
-                                    className={`link text-secondary duration-300 cursor-pointer ${
-                                      pathname === "/product/one-scrolling"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 cursor-pointer ${pathname === "/product/one-scrolling"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Grid 1 Scrolling
                                   </Link>
@@ -1116,11 +796,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/two-scrolling"}
-                                    className={`link text-secondary duration-300 cursor-pointer ${
-                                      pathname === "/product/two-scrolling"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 cursor-pointer ${pathname === "/product/two-scrolling"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Grid 2 Scrolling
                                   </Link>
@@ -1128,11 +807,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/combined-one"}
-                                    className={`link text-secondary duration-300 cursor-pointer ${
-                                      pathname === "/product/combined-one"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 cursor-pointer ${pathname === "/product/combined-one"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Combined 1
                                   </Link>
@@ -1140,11 +818,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/combined-two"}
-                                    className={`link text-secondary duration-300 cursor-pointer ${
-                                      pathname === "/product/combined-two"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 cursor-pointer ${pathname === "/product/combined-two"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Combined 2
                                   </Link>
@@ -1181,9 +858,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/blog/default"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/blog/default" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/blog/default" ? "active" : ""
+                              }`}
                           >
                             Blog Default
                           </Link>
@@ -1191,9 +867,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/blog/list"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/blog/list" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/blog/list" ? "active" : ""
+                              }`}
                           >
                             Blog List
                           </Link>
@@ -1201,9 +876,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/blog/grid"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/blog/grid" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/blog/grid" ? "active" : ""
+                              }`}
                           >
                             Blog Grid
                           </Link>
@@ -1211,9 +885,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/blog/detail2"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/blog/detail2" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/blog/detail2" ? "active" : ""
+                              }`}
                           >
                             Blog Detail 1
                           </Link>
@@ -1221,9 +894,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/blog/detail2"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/blog/detail2" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/blog/detail2" ? "active" : ""
+                              }`}
                           >
                             Blog Detail 2
                           </Link>
@@ -1234,9 +906,8 @@ const MenuEight = () => {
                   <li className="h-full relative">
                     <Link
                       href="#!"
-                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${
-                        pathname.includes("/pages") ? "active" : ""
-                      }`}
+                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes("/pages") ? "active" : ""
+                        }`}
                     >
                       Pages
                     </Link>
@@ -1245,9 +916,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/about"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/pages/about" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/pages/about" ? "active" : ""
+                              }`}
                           >
                             About Us
                           </Link>
@@ -1255,9 +925,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/contact"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/pages/contact" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/pages/contact" ? "active" : ""
+                              }`}
                           >
                             Contact Us
                           </Link>
@@ -1265,9 +934,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/store-list"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/pages/store-list" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/pages/store-list" ? "active" : ""
+                              }`}
                           >
                             Store List
                           </Link>
@@ -1275,11 +943,10 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/page-not-found"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/pages/page-not-found"
-                                ? "active"
-                                : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/pages/page-not-found"
+                              ? "active"
+                              : ""
+                              }`}
                           >
                             404
                           </Link>
@@ -1287,9 +954,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/faqs"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/pages/faqs" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/pages/faqs" ? "active" : ""
+                              }`}
                           >
                             FAQs
                           </Link>
@@ -1297,9 +963,8 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/coming-soon"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/pages/coming-soon" ? "active" : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/pages/coming-soon" ? "active" : ""
+                              }`}
                           >
                             Coming Soon
                           </Link>
@@ -1307,11 +972,10 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/customer-feedbacks"
-                            className={`text-secondary duration-300 ${
-                              pathname === "/pages/customer-feedbacks"
-                                ? "active"
-                                : ""
-                            }`}
+                            className={`text-secondary duration-300 ${pathname === "/pages/customer-feedbacks"
+                              ? "active"
+                              : ""
+                              }`}
                           >
                             Customer Feedbacks
                           </Link>
@@ -1387,9 +1051,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/" ? "active" : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/" ? "active" : ""
+                                }`}
                             >
                               Home Fashion 1
                             </Link>
@@ -1397,11 +1060,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion2"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion2"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion2"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 2
                             </Link>
@@ -1409,11 +1071,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion3"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion3"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion3"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 3
                             </Link>
@@ -1421,11 +1082,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion4"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion4"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion4"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 4
                             </Link>
@@ -1433,11 +1093,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion5"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion5"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion5"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 5
                             </Link>
@@ -1445,11 +1104,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion6"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion6"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion6"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 6
                             </Link>
@@ -1457,11 +1115,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion7"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion7"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion7"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 7
                             </Link>
@@ -1469,11 +1126,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion8"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion8"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion8"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 8
                             </Link>
@@ -1481,11 +1137,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion9"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion9"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion9"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 9
                             </Link>
@@ -1493,11 +1148,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion10"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion10"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion10"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 10
                             </Link>
@@ -1505,11 +1159,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/fashion11"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/fashion11"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/fashion11"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Fashion 11
                             </Link>
@@ -1519,11 +1172,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/underwear"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/underwear"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/underwear"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Underwear
                             </Link>
@@ -1531,11 +1183,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/cosmetic1"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/cosmetic1"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/cosmetic1"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Cosmetic 1
                             </Link>
@@ -1543,11 +1194,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/cosmetic2"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/cosmetic2"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/cosmetic2"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Cosmetic 2
                             </Link>
@@ -1555,11 +1205,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/cosmetic3"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/cosmetic3"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/cosmetic3"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Cosmetic 3
                             </Link>
@@ -1567,9 +1216,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/pet"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/pet" ? "active" : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/pet" ? "active" : ""
+                                }`}
                             >
                               Home Pet Store
                             </Link>
@@ -1577,11 +1225,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/jewelry"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/jewelry"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/jewelry"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Jewelry
                             </Link>
@@ -1589,11 +1236,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/furniture"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/furniture"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/furniture"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Furniture
                             </Link>
@@ -1601,9 +1247,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/watch"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/watch" ? "active" : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/watch" ? "active" : ""
+                                }`}
                             >
                               Home Watch
                             </Link>
@@ -1611,9 +1256,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/toys"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/toys" ? "active" : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/toys" ? "active" : ""
+                                }`}
                             >
                               Home Toys Kid
                             </Link>
@@ -1621,9 +1265,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/yoga"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/yoga" ? "active" : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/yoga" ? "active" : ""
+                                }`}
                             >
                               Home Yoga
                             </Link>
@@ -1631,11 +1274,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/organic"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/organic"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/organic"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Organic
                             </Link>
@@ -1643,11 +1285,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/homepages/marketplace"
-                              className={`nav-item-mobile text-secondary duration-300 ${
-                                pathname === "/homepages/marketplace"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`nav-item-mobile text-secondary duration-300 ${pathname === "/homepages/marketplace"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Home Marketplace
                             </Link>
@@ -1925,14 +1566,14 @@ const MenuEight = () => {
                           >
                             <div className="text-content py-14 pl-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                Save $10
+                                save $10
                               </div>
                               <div className="heading6 mt-2">
                                 Dive into Savings <br />
                                 on Swimwear
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                Starting at{" "}
+                                starting at{" "}
                                 <span className="text-red">$59.99</span>
                               </div>
                             </div>
@@ -1950,14 +1591,14 @@ const MenuEight = () => {
                           >
                             <div className="text-content py-14 pl-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                Save $10
+                                save $10
                               </div>
                               <div className="heading6 mt-2">
                                 20% off <br />
                                 accessories
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                Starting at{" "}
+                                starting at{" "}
                                 <span className="text-red">$59.99</span>
                               </div>
                             </div>
@@ -2016,11 +1657,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/default"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/default"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/default"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Defaults
                                   </Link>
@@ -2028,11 +1668,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/sale"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/sale"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/sale"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Sale
                                   </Link>
@@ -2040,11 +1679,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/countdown-timer"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/countdown-timer"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/countdown-timer"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Countdown Timer
                                   </Link>
@@ -2052,11 +1690,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/grouped"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/grouped"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/grouped"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Grouped
                                   </Link>
@@ -2064,11 +1701,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/bought-together"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/bought-together"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/bought-together"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Frequently Bought Together
                                   </Link>
@@ -2076,11 +1712,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/out-of-stock"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/out-of-stock"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/out-of-stock"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Out Of Stock
                                   </Link>
@@ -2088,11 +1723,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/variable"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/variable"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/variable"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Variable
                                   </Link>
@@ -2107,11 +1741,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/external"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/external"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/external"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products External
                                   </Link>
@@ -2119,11 +1752,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/on-sale"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/on-sale"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/on-sale"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products On Sale
                                   </Link>
@@ -2131,11 +1763,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/discount"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/discount"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/discount"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products With Discount
                                   </Link>
@@ -2143,11 +1774,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/sidebar"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/sidebar"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/sidebar"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products With Sidebar
                                   </Link>
@@ -2155,11 +1785,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/fixed-price"}
-                                    className={`text-secondary duration-300 ${
-                                      pathname === "/product/fixed-price"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`text-secondary duration-300 ${pathname === "/product/fixed-price"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Fixed Price
                                   </Link>
@@ -2174,11 +1803,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/thumbnail-left"}
-                                    className={`link text-secondary duration-300 ${
-                                      pathname === "/product/thumbnail-left"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 ${pathname === "/product/thumbnail-left"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Thumbnails Left
                                   </Link>
@@ -2186,11 +1814,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/thumbnail-bottom"}
-                                    className={`link text-secondary duration-300 ${
-                                      pathname === "/product/thumbnail-bottom"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 ${pathname === "/product/thumbnail-bottom"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Thumbnails Bottom
                                   </Link>
@@ -2198,11 +1825,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/one-scrolling"}
-                                    className={`link text-secondary duration-300 ${
-                                      pathname === "/product/one-scrolling"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 ${pathname === "/product/one-scrolling"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Grid 1 Scrolling
                                   </Link>
@@ -2210,11 +1836,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/two-scrolling"}
-                                    className={`link text-secondary duration-300 ${
-                                      pathname === "/product/two-scrolling"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 ${pathname === "/product/two-scrolling"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Grid 2 Scrolling
                                   </Link>
@@ -2222,11 +1847,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/combined-one"}
-                                    className={`link text-secondary duration-300 ${
-                                      pathname === "/product/combined-one"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 ${pathname === "/product/combined-one"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Combined 1
                                   </Link>
@@ -2234,11 +1858,10 @@ const MenuEight = () => {
                                 <li>
                                   <Link
                                     href={"/product/combined-two"}
-                                    className={`link text-secondary duration-300 ${
-                                      pathname === "/product/combined-two"
-                                        ? "active"
-                                        : ""
-                                    }`}
+                                    className={`link text-secondary duration-300 ${pathname === "/product/combined-two"
+                                      ? "active"
+                                      : ""
+                                      }`}
                                   >
                                     Products Combined 2
                                   </Link>
@@ -2286,9 +1909,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/blog/default"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/blog/default" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/blog/default" ? "active" : ""
+                                }`}
                             >
                               Blog Default
                             </Link>
@@ -2296,9 +1918,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/blog/list"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/blog/list" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/blog/list" ? "active" : ""
+                                }`}
                             >
                               Blog List
                             </Link>
@@ -2306,9 +1927,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/blog/grid"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/blog/grid" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/blog/grid" ? "active" : ""
+                                }`}
                             >
                               Blog Grid
                             </Link>
@@ -2316,9 +1936,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/blog/detail2"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/blog/detail2" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/blog/detail2" ? "active" : ""
+                                }`}
                             >
                               Blog Detail 1
                             </Link>
@@ -2326,9 +1945,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/blog/detail2"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/blog/detail2" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/blog/detail2" ? "active" : ""
+                                }`}
                             >
                               Blog Detail 2
                             </Link>
@@ -2363,9 +1981,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/about"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/pages/about" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/pages/about" ? "active" : ""
+                                }`}
                             >
                               About Us
                             </Link>
@@ -2373,9 +1990,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/contact"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/pages/contact" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/pages/contact" ? "active" : ""
+                                }`}
                             >
                               Contact Us
                             </Link>
@@ -2383,9 +1999,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/store-list"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/pages/store-list" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/pages/store-list" ? "active" : ""
+                                }`}
                             >
                               Store List
                             </Link>
@@ -2393,11 +2008,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/page-not-found"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/pages/page-not-found"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/pages/page-not-found"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               404
                             </Link>
@@ -2405,9 +2019,8 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/faqs"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/pages/faqs" ? "active" : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/pages/faqs" ? "active" : ""
+                                }`}
                             >
                               FAQs
                             </Link>
@@ -2415,11 +2028,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/coming-soon"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/pages/coming-soon"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/pages/coming-soon"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Coming Soon
                             </Link>
@@ -2427,11 +2039,10 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/customer-feedbacks"
-                              className={`text-secondary duration-300 ${
-                                pathname === "/pages/customer-feedbacks"
-                                  ? "active"
-                                  : ""
-                              }`}
+                              className={`text-secondary duration-300 ${pathname === "/pages/customer-feedbacks"
+                                ? "active"
+                                : ""
+                                }`}
                             >
                               Customer Feedbacks
                             </Link>

@@ -1,8 +1,11 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 
 const Banner = () => {
+    const { t } = useTranslation();
+    
     return (
         <>
             <div className="banner-block md:pt-20 pt-10">
@@ -19,8 +22,8 @@ const Banner = () => {
                                 />
                             </div>
                             <div className="banner-content absolute left-[30px] top-1/2 -translate-y-1/2">
-                                <div className="heading6">Women{String.raw`'s`} Fashion <br />Must-Haves</div>
-                                <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">Shop Now</div>
+                                <div className="heading6">{t('slider.collections.womensFashion')}</div>
+                                <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">{t('slider.shopNow')}</div>
                             </div>
                         </Link>
                         <Link href={'/shop/breadcrumb-img'} className="banner-item relative block duration-500">
@@ -34,8 +37,8 @@ const Banner = () => {
                                 />
                             </div>
                             <div className="banner-content absolute left-[30px] top-1/2 -translate-y-1/2">
-                                <div className="heading6">Latest Men{String.raw`'s`} <br />Fashion Essentials</div>
-                                <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">Shop Now</div>
+                                <div className="heading6">{t('slider.collections.mensFashion')}</div>
+                                <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">{t('slider.shopNow')}</div>
                             </div>
                         </Link>
                         <Link href={'/shop/breadcrumb-img'} className="banner-item relative block duration-500 max-lg:hidden">
@@ -49,8 +52,8 @@ const Banner = () => {
                                 />
                             </div>
                             <div className="banner-content absolute left-[30px] top-1/2 -translate-y-1/2">
-                                <div className="heading6">Summer Sale <br />collection</div>
-                                <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">Shop Now</div>
+                                <div className="heading6">{t('slider.collections.summer')}</div>
+                                <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">{t('slider.shopNow')}</div>
                             </div>
                         </Link>
                     </div>

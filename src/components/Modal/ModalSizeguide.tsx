@@ -6,6 +6,7 @@ import { ProductType } from '@/type/ProductType'
 // import Slider from 'react-slider'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css'
+import { useTranslation } from 'next-i18next';
 
 interface Props {
     data: ProductType | null;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const ModalSizeguide: React.FC<Props> = ({ data, isOpen, onClose }) => {
+    const { t } = useTranslation();
     const [activeSize, setActiveSize] = useState<string>('')
     const [heightRange, setHeightRange] = useState<{ min: number; max: number }>({ min: 100, max: 200 });
     const [weightRange, setWeightRange] = useState<{ min: number; max: number }>({ min: 30, max: 90 });
@@ -61,14 +63,14 @@ const ModalSizeguide: React.FC<Props> = ({ data, isOpen, onClose }) => {
                     >
                         <Icon.X size={14} />
                     </div>
-                    <div className="heading3">Size guide</div>
+                    <div className="heading3">{t('modal.sizeguide.title')}</div>
                     <div className="md:mt-8 mt-6 progress">
                         <div className="flex imd:items-center gap-10 justify-between max-md:flex-col gap-y-5 max-md:pr-3">
                             <div className="flex items-center flex-shrink-0 gap-8">
-                                <span className='flex-shrink-0 md:w-14'>Height</span>
+                                <span className='flex-shrink-0 md:w-14'>{t('modal.sizeguide.height')}</span>
                                 <div className="flex items-center justify-center w-20 gap-1 py-2 border border-line rounded-lg flex-shrink-0">
                                     <span>{heightRange.max}</span>
-                                    <span className='caption1 text-secondary'>Cm</span>
+                                    <span className='caption1 text-secondary'>{t('modal.sizeguide.cm')}</span>
                                 </div>
                             </div>
                             <Slider
@@ -81,10 +83,10 @@ const ModalSizeguide: React.FC<Props> = ({ data, isOpen, onClose }) => {
                         </div>
                         <div className="flex md:items-center gap-10 justify-between max-md:flex-col gap-y-5 max-md:pr-3 mt-5">
                             <div className="flex items-center gap-8 flex-shrink-0">
-                                <span className='flex-shrink-0 md:w-14'>Weight</span>
+                                <span className='flex-shrink-0 md:w-14'>{t('modal.sizeguide.weight')}</span>
                                 <div className="flex items-center justify-center w-20 gap-1 py-2 border border-line rounded-lg flex-shrink-0">
                                     <span>{weightRange.max}</span>
-                                    <span className='caption1 text-secondary'>Kg</span>
+                                    <span className='caption1 text-secondary'>{t('modal.sizeguide.kg')}</span>
                                 </div>
                             </div>
                             <Slider
@@ -96,22 +98,21 @@ const ModalSizeguide: React.FC<Props> = ({ data, isOpen, onClose }) => {
                             />
                         </div>
                     </div>
-                    <div className="heading6 mt-8">suggests for you:</div>
+                    <div className="heading6 mt-8">{t('modal.sizeguide.suggestions')}</div>
                     <div className="list-size flex items-center gap-2 flex-wrap mt-3">
-                        
-                            <div
-                                className={`size-item w-12 h-12 flex items-center justify-center text-button rounded-full bg-white border border-line active`}
-                            >
-                                {data?.size}
-                            </div>
+                        <div
+                            className={`size-item w-12 h-12 flex items-center justify-center text-button rounded-full bg-white border border-line active`}
+                        >
+                            {data?.size}
+                        </div>
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>Size</th>
-                                <th>Bust</th>
-                                <th>Waist</th>
-                                <th>Low Hip</th>
+                                <th>{t('modal.sizeguide.size')}</th>
+                                <th>{t('modal.sizeguide.bust')}</th>
+                                <th>{t('modal.sizeguide.waist')}</th>
+                                <th>{t('modal.sizeguide.lowHip')}</th>
                             </tr>
                         </thead>
                         <tbody>

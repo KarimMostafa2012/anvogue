@@ -1,4 +1,6 @@
 // src/i18n.js
+'use client';
+
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
@@ -10,7 +12,7 @@ import translationUK from '../locales/uk/translation.json';
 import { localStorageUtil } from './localStorage';
 
 // Get the initial language from localStorage or default to 'en'
-const defaultLanguage = localStorageUtil.get('language') || 'en';
+const defaultLanguage = typeof window !== 'undefined' ? localStorageUtil.get('language') || 'en' : 'en';
 
 // the translations
 const resources = {
@@ -37,9 +39,11 @@ i18n
         resources,
         lng: defaultLanguage, // default language
         fallbackLng: 'en', // fallback language
-
         interpolation: {
             escapeValue: false
+        },
+        react: {
+            useSuspense: false // This is important for Next.js
         }
     });
 

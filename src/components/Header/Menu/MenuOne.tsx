@@ -16,6 +16,7 @@ import { useModalSearchContext } from "@/context/ModalSearchContext";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   props: string;
@@ -82,6 +83,7 @@ type SubCategory = {
 };
 
 const MenuOne: React.FC<Props> = ({ props }) => {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const { openLoginPopup, handleLoginPopup } = useLoginPopup();
   const { openSubMenuDepartment, handleSubMenuDepartment } =
@@ -217,8 +219,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                 setLoggedIn(true);
                 window.localStorage.setItem("accessToken", data.access);
                 window.sessionStorage.setItem("accessToken", data.access);
-                window.localStorage.setItem("refreshToken", data.refresh);
-                window.sessionStorage.setItem("refreshToken", data.refresh);
                 window.sessionStorage.setItem("loggedIn", "true");
               })
               .catch((error) => {
@@ -262,8 +262,6 @@ const MenuOne: React.FC<Props> = ({ props }) => {
           setLoggedIn(true);
           window.localStorage.setItem("accessToken", data.access);
           window.sessionStorage.setItem("accessToken", data.access);
-          window.localStorage.setItem("refreshToken", data.refresh);
-          window.sessionStorage.setItem("refreshToken", data.refresh);
           window.sessionStorage.setItem("loggedIn", "true");
         })
         .catch((error) => {
@@ -339,7 +337,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname === "/" ? "active" : ""
                       }`}
                     >
-                      Home
+                      {t('header.home')}
                     </Link>
                   </li>
                   <li className="h-full">
@@ -347,7 +345,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                       href="#!"
                       className="text-button-uppercase duration-300 h-full flex items-center justify-center"
                     >
-                      Features
+                      {t('header.features')}
                     </Link>
                     <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                       <div className="container">
@@ -399,11 +397,11 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                             <li key={subCatName.id}>
                                               <div
                                                 onClick={() => {
-                                                  window.location.href = "";
+                                                  window.location.href = "/shop";
                                                 }}
                                                 className={`link text-secondary duration-300 cursor-pointer`}
                                               >
-                                                view more
+                                                {t('header.viewMore')}
                                               </div>
                                             </li>
                                           );
@@ -422,14 +420,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             >
                               <div className="text-content py-14 pl-8 relative z-[1]">
                                 <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                  Save $10
+                                  {t('header.save')} $10
                                 </div>
                                 <div className="heading6 mt-2">
-                                  Dive into Savings <br />
-                                  on Swimwear
+                                  {t('header.diveIntoSavings')} <br />
+                                  {t('header.onSwimwear')}
                                 </div>
                                 <div className="body1 mt-3 text-secondary">
-                                  Starting at{" "}
+                                  {t('header.startingAt')}{" "}
                                   <span className="text-red">$59.99</span>
                                 </div>
                               </div>
@@ -447,14 +445,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             >
                               <div className="text-content py-14 pl-8 relative z-[1]">
                                 <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                  Save $10
+                                  {t('header.save')} $10
                                 </div>
                                 <div className="heading6 mt-2">
-                                  20% off <br />
-                                  accessories
+                                  20% {t('header.off')} <br />
+                                  {t('header.accessories')}
                                 </div>
                                 <div className="body1 mt-3 text-secondary">
-                                  Starting at{" "}
+                                  {t('header.startingAt')}{" "}
                                   <span className="text-red">$59.99</span>
                                 </div>
                               </div>
@@ -478,7 +476,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/shop") ? "active" : ""
                       }`}
                     >
-                      Shop
+                      {t('header.shop')}
                     </Link>
                   </li>
                   <li className="h-full">
@@ -488,14 +486,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/product/") ? "active" : ""
                       }`}
                     >
-                      Product
+                      {t('header.product')}
                     </Link>
                     <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                       <div className="container">
                         <div className="nav-link w-full flex justify-between py-8">
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-2">
-                              Products Features
+                              {t('header.productsFeatures')}
                             </div>
                             <ul>
                               <li>
@@ -507,65 +505,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                       : ""
                                   }`}
                                 >
-                                  Products Defaults
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/sale"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/sale" ? "active" : ""
-                                  }`}
-                                >
-                                  Products Sale
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/countdown-timer"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/countdown-timer"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Countdown Timer
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/grouped"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/grouped"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Grouped
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/bought-together"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/bought-together"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Frequently Bought Together
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/out-of-stock"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/out-of-stock"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Out Of Stock
+                                  {t('header.defaultProduct')}
                                 </Link>
                               </li>
                               <li>
@@ -577,16 +517,21 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                       : ""
                                   }`}
                                 >
-                                  Products Variable
+                                  {t('header.variableProduct')}
                                 </Link>
                               </li>
-                            </ul>
-                          </div>
-                          <div className="nav-item">
-                            <div className="text-button-uppercase pb-2">
-                              Products Features
-                            </div>
-                            <ul>
+                              <li>
+                                <Link
+                                  href={"/product/grouped"}
+                                  className={`link text-secondary duration-300 ${
+                                    pathname === "/product/grouped"
+                                      ? "active"
+                                      : ""
+                                  }`}
+                                >
+                                  {t('header.groupedProduct')}
+                                </Link>
+                              </li>
                               <li>
                                 <Link
                                   href={"/product/external"}
@@ -596,201 +541,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                       : ""
                                   }`}
                                 >
-                                  Products External
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/on-sale"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/on-sale"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products On Sale
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/discount"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/discount"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products With Discount
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/sidebar"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/sidebar"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products With Sidebar
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/fixed-price"}
-                                  className={`link text-secondary duration-300 ${
-                                    pathname === "/product/fixed-price"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Fixed Price
-                                </Link>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="nav-item">
-                            <div className="text-button-uppercase pb-2">
-                              Products Layout
-                            </div>
-                            <ul>
-                              <li>
-                                <Link
-                                  href={"/product/thumbnail-left"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/thumbnail-left"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Thumbnails Left
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/thumbnail-bottom"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/thumbnail-bottom"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Thumbnails Bottom
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/one-scrolling"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/one-scrolling"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Grid 1 Scrolling
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/two-scrolling"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/two-scrolling"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Grid 2 Scrolling
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/combined-one"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/combined-one"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Combined 1
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/combined-two"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/combined-two"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Combined 2
-                                </Link>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="nav-item">
-                            <div className="text-button-uppercase pb-2">
-                              Products Styles
-                            </div>
-                            <ul>
-                              <li>
-                                <Link
-                                  href={"/product/styles/style1"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/styles/style1"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Style 01
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/styles/style2"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/styles/style2"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Style 02
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/styles/style3"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/styles/style3"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Style 03
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/styles/style4"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/styles/style4"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Style 04
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  href={"/product/styles/style5"}
-                                  className={`link text-secondary duration-300 cursor-pointer ${
-                                    pathname === "/product/styles/style5"
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                >
-                                  Products Style 05
+                                  {t('header.externalProduct')}
                                 </Link>
                               </li>
                             </ul>
@@ -806,7 +557,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/blog") ? "active" : ""
                       }`}
                     >
-                      Blog
+                      {t('header.blog')}
                     </Link>
                     <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                       <ul className="w-full">
@@ -817,7 +568,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/blog/default" ? "active" : ""
                             }`}
                           >
-                            Blog Default
+                            {t('header.blog.default')}
                           </Link>
                         </li>
                         <li>
@@ -827,7 +578,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/blog/list" ? "active" : ""
                             }`}
                           >
-                            Blog List
+                            {t('header.blog.list')}
                           </Link>
                         </li>
                         <li>
@@ -837,7 +588,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/blog/grid" ? "active" : ""
                             }`}
                           >
-                            Blog Grid
+                            {t('header.blog.grid')}
                           </Link>
                         </li>
                       </ul>
@@ -850,7 +601,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/pages") ? "active" : ""
                       }`}
                     >
-                      Pages
+                      {t('header.pages')}
                     </Link>
                     <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                       <ul className="w-full">
@@ -861,7 +612,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/pages/about" ? "active" : ""
                             }`}
                           >
-                            About Us
+                            {t('header.pages.about')}
                           </Link>
                         </li>
                         <li>
@@ -871,7 +622,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/pages/contact" ? "active" : ""
                             }`}
                           >
-                            Contact Us
+                            {t('header.pages.contact')}
                           </Link>
                         </li>
                         <li>
@@ -881,7 +632,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/pages/store-list" ? "active" : ""
                             }`}
                           >
-                            Store List
+                            {t('header.pages.storeList')}
                           </Link>
                         </li>
                         <li>
@@ -893,7 +644,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 : ""
                             }`}
                           >
-                            404
+                            {t('header.pages.notFound')}
                           </Link>
                         </li>
                         <li>
@@ -903,17 +654,19 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/pages/faqs" ? "active" : ""
                             }`}
                           >
-                            FAQs
+                            {t('header.pages.faqs')}
                           </Link>
                         </li>
                         <li>
                           <Link
                             href="/pages/coming-soon"
                             className={`link text-secondary duration-300 ${
-                              pathname === "/pages/coming-soon" ? "active" : ""
+                              pathname === "/pages/coming-soon"
+                                ? "active"
+                                : ""
                             }`}
                           >
-                            Coming Soon
+                            {t('header.pages.comingSoon')}
                           </Link>
                         </li>
                         <li>
@@ -925,7 +678,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 : ""
                             }`}
                           >
-                            Customer Feedbacks
+                            {t('header.pages.customerFeedbacks')}
                           </Link>
                         </li>
                       </ul>
@@ -968,7 +721,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           Login
                         </Link>
                         <div className="text-secondary text-center mt-3 pb-4">
-                          Don’t have an account?
+                          Don't have an account?
                           <Link
                             href={"/register"}
                             className="text-black pl-1 hover:underline"
@@ -1044,7 +797,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                 />
                 <input
                   type="text"
-                  placeholder="What are you looking for?"
+                  placeholder={t('header.search.placeholder')}
                   className=" h-12 rounded-lg border border-line text-sm w-full pl-10 pr-4"
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
@@ -1063,7 +816,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                       href={"#!"}
                       className={`text-xl font-semibold flex items-center justify-between`}
                     >
-                      Demo
+                      {t('header.mobile.demo')}
                       <span className="text-right">
                         <Icon.CaretRight size={20} />
                       </span>
@@ -1074,7 +827,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         onClick={() => handleOpenSubNavMobile(1)}
                       >
                         <Icon.CaretLeft />
-                        Back
+                        {t('header.mobile.back')}
                       </div>
                       <div className="list-nav-item w-full grid grid-cols-2 pt-2 pb-6">
                         <ul>
@@ -1375,14 +1128,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         <div className="nav-link grid grid-cols-2 gap-5 gap-y-6">
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              For Men
+                              {t('header.mobile.features.forMen')}
                             </div>
                             <ul>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Starting From 50% Off
+                                  {t('header.mobile.features.startingFrom50')}
                                 </div>
                               </li>
                               <li>
@@ -1390,7 +1143,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("outerwear")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Outerwear | Coats
+                                  {t('header.mobile.features.outerwear')}
                                 </div>
                               </li>
                               <li>
@@ -1398,7 +1151,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("sweater")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Sweaters | Cardigans
+                                  {t('header.mobile.features.sweaters')}
                                 </div>
                               </li>
                               <li>
@@ -1406,21 +1159,21 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("shirt")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Shirt | Sweatshirts
+                                  {t('header.mobile.features.shirts')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  View All
+                                  {t('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              Skincare
+                              {t('header.mobile.features.skincare')}
                             </div>
                             <ul>
                               <li>
@@ -1428,7 +1181,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("face")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Faces Skin
+                                  {t('header.mobile.features.faceSkin')}
                                 </div>
                               </li>
                               <li>
@@ -1436,7 +1189,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("eye")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Eyes Makeup
+                                  {t('header.mobile.features.eyeMakeup')}
                                 </div>
                               </li>
                               <li>
@@ -1444,7 +1197,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("lip")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Lip Polish
+                                  {t('header.mobile.features.lipPolish')}
                                 </div>
                               </li>
                               <li>
@@ -1452,21 +1205,21 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("hair")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Hair Care
+                                  {t('header.mobile.features.hairCare')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  View All
+                                  {t('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              Health
+                              {t('header.mobile.features.health')}
                             </div>
                             <ul>
                               <li>
@@ -1474,7 +1227,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("candle")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Cented Candle
+                                  {t('header.mobile.features.centedCandle')}
                                 </div>
                               </li>
                               <li>
@@ -1482,7 +1235,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("drinks")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Health Drinks
+                                  {t('header.mobile.features.healthDrinks')}
                                 </div>
                               </li>
                               <li>
@@ -1490,7 +1243,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("clothes")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Yoga Clothes
+                                  {t('header.mobile.features.yogaClothes')}
                                 </div>
                               </li>
                               <li>
@@ -1498,28 +1251,28 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("mats")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Yoga Equipment
+                                  {t('header.mobile.features.yogaEquipment')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  View All
+                                  {t('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              For Women
+                              {t('header.mobile.features.forWomen')}
                             </div>
                             <ul>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Starting From 60% Off
+                                  {t('header.mobile.features.startingFrom60')}
                                 </div>
                               </li>
                               <li>
@@ -1527,7 +1280,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("dress")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Dresses | Jumpsuits
+                                  {t('header.mobile.features.dresses')}
                                 </div>
                               </li>
                               <li>
@@ -1535,7 +1288,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("t-shirt")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  T-shirts | Sweatshirts
+                                  {t('header.mobile.features.tshirts')}
                                 </div>
                               </li>
                               <li>
@@ -1543,21 +1296,21 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("accessories")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Accessories | Jewelry
+                                  {t('header.mobile.features.accessoriesJewelry')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  View All
+                                  {t('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              For Kid
+                              {t('header.mobile.features.forKid')}
                             </div>
                             <ul>
                               <li>
@@ -1565,7 +1318,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("bed")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Kids Bed
+                                  {t('header.mobile.features.kidsBed')}
                                 </div>
                               </li>
                               <li>
@@ -1573,7 +1326,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("toy")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Boy{String.raw`'s`} Toy
+                                  {t('header.mobile.features.boysToy')}
                                 </div>
                               </li>
                               <li>
@@ -1581,7 +1334,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("blanket")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Baby Blanket
+                                  {t('header.mobile.features.babyBlanket')}
                                 </div>
                               </li>
                               <li>
@@ -1589,28 +1342,28 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("clothing")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Newborn Clothing
+                                  {t('header.mobile.features.newbornClothing')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  View All
+                                  {t('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              For Home
+                              {t('header.mobile.features.forHome')}
                             </div>
                             <ul>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Furniture | Decor
+                                  {t('header.mobile.features.furnitureDecor')}
                                 </div>
                               </li>
                               <li>
@@ -1618,7 +1371,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("table")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Table | Living Room
+                                  {t('header.mobile.features.tableLivingRoom')}
                                 </div>
                               </li>
                               <li>
@@ -1626,7 +1379,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("chair")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Chair | Work Room
+                                  {t('header.mobile.features.chairWorkRoom')}
                                 </div>
                               </li>
                               <li>
@@ -1634,14 +1387,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("lighting")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Lighting | Bed Room
+                                  {t('header.mobile.features.lightingBedRoom')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  View All
+                                  {t('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
@@ -1654,15 +1407,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           >
                             <div className="text-content py-14 pl-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                Save $10
+                                {t('header.mobile.features.save10')}
                               </div>
                               <div className="heading6 mt-2">
-                                Dive into Savings <br />
-                                on Swimwear
+                                {t('header.mobile.features.diveIntoSavings')} <br />
+                                {t('header.mobile.features.onSwimwear')}
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                Starting at{" "}
-                                <span className="text-red">$59.99</span>
+                                {t('header.mobile.features.startingAt')} <span className="text-red">$59.99</span>
                               </div>
                             </div>
                             <Image
@@ -1679,15 +1431,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           >
                             <div className="text-content py-14 pl-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                Save $10
+                                {t('header.mobile.features.save10')}
                               </div>
                               <div className="heading6 mt-2">
-                                20% off <br />
-                                accessories
+                                20% {t('header.mobile.features.off')} <br />
+                                {t('header.mobile.features.accessories')}
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                Starting at{" "}
-                                <span className="text-red">$59.99</span>
+                                {t('header.mobile.features.startingAt')} <span className="text-red">$59.99</span>
                               </div>
                             </div>
                             <Image
@@ -1739,7 +1490,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           <div className="nav-link grid grid-cols-2 gap-5 gap-y-6 justify-between">
                             <div className="nav-item">
                               <div className="text-button-uppercase pb-1">
-                                Products Features
+                                {t('header.mobile.product.features')}
                               </div>
                               <ul>
                                 <li>
@@ -1751,7 +1502,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Defaults
+                                    {t('header.mobile.product.default')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1763,7 +1514,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Sale
+                                    {t('header.mobile.product.sale')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1775,7 +1526,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Countdown Timer
+                                    {t('header.mobile.product.countdownTimer')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1787,7 +1538,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Grouped
+                                    {t('header.mobile.product.grouped')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1799,7 +1550,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Frequently Bought Together
+                                    {t('header.mobile.product.boughtTogether')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1811,7 +1562,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Out Of Stock
+                                    {t('header.mobile.product.outOfStock')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1823,14 +1574,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Variable
+                                    {t('header.mobile.product.variable')}
                                   </Link>
                                 </li>
                               </ul>
                             </div>
                             <div className="nav-item">
                               <div className="text-button-uppercase pb-1">
-                                Products Features
+                                {t('header.mobile.product.features')}
                               </div>
                               <ul>
                                 <li>
@@ -1842,7 +1593,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products External
+                                    {t('header.mobile.product.external')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1854,7 +1605,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products On Sale
+                                    {t('header.mobile.product.onSale')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1866,7 +1617,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products With Discount
+                                    {t('header.mobile.product.withDiscount')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1878,7 +1629,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products With Sidebar
+                                    {t('header.mobile.product.withSidebar')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1890,14 +1641,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Fixed Price
+                                    {t('header.mobile.product.fixedPrice')}
                                   </Link>
                                 </li>
                               </ul>
                             </div>
                             <div className="nav-item col-span-2">
                               <div className="text-button-uppercase pb-1">
-                                Products Layout
+                                {t('header.mobile.product.layout')}
                               </div>
                               <ul>
                                 <li>
@@ -1909,7 +1660,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Thumbnails Left
+                                    {t('header.mobile.product.thumbnailsLeft')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1921,7 +1672,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Thumbnails Bottom
+                                    {t('header.mobile.product.thumbnailsBottom')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1933,7 +1684,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Grid 1 Scrolling
+                                    {t('header.mobile.product.grid1Scrolling')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1945,7 +1696,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Grid 2 Scrolling
+                                    {t('header.mobile.product.grid2Scrolling')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1957,7 +1708,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Combined 1
+                                    {t('header.mobile.product.combined1')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1969,7 +1720,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    Products Combined 2
+                                    {t('header.mobile.product.combined2')}
                                   </Link>
                                 </li>
                               </ul>
@@ -1977,7 +1728,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           </div>
                           <div className="recent-product pt-4">
                             <div className="text-button-uppercase pb-1">
-                              Recent Products
+                              {t('header.mobile.product.recentProducts')}
                             </div>
                             <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
                               {productData.slice(0, 2).map((prd, index) => (
@@ -2019,7 +1770,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/default" ? "active" : ""
                               }`}
                             >
-                              Blog Default
+                              {t('header.mobile.blog.default')}
                             </Link>
                           </li>
                           <li>
@@ -2029,7 +1780,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/list" ? "active" : ""
                               }`}
                             >
-                              Blog List
+                              {t('header.mobile.blog.list')}
                             </Link>
                           </li>
                           <li>
@@ -2039,7 +1790,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/grid" ? "active" : ""
                               }`}
                             >
-                              Blog Grid
+                              {t('header.mobile.blog.grid')}
                             </Link>
                           </li>
                           <li>
@@ -2049,7 +1800,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/detail2" ? "active" : ""
                               }`}
                             >
-                              Blog Detail 1
+                              {t('header.mobile.blog.detail1')}
                             </Link>
                           </li>
                           <li>
@@ -2059,7 +1810,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/detail2" ? "active" : ""
                               }`}
                             >
-                              Blog Detail 2
+                              {t('header.mobile.blog.detail2')}
                             </Link>
                           </li>
                         </ul>
@@ -2128,7 +1879,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   : ""
                               }`}
                             >
-                              404
+                              {t('header.pages.notFound')}
                             </Link>
                           </li>
                           <li>
@@ -2138,7 +1889,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/pages/faqs" ? "active" : ""
                               }`}
                             >
-                              FAQs
+                              {t('header.pages.faqs')}
                             </Link>
                           </li>
                           <li>
@@ -2150,7 +1901,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   : ""
                               }`}
                             >
-                              Coming Soon
+                              {t('header.pages.comingSoon')}
                             </Link>
                           </li>
                           <li>
@@ -2162,7 +1913,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   : ""
                               }`}
                             >
-                              Customer Feedbacks
+                              {t('header.pages.customerFeedbacks')}
                             </Link>
                           </li>
                         </ul>
@@ -2183,7 +1934,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
             className="menu_bar-link flex flex-col items-center gap-1"
           >
             <Icon.House weight="bold" className="text-2xl" />
-            <span className="menu_bar-title caption2 font-semibold">Home</span>
+            <span className="menu_bar-title caption2 font-semibold">{t('header.mobile.menuBar.home')}</span>
           </Link>
           <Link
             href={"/shop/filter-canvas"}
@@ -2191,7 +1942,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
           >
             <Icon.List weight="bold" className="text-2xl" />
             <span className="menu_bar-title caption2 font-semibold">
-              Category
+              {t('header.mobile.menuBar.category')}
             </span>
           </Link>
           <Link
@@ -2206,7 +1957,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                 handleSearch(searchKeyword);
               }}
             >
-              Search
+              {t('header.mobile.menuBar.search')}
             </span>
           </Link>
           <Link
@@ -2219,7 +1970,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                 {cartState.cartArray.length}
               </span>
             </div>
-            <span className="menu_bar-title caption2 font-semibold">Cart</span>
+            <span className="menu_bar-title caption2 font-semibold">{t('header.mobile.menuBar.cart')}</span>
           </Link>
         </div>
       </div>

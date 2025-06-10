@@ -7,9 +7,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css/bundle';
 import 'swiper/css/effect-fade';
-
+import { useTranslation } from 'react-i18next';
 
 const SliderNine = () => {
+    const { t } = useTranslation();
+    
     return (
         <>
             <div className="slider-block style-nine lg:h-[480px] md:h-[400px] sm:h-[320px] h-[280px] w-full">
@@ -29,9 +31,9 @@ const SliderNine = () => {
                             <SwiperSlide>
                                 <div className="slider-item h-full w-full flex items-center bg-surface relative">
                                     <div className="text-content md:pl-16 pl-5 basis-1/2">
-                                        <div className="text-sub-display">Sale! Up To 50% Off!</div>
-                                        <div className="heading1 md:mt-5 mt-2">Step into a World of Style</div>
-                                        <Link href='/shop/breadcrumb-img' className="button-main md:mt-8 mt-3">Shop Now</Link>
+                                        <div className="text-sub-display">{t('slider.sale')}</div>
+                                        <div className="heading1 md:mt-5 mt-2">{t('slider.collections.fashion')}</div>
+                                        <Link href='/shop/breadcrumb-img' className="button-main md:mt-8 mt-3">{t('slider.shopNow')}</Link>
                                     </div>
                                     <div className="sub-img absolute xl:w-[33%] sm:w-[38%] w-[60%] xl:right-[100px] sm:right-[20px] -right-5 bottom-0">
                                         <Image
@@ -48,9 +50,9 @@ const SliderNine = () => {
                             <SwiperSlide>
                                 <div className="slider-item h-full w-full flex items-center bg-[#F2E9E9] relative">
                                     <div className="text-content md:pl-16 pl-5 basis-1/2">
-                                        <div className="text-sub-display">Sale! Up To 50% Off!</div>
-                                        <div className="heading1 md:mt-5 mt-2">Unveiling Fashion{String.raw`'s`} Finest</div>
-                                        <Link href='/shop/breadcrumb-img' className="button-main md:mt-8 mt-3">Shop Now</Link>
+                                        <div className="text-sub-display">{t('slider.sale')}</div>
+                                        <div className="heading1 md:mt-5 mt-2">{t('slider.collections.newSeason')}</div>
+                                        <Link href='/shop/breadcrumb-img' className="button-main md:mt-8 mt-3">{t('slider.shopNow')}</Link>
                                     </div>
                                     <div className="sub-img absolute xl:w-[35%] sm:w-[40%] w-[62%] xl:right-[80px] sm:right-[20px] -right-5 bottom-0">
                                         <Image
@@ -67,9 +69,9 @@ const SliderNine = () => {
                             <SwiperSlide>
                                 <div className="slider-item h-full w-full flex items-center bg-[#E4EADD] relative">
                                     <div className="text-content md:pl-16 pl-5 basis-1/2">
-                                        <div className="text-sub-display">Sale! Up To 50% Off!</div>
-                                        <div className="heading1 md:mt-5 mt-2">Unleash Your Unique Style</div>
-                                        <Link href='/shop/breadcrumb-img' className="button-main md:mt-8 mt-3">Shop Now</Link>
+                                        <div className="text-sub-display">{t('slider.sale')}</div>
+                                        <div className="heading1 md:mt-5 mt-2">{t('slider.collections.stylish')}</div>
+                                        <Link href='/shop/breadcrumb-img' className="button-main md:mt-8 mt-3">{t('slider.shopNow')}</Link>
                                     </div>
                                     <div className="sub-img absolute xl:w-[29%] sm:w-[33%] w-[46%] xl:right-[80px] sm:right-[20px] -right-3 bottom-0">
                                         <Image
