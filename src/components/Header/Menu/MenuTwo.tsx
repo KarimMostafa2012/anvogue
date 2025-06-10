@@ -1086,7 +1086,7 @@ const MenuTwo = () => {
                                             ${openLoginPopup ? 'open' : ''}`}
                                     >
                                         <Link href={'/login'} className="button-main w-full text-center">Login</Link>
-                                        <div className="text-secondary text-center mt-3 pb-4">Don't have an account?
+                                        <div className="text-secondary text-center mt-3 pb-4">Don&apos;t have an account?
                                             <Link href={'/register'} className='text-black pl-1 hover:underline'>Register</Link>
                                         </div>
                                         <Link href={'/my-account'} className="button-main bg-white text-black border border-black w-full text-center">Dashboard</Link>

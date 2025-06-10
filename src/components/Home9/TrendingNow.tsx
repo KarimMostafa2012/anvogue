@@ -108,7 +108,7 @@ const TrendingNow = () => {
             >
               {categories.map((category) => {
                 return (
-                  <SwiperSlide className="py-1">
+                  <SwiperSlide key={category.id} className="py-1">
                     <div
                       className="trending-item block relative cursor-pointer"
                       onClick={() => handleTypeClick("t-shirt")}

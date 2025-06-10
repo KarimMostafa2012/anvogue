@@ -910,7 +910,7 @@ const MyAccount = () => {
                           <div className="list_prd px-5">
                             {order.order_items.map((item) => {
                               return (
-                                <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
+                                <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line" key={item.id}>
                                   <Link
                                     href={
                                       "/product/variable?id=" + item.product.id
@@ -1072,9 +1072,8 @@ const MyAccount = () => {
                   </form>
                   {profile.addresses?.map((address: Address, i) => {
                     return (
-                      <>
+                      <div key={address.id}>
                         <button
-                          key={i}
                           type="button"
                           className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${
                             activeAddress === "shipping" + i ? "active" : ""
@@ -1096,9 +1095,7 @@ const MyAccount = () => {
                         >
                           <div
                             className={`form_address ${
-                              activeAddress === "shipping" + i
-                                ? "block"
-                                : "hidden"
+                              activeAddress === "shipping" + i ? "block" : "hidden"
                             }`}
                           >
                             <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
@@ -1181,7 +1178,7 @@ const MyAccount = () => {
                             </button>
                           </div>
                         </form>
-                      </>
+                      </div>
                     );
                   })}
                   <div className="block-button lg:mt-10 mt-6">
@@ -1558,7 +1555,7 @@ const MyAccount = () => {
             <div className="list_prd">
               {detailOrder?.order_items.map((item) => {
                 return (
-                  <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
+                  <div className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line" key={item.id}>
                     <Link
                       href={"/product/variable?id=" + item.product.id}
                       className="flex items-center gap-5"

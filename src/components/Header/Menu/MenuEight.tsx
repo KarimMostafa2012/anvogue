@@ -549,6 +549,7 @@ const MenuEight = () => {
                             {products.map((prod, i) => {
                               return (
                                 <div
+                                key={i}
                                   className={
                                     "banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " +
                                     (i == 1 && "mt-2")

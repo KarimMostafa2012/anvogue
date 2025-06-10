@@ -483,7 +483,7 @@ const ShopSidebarList = ({
               {productName && (
                 <div className="mb-4 text-lg">
                   {t('shop.showingResultsFor')}:{" "}
-                  <span className="font-semibold">"{productName}"</span>
+                  <span className="font-semibold">&quot;{productName}&quot;</span>
                   <button
                     onClick={() => {
                       const newParams = new URLSearchParams(searchParams.toString());
@@ -611,7 +611,7 @@ const ShopSidebarList = ({
                   <div className="no-data-product col-span-full text-center py-10">
                     {productName ? (
                       <>
-                        {t('shop.noProductsFoundFor')} "{productName}"
+                        {t('shop.noProductsFoundFor')} &quot;{productName}&quot;
                         <button
                           onClick={() => {
                             const newParams = new URLSearchParams(searchParams.toString());

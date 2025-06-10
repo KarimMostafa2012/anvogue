@@ -721,7 +721,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           Login
                         </Link>
                         <div className="text-secondary text-center mt-3 pb-4">
-                          Don't have an account?
+                          Don&apos;t have an account?
                           <Link
                             href={"/register"}
                             className="text-black pl-1 hover:underline"

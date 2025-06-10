@@ -376,7 +376,7 @@ const Checkout = () => {
                   <div className="login bg-surface py-3 px-4 flex justify-between rounded-lg">
                     <div className="left flex items-center">
                       <span className="text-on-surface-variant1 pr-4">
-                        don't have an account?{" "}
+                        don&apos;t have an account?{" "}
                       </span>
                       <span className="text-button text-on-surface hover-underline cursor-pointer">
                         <a href="/register">Signup</a>
@@ -518,9 +518,8 @@ const Checkout = () => {
                     </form>
                     {profile.addresses?.map((address: Address, i) => {
                       return (
-                        <>
+                        <div key={address.id}>
                           <button
-                            key={i}
                             type="button"
                             className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${
                               activeAddress === "shipping" + i ? "active" : ""
@@ -554,9 +553,7 @@ const Checkout = () => {
                           >
                             <div
                               className={`form_address ${
-                                activeAddress === "shipping" + i
-                                  ? "block"
-                                  : "hidden"
+                                activeAddress === "shipping" + i ? "block" : "hidden"
                               }`}
                             >
                               <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
@@ -626,7 +623,7 @@ const Checkout = () => {
                               </div>
                             </div>
                           </form>
-                        </>
+                        </div>
                       );
                     })}
                     <div className="block-button lg:mt-10 mt-6">
