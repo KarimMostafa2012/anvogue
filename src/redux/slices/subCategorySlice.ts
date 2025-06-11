@@ -135,8 +135,10 @@ const initialState: SubCategoryState = {
 
 const subCategorySlice = createSlice({
     name: 'subCategory',
-    initialState: initialState,
-    reducers: {},
+    initialState,
+    reducers: {
+        // ... existing code ...
+    },
     extraReducers: (builder) => {
         builder
             // Handle getAllSubCategories

@@ -9,8 +9,6 @@ import ModalQuickview from '@/components/Modal/ModalQuickview'
 import ModalCompare from '@/components/Modal/ModalCompare'
 import CountdownTimeType from '@/type/CountdownType'
 import { countdownTime } from '@/store/countdownTime'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/redux/store'
 
 const serverTimeLeft: CountdownTimeType = countdownTime("2025-5-31");
 
@@ -26,9 +24,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-
   return (
-    <html lang="utf8">
+    <html lang="en">
       <body className={instrument.className}>
         <GlobalProvider>
           {children}
