@@ -230,11 +230,6 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
 
       // Then add the main product if it exists
       if (productMain) {
-        // await addToCart(
-        //   { ...productMain },
-        //   activeColor == undefined ? productMain.colors[0].color : activeColor,
-        //   quantity[productMain.id]
-        // );
         if (!cartState.cartArray.find((item) => item.id === productMain.id)) {
           console.log(`found: ${productMain.id}`);
           await addToCart(
@@ -767,7 +762,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                 </div>
                 <div className="button-block mt-5">
                   <div className="button-main w-full text-center">
-                    {t('product.buyNow')}
+                    {t('product.detail.buyNow')}
                   </div>
                 </div>
                 <div className="flex items-center lg:gap-20 gap-8 mt-5 pb-6 border-b border-line">
@@ -787,7 +782,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                     <div className="share-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
                       <Icon.ShareNetwork weight="fill" className="heading6" />
                     </div>
-                    <span>{t('product.share')}</span>
+                    <span>{t('product.detail.share')}</span>
                   </div>
                 </div>
                 <div className="more-infor mt-6">

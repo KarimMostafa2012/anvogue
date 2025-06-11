@@ -8,7 +8,7 @@ import { ProductType } from "@/type/ProductType";
 import Product from "@/components/Product/Product";
 import { useWishlist } from "@/context/WishlistContext";
 import HandlePagination from "@/components/Other/HandlePagination";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, X } from "@phosphor-icons/react/dist/ssr";
 import {WishlistItem} from "@/context/WishlistContext"
 
 const Wishlist = () => {
@@ -214,7 +214,7 @@ const Wishlist = () => {
                     <option value="priceHighToLow">Price High To Low</option>
                     <option value="priceLowToHigh">Price Low To High</option>
                   </select>
-                  <Icon.CaretDown
+                  <CaretDown
                     size={12}
                     className="absolute top-1/2 -translate-y-1/2 md:right-4 right-2"
                   />
@@ -238,7 +238,7 @@ const Wishlist = () => {
                           setType(undefined);
                         }}
                       >
-                        <Icon.X className="cursor-pointer" />
+                        <X className="cursor-pointer" />
                         <span>{selectedType}</span>
                       </div>
                     )}
@@ -249,7 +249,7 @@ const Wishlist = () => {
                       setType(undefined);
                     }}
                   >
-                    <Icon.X
+                    <X
                       color="rgb(219, 68, 68)"
                       className="cursor-pointer"
                     />

@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { CaretRight } from "@phosphor-icons/react/dist/ssr";
 
 interface Pros {
     heading: string
@@ -18,7 +18,7 @@ const Breadcrumb: React.FC<Pros> = ({ heading, subHeading }) => {
                                 <div className="heading2 text-center">{heading}</div>
                                 <div className="link flex items-center justify-center gap-1 caption1 mt-3">
                                     <Link href={'/'}>Homepage</Link>
-                                    <Icon.CaretRight size={14} className='text-secondary2' />
+                                    <CaretRight size={14} className='text-secondary2' />
                                     <div className='text-secondary2 capitalize'>{subHeading}</div>
                                 </div>
                             </div>

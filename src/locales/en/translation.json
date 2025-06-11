@@ -1,35 +1,4 @@
 {
-    "Shop": "Shop",
-    "Homepage": "Homepage",
-    "t-shirt": "T-Shirt",
-    "dress": "Dress",
-    "top": "Top",
-    "swimwear": "Swimwear",
-    "shirt": "Shirt",
-    "underwear": "Underwear",
-    "sets": "Sets",
-    "accessories": "Accessories",
-    "Product Type": "Product Type",
-    "Price Range": "Price Range",
-    "Min price": "Min price",
-    "Max price": "Max price",
-    "Colors": "Colors",
-    "Show more": "Show more",
-    "Clear All Filters": "Clear All Filters",
-    "Show only products on sale": "Show only products on sale",
-    "Sort by": "Sort by",
-    "Default Sorting": "Default Sorting",
-    "Best Selling": "Best Selling",
-    "Best Discount": "Best Discount",
-    "Price High To Low": "Price High To Low",
-    "Price Low To High": "Price Low To High",
-    "Products Found": "Products Found",
-    "Loading products...": "Loading products...",
-    "Error": "Error",
-    "No products match your current filters. Try adjusting or clearing filters.": "No products match your current filters. Try adjusting or clearing filters.",
-    "...": "...",
-    "dir": "ltr",
-    "textAlign": "left",
     "common": {
         "shop": "Shop",
         "homepage": "Homepage",
@@ -74,93 +43,166 @@
             }
         }
     },
-    "slider": {
-        "sale": "Sale! Up To 50% Off!",
-        "shopNow": "Shop Now",
-        "collections": {
-            "summer": "Summer Sale Collections",
-            "newSeason": "New season, new wardrobe!",
-            "fashion": "Fashion for Every Occasion",
-            "stylish": "Stylish Looks for Any Season",
-            "trending": "Trending Right Now",
-            "deals": "Deals of the day",
-            "viewAllDeals": "View All Deals",
-            "womensFashion": "Women's Fashion Must-Haves",
-            "mensFashion": "Latest Men's Fashion Essentials",
-            "bestSellers": "Best Sellers",
-            "onSale": "On Sale",
-            "newArrivals": "New Arrivals",
-            "yoga": "Explore Our Yoga Collection",
-            "watches": {
-                "smart": "Discover Smart Watches",
-                "finest": "Explore the Finest Watches",
-                "elegance": "Explore the Timeless Elegance"
-            },
-            "pet": {
-                "perfectStore": "Your pet's Perfect Store",
-                "unleash": "Unleash a Happy, Healthy Pet"
-            },
-            "toys": {
-                "smart": "Smart toys on sale",
-                "blankets": "blankets for newborns",
-                "kids": "Kids Toys & Clothing"
-            }
-        }
-    },
-    "product": {
-        "detail": {
-            "reviews": "(1.234 reviews)",
-            "quantity": "Quantity:",
-            "delivery": {
-                "title": "Delivery & Return",
-                "estimated": "Estimated Delivery:",
-                "freeShipping": "Free shipping",
-                "support": "Support everyday",
-                "returns": "100 Day Returns"
-            },
-            "specifications": {
-                "sku": "SKU:",
-                "categories": "Categories:",
-                "tag": "Tag:",
-                "rating": "Rating",
-                "outerShell": "Outer Shell",
-                "lining": "Lining",
-                "size": "Size",
-                "colors": "Colors",
-                "care": "Care"
-            },
-            "related": "Related Products",
-            "soldIt": "sold It:",
-            "askQuestion": "Ask A Question"
+    "header": {
+        "home": "Home",
+        "features": "Features",
+        "shop": "Shop",
+        "product": "Product",
+        "slogan": "Slogan",
+        "blog": {
+            "title": "Blog",
+            "default": "Default",
+            "list": "List",
+            "grid": "Grid",
+            "newsInsight": "News Insight"
         },
-        "countdown": {
-            "days": "Days",
-            "hours": "Hours",
-            "mins": "Mins",
-            "secs": "Secs"
-        }
-    },
-    "testimonial": {
-        "customerReviews": "Customer reviews",
-        "from": "From"
+        "pages": {
+            "title": "Pages",
+            "about": "About",
+            "contact": "Contact",
+            "storeList": "Store List",
+            "notFound": "Page Not Found",
+            "faqs": "FAQs",
+            "comingSoon": "Coming Soon",
+            "customerFeedbacks": "Customer Feedbacks"
+        },
+        "viewMore": "View More",
+        "save": "Save",
+        "diveIntoSavings": "Dive into Savings",
+        "onSwimwear": "on Swimwear",
+        "startingAt": "Starting at",
+        "off": "off",
+        "accessories": "Accessories",
+        "productsFeatures": "Products Features",
+        "defaultProduct": "Default Product",
+        "variableProduct": "Variable Product",
+        "groupedProduct": "Grouped Product",
+        "externalProduct": "External Product",
+        "mobile": {
+            "demo": "Demo",
+            "back": "Back",
+            "search": {
+                "placeholder": "What are you looking for?"
+            },
+            "menuBar": {
+                "home": "Home",
+                "category": "Category",
+                "search": "Search",
+                "cart": "Cart"
+            },
+            "features": {
+                "forMen": "For Men",
+                "forWomen": "For Women",
+                "forKid": "For Kid",
+                "forHome": "For Home",
+                "startingFrom50": "Starting From 50% Off",
+                "startingFrom60": "Starting From 60% Off",
+                "outerwear": "Outerwear",
+                "sweaters": "Sweaters",
+                "shirts": "Shirts",
+                "viewAll": "View All",
+                "skincare": "Skincare",
+                "faceSkin": "Face Skin",
+                "eyeMakeup": "Eye Makeup",
+                "lipPolish": "Lip Polish",
+                "hairCare": "Hair Care",
+                "health": "Health",
+                "centedCandle": "Cented Candle",
+                "healthDrinks": "Health Drinks",
+                "yogaClothes": "Yoga Clothes",
+                "yogaEquipment": "Yoga Equipment",
+                "dresses": "Dresses",
+                "tshirts": "T-shirts",
+                "accessoriesJewelry": "Accessories & Jewelry",
+                "kidsBed": "Kids Bed",
+                "boysToy": "Boy's Toy",
+                "babyBlanket": "Baby Blanket",
+                "newbornClothing": "Newborn Clothing",
+                "furnitureDecor": "Furniture & Decor",
+                "tableLivingRoom": "Table & Living Room",
+                "chairWorkRoom": "Chair & Work Room",
+                "lightingBedRoom": "Lighting & Bed Room",
+                "save10": "Save $10",
+                "diveIntoSavings": "Dive into Savings",
+                "onSwimwear": "on Swimwear",
+                "startingAt": "Starting at"
+            },
+            "product": {
+                "features": "Product Features",
+                "default": "Default",
+                "sale": "Sale",
+                "countdownTimer": "Countdown Timer",
+                "grouped": "Grouped",
+                "boughtTogether": "Bought Together",
+                "outOfStock": "Out of Stock",
+                "variable": "Variable",
+                "external": "External",
+                "onSale": "On Sale",
+                "withDiscount": "With Discount",
+                "withSidebar": "With Sidebar",
+                "fixedPrice": "Fixed Price",
+                "layout": "Product Layout",
+                "thumbnailsLeft": "Thumbnails Left",
+                "thumbnailsBottom": "Thumbnails Bottom",
+                "grid1Scrolling": "Grid 1 Scrolling",
+                "grid2Scrolling": "Grid 2 Scrolling",
+                "combined1": "Combined 1",
+                "combined2": "Combined 2",
+                "recentProducts": "Recent Products"
+            },
+            "blog": {
+                "default": "Default",
+                "list": "List",
+                "grid": "Grid",
+                "detail1": "Detail 1",
+                "detail2": "Detail 2"
+            }
+        },
+        "demo": "Demo",
+        "homepages": {
+            "fashion1": "Home Fashion 1",
+            "fashion2": "Home Fashion 2",
+            "fashion3": "Home Fashion 3",
+            "fashion4": "Home Fashion 4",
+            "fashion5": "Home Fashion 5",
+            "fashion6": "Home Fashion 6",
+            "fashion7": "Home Fashion 7",
+            "fashion8": "Home Fashion 8",
+            "fashion9": "Home Fashion 9",
+            "fashion10": "Home Fashion 10",
+            "fashion11": "Home Fashion 11",
+            "underwear": "Home Underwear",
+            "cosmetic1": "Home Cosmetic 1",
+            "cosmetic2": "Home Cosmetic 2",
+            "cosmetic3": "Home Cosmetic 3",
+            "pet": "Home Pet",
+            "jewelry": "Home Jewelry",
+            "furniture": "Home Furniture",
+            "watch": "Home Watch",
+            "toys": "Home Toys",
+            "yoga": "Home Yoga",
+            "organic": "Home Organic",
+            "marketplace": "Home Marketplace"
+        },
+        "department": "Department"
     },
     "footer": {
         "company": {
-            "mail": "Mail:",
-            "phone": "Phone:",
-            "address": "Address:"
+            "mail": "Mail",
+            "phone": "Phone",
+            "address": "Address"
         },
         "navigation": {
-            "information": "Infomation",
+            "information": "Information",
             "quickShop": "Quick Shop",
             "customerServices": "Customer Services",
-            "newsletter": "Newletter"
+            "newsletter": "Newsletter"
         },
         "links": {
             "contactUs": "Contact us",
             "career": "Career",
             "myAccount": "My Account",
-            "orderReturns": "Order & Returns",
+            "orderAndReturns": "Order & Returns",
             "faqs": "FAQs",
             "women": "Women",
             "men": "Men",
@@ -170,7 +212,7 @@
             "ordersFaqs": "Orders FAQs",
             "shipping": "Shipping",
             "privacyPolicy": "Privacy Policy",
-            "returnRefund": "Return & Refund"
+            "returnAndRefund": "Return & Refund"
         },
         "newsletter": {
             "signup": "Sign up for our newsletter and get 10% off your first purchase",
@@ -178,13 +220,13 @@
         },
         "bottom": {
             "copyright": "©2023 Anvogue. All Rights Reserved.",
-            "payment": "Payment:",
-            "language": {
+            "payment": "Payment",
+            "languages": {
                 "english": "English",
-                "espana": "Espana",
-                "france": "France"
+                "spanish": "Espana",
+                "french": "France"
             },
-            "currency": {
+            "currencies": {
                 "usd": "USD",
                 "eur": "EUR",
                 "gbp": "GBP"
@@ -263,6 +305,51 @@
             "cancel": "Cancel"
         }
     },
+    "cart": {
+        "title": "Shopping Cart",
+        "empty": "Your cart is empty",
+        "continueShopping": "Continue Shopping",
+        "updateCart": "Update Cart",
+        "clearCart": "Clear Cart",
+        "subtotal": "Subtotal",
+        "shipping": "Shipping",
+        "tax": "Tax",
+        "proceedToCheckout": "Proceed to Checkout",
+        "removeItem": "Remove Item",
+        "quantity": "Quantity",
+        "price": "Price",
+        "total": "Total"
+    },
+    "cartPage": {
+        "expireNotice": "Your cart will expire in",
+        "minutes": "minutes! Please checkout now before your items sell out!",
+        "buyMoreForFreeship": "Buy ${{amount}} more to get freeship",
+        "freeship": "freeship",
+        "products": "Products",
+        "price": "Price",
+        "quantity": "Quantity",
+        "totalPrice": "Total Price",
+        "noProduct": "No product in cart",
+        "addVoucher": "Add voucher discount",
+        "applyCode": "Apply Code",
+        "discount": "Discount",
+        "discount10": "10% OFF",
+        "discount15": "15% OFF",
+        "discount20": "20% OFF",
+        "forOrdersFrom": "For all orders from ${{amount}}",
+        "code": "Code: {{code}}",
+        "applied": "Applied",
+        "orderSummary": "Order Summary",
+        "subtotal": "Subtotal",
+        "discounts": "Discounts",
+        "shipping": "Shipping",
+        "freeShipping": "Free Shipping:",
+        "local": "Local:",
+        "flatRate": "Flat Rate:",
+        "total": "Total",
+        "processToCheckout": "Process To Checkout",
+        "continueShopping": "Continue shopping"
+    },
     "checkout": {
         "title": "Checkout",
         "billingDetails": "Billing Details",
@@ -281,20 +368,75 @@
         "continueShopping": "Continue Shopping",
         "proceedToPayment": "Proceed to Payment"
     },
-    "cart": {
-        "title": "Shopping Cart",
-        "empty": "Your cart is empty",
-        "continueShopping": "Continue Shopping",
-        "updateCart": "Update Cart",
-        "clearCart": "Clear Cart",
-        "subtotal": "Subtotal",
+    "checkoutPage": {
+        "shoppingCart": "Shopping cart",
+        "chooseOrderAddress": "Choose Order Address",
+        "mainAddress": "Main address",
+        "chosenAddress": "Chosen Address",
+        "shippingAddress": "Shipping address {{number}}",
+        "streetName": "Street Name",
+        "city": "Town / city",
+        "houseNumber": "House Number",
+        "zip": "ZIP",
+        "updateAddress": "Update Address",
+        "addAddress": "Add Address",
+        "removeAddress": "Remove Address",
+        "save": "Save",
+        "pleaseActivateEmail": "Please Activate Your Email",
+        "activate": "ACTIVATE",
+        "yourOrder": "Your Order",
+        "noProduct": "No product in cart",
+        "discounts": "Discounts",
         "shipping": "Shipping",
-        "tax": "Tax",
-        "proceedToCheckout": "Proceed to Checkout",
-        "removeItem": "Remove Item",
-        "quantity": "Quantity",
+        "free": "Free",
+        "total": "Total",
+        "notes": "Notes",
+        "next": "Next",
+        "orderDetails": "Order Details",
+        "walletValue": "The value of the wallet is {{balance}}, {{amount}} has been deducted.",
+        "done": "Done"
+    },
+    "comparePage": {
+        "compareProducts": "Compare Products",
+        "rating": "Rating",
         "price": "Price",
-        "total": "Total"
+        "type": "Type",
+        "brand": "Brand",
+        "size": "Size",
+        "colors": "Colors",
+        "addToCart": "Add To Cart",
+        "noProductsToCompare": "No products to compare"
+    },
+    "wishlistPage": {
+        "wishList": "Wish List",
+        "removeItem": "Remove Item",
+        "addToCart": "Add to Cart",
+        "empty": "Your wishlist is empty"
+    },
+    "notFoundPage": {
+        "404": "404",
+        "missing": "Something is Missing.",
+        "notFound": "The page you are looking for cannot be found.",
+        "takeBreak": "Take a break before trying again",
+        "backToHomepage": "Back To Homepage"
+    },
+    "faqsPage": {
+        "faqs": "FAQs",
+        "howToBuy": "How to buy",
+        "paymentMethods": "Payment methods",
+        "delivery": "Delivery",
+        "question1": "How does COVID-19 affect my online orders and store purchases?",
+        "answer1": "The courier companies have adapted their procedures to guarantee the safety of our employees and our community. We thank you for your patience, as there may be some delays to deliveries. We remind you that you can still find us at Mango.com",
+        "question2": "NEW! Plus sizes for Woman",
+        "answer2": "The courier companies have adapted their procedures to guarantee the safety of our employees and our community. We thank you for your patience, as there may be some delays to deliveries. We remind you that you can still find us at Mango.com and on all our online channels. Our customer services are still there for you, to answer any questions you may have, although due to the current situation, we are operating with longer waiting times.",
+        "question3": "What payment methods do you accept?",
+        "answer3": "We accept various payment methods including credit cards, PayPal, and other major payment providers.",
+        "question4": "Is my payment information secure?",
+        "answer4": "Yes, we use industry-standard encryption to protect your payment information.",
+        "question5": "What are your delivery options?",
+        "answer5": "We offer standard and express delivery options to most locations.",
+        "question6": "How long does delivery take?",
+        "answer6": "Standard delivery typically takes 3-5 business days, while express delivery takes 1-2 business days."
     },
     "modal": {
         "cart": {
@@ -335,16 +477,24 @@
             "empty": "Your wishlist is empty",
             "continueShopping": "Continue Shopping",
             "removeItem": "Remove Item",
-            "addToCart": "Add to Cart"
+            "addToCart": "Add to Cart",
+            "viewAll": "View All"
         },
         "search": {
             "title": "Search",
             "placeholder": "Search for products...",
             "noResults": "No results found",
             "recentSearches": "Recent Searches",
-            "clearRecent": "Clear Recent Searches"
+            "clearRecent": "Clear Recent Searches",
+            "featureKeywords": "Featured Keywords",
+            "recentlyViewed": "Recently Viewed",
+            "keywords": {
+                "dress": "Dress",
+                "t-shirt": "T-Shirt",
+                "underwear": "Underwear",
+                "top": "Top"
+            }
         },
-
         "sizeguide": {
             "title": "Size Guide",
             "close": "Close",
@@ -386,210 +536,118 @@
             "clearAllProducts": "Clear All Products"
         }
     },
-    "breadcrumb": {
-        "home": "Homepage",
-        "separator": ">"
+    "product": {
+        "new": "New",
+        "sale": "Sale",
+        "hotSale": "Hot Sale",
+        "off": "off",
+        "addToCart": "Add to Cart",
+        "addToWishlist": "Add to Wishlist",
+        "compare": "Compare",
+        "quickView": "Quick View",
+        "quickShop": "Quick Shop",
+        "description": "Description",
+        "price": "Price",
+        "originalPrice": "Original Price",
+        "discount": "Discount",
+        "color": "Color",
+        "size": "Size",
+        "quantity": "Quantity",
+        "rating": "Rating",
+        "reviews": "Reviews",
+        "specifications": "Specifications",
+        "related": "Related Products",
+        "soldIt": "Sold It",
+        "askQuestion": "Ask A Question",
+        "delivery": {
+            "title": "Delivery & Return",
+            "estimated": "Estimated Delivery",
+            "freeShipping": "Free shipping",
+            "support": "Support everyday",
+            "returns": "100 Day Returns"
+        },
+        "specifications": {
+            "sku": "SKU",
+            "categories": "Categories",
+            "tag": "Tag",
+            "rating": "Rating",
+            "outerShell": "Outer Shell",
+            "lining": "Lining",
+            "size": "Size",
+            "colors": "Colors",
+            "care": "Care"
+        },
+        "countdown": {
+            "days": "Days",
+            "hours": "Hours",
+            "mins": "Mins",
+            "secs": "Secs"
+        },
+        "detail": {
+            "addedToCart": "Product added to cart successfully",
+            "addToCartError": "Error adding product to cart",
+            "compareLimit": "You can only compare up to 3 products",
+            "hurryUp": "Hurry Up!",
+            "offerEndsIn": "Offer ends in:",
+            "days": "Days",
+            "hours": "Hours",
+            "minutes": "Minutes",
+            "seconds": "Seconds",
+            "color": "Color",
+            "quantity": "Quantity",
+            "buyNow": "Buy Now",
+            "share": "Share",
+            "deliveryReturn": "Delivery & Return",
+            "askQuestion": "Ask A Question",
+            "estimatedDelivery": "Estimated Delivery",
+            "peopleViewing": "people viewing this product right now",
+            "sku": "SKU",
+            "categories": "Categories",
+            "tag": "Tag",
+            "guaranteedCheckout": "Guaranteed Safe Checkout",
+            "getItToday": "Get it Today",
+            "freeShipping": "Free Shipping",
+            "freeShippingDesc": "Free shipping on all orders over $100",
+            "supportEveryday": "Support Everyday",
+            "supportHours": "24/7 Customer Support",
+            "returns": "100 Day Returns",
+            "returnsDesc": "100 day return policy",
+            "description": "Description",
+            "specifications": "Specifications",
+            "reviews": "Reviews"
+        }
     },
-    "header": {
-        "home": "Home",
-        "shop": {
-            "title": "Shop",
-            "features": {
-                "title": "Shop Features",
-                "breadcrumbImg": "Shop Breadcrumb IMG",
-                "breadcrumb1": "Shop Breadcrumb 1",
-                "breadcrumb2": "Shop Breadcrumb 2",
-                "collection": "Shop Collection",
-                "filterCanvas": "Shop Filter Canvas",
-                "filterOptions": "Shop Filter Options",
-                "filterDropdown": "Shop Filter Dropdown",
-                "sidebarList": "Shop Sidebar List"
+    "slider": {
+        "sale": "Sale! Up To 50% Off!",
+        "shopNow": "Shop Now",
+        "collections": {
+            "summer": "Summer Sale Collections",
+            "newSeason": "New season, new wardrobe!",
+            "fashion": "Fashion for Every Occasion",
+            "stylish": "Stylish Looks for Any Season",
+            "trending": "Trending Right Now",
+            "deals": "Deals of the day",
+            "viewAllDeals": "View All Deals",
+            "womensFashion": "Women's Fashion Must-Haves",
+            "mensFashion": "Latest Men's Fashion Essentials",
+            "bestSellers": "Best Sellers",
+            "onSale": "On Sale",
+            "newArrivals": "New Arrivals",
+            "yoga": "Explore Our Yoga Collection",
+            "watches": {
+                "smart": "Discover Smart Watches",
+                "finest": "Explore the Finest Watches",
+                "elegance": "Explore the Timeless Elegance"
             },
-            "layout": {
-                "title": "Shop Layout",
-                "default": "Shop Default",
-                "defaultGrid": "Shop Default Grid",
-                "defaultList": "Shop Default List",
-                "fullWidth": "Shop Full Width",
-                "square": "Shop Square"
+            "pet": {
+                "perfectStore": "Your pet's Perfect Store",
+                "unleash": "Unleash a Happy, Healthy Pet"
             },
-            "products": {
-                "title": "Products Pages",
-                "wishList": "Wish List",
-                "checkout": "Checkout",
-                "checkoutStyle2": "Checkout Style 2"
+            "toys": {
+                "smart": "Smart toys on sale",
+                "blankets": "blankets for newborns",
+                "kids": "Kids Toys & Clothing"
             }
-        },
-        "blog": "Blog",
-        "pages": "Pages",
-        "about": "About",
-        "contact": "Contact",
-        "storeLocation": "Store Location",
-        "help": "Help",
-        "slogan": "Free shipping on all orders over $75",
-        "languages": {
-            "english": "English",
-            "spanish": "Spanish",
-            "french": "French",
-            "arabic": "Arabic",
-            "german": "German",
-            "kurdish": "Kurdish",
-            "ukrainian": "Ukrainian"
-        },
-        "currencies": {
-            "usd": "USD",
-            "eur": "EUR",
-            "gbp": "GBP"
-        },
-        "features": {
-            "forMen": "For Men",
-            "forWomen": "For Women",
-            "forKid": "For Kid",
-            "forHome": "For Home",
-            "startingFrom50": "Starting From 50% Off",
-            "startingFrom60": "Starting From 60% Off",
-            "shirts": "Shirts",
-            "jackets": "Jackets",
-            "pants": "Pants",
-            "accessories": "Accessories",
-            "dresses": "Dresses",
-            "tshirts": "T-shirts",
-            "accessoriesJewelry": "Accessories & Jewelry",
-            "kidsBed": "Kids Bed",
-            "boysToy": "Boy's Toy",
-            "babyBlanket": "Baby Blanket",
-            "newbornClothing": "Newborn Clothing",
-            "furnitureDecor": "Furniture & Decor",
-            "tableLivingRoom": "Table & Living Room",
-            "chairWorkRoom": "Chair & Work Room",
-            "lightingBedRoom": "Lighting & Bed Room",
-            "viewAll": "View All",
-            "save10": "Save $10",
-            "diveIntoSavings": "Dive into Savings",
-            "onSwimwear": "on Swimwear",
-            "startingAt": "Starting at",
-            "off": "off",
-            "massimoDutti": "Massimo Dutti",
-            "shirt": "Shirt",
-            "top": "Top",
-            "tshirt": "T-Shirt",
-            "swimwear": "Swimwear",
-            "skincare": "Skincare",
-            "facesSkin": "Faces Skin",
-            "eyesMakeup": "Eyes Makeup",
-            "lipPolish": "Lip Polish",
-            "hairCare": "Hair Care",
-            "health": "Health",
-            "centedCandle": "Cented Candle",
-            "healthDrinks": "Health Drinks",
-            "yogaClothes": "Yoga Clothes",
-            "yogaEquipment": "Yoga Equipment"
-        },
-        "blog": {
-            "default": "Default",
-            "list": "List",
-            "grid": "Grid",
-            "newsInsight": "News Insight"
-        },
-        "pages": {
-            "about": "About",
-            "contact": "Contact",
-            "storeList": "Store List",
-            "notFound": "Page Not Found",
-            "faqs": "FAQs",
-            "comingSoon": "Coming Soon",
-            "customerFeedbacks": "Customer Feedbacks"
-        },
-        "mobile": {
-            "demo": "Demo",
-            "back": "Back",
-            "search": {
-                "placeholder": "What are you looking for?"
-            }
-        },
-        "demo": "Demo",
-        "homepages": {
-            "fashion1": "Home Fashion 1",
-            "fashion2": "Home Fashion 2",
-            "fashion3": "Home Fashion 3",
-            "fashion4": "Home Fashion 4",
-            "fashion5": "Home Fashion 5",
-            "fashion6": "Home Fashion 6",
-            "fashion7": "Home Fashion 7",
-            "fashion8": "Home Fashion 8",
-            "fashion9": "Home Fashion 9",
-            "fashion10": "Home Fashion 10",
-            "fashion11": "Home Fashion 11",
-            "underwear": "Home Underwear",
-            "cosmetic1": "Home Cosmetic 1",
-            "cosmetic2": "Home Cosmetic 2",
-            "cosmetic3": "Home Cosmetic 3",
-            "pet": "Home Pet",
-            "jewelry": "Home Jewelry",
-            "furniture": "Home Furniture",
-            "watch": "Home Watch",
-            "toys": "Home Toys",
-            "yoga": "Home Yoga",
-            "organic": "Home Organic",
-            "marketplace": "Home Marketplace"
-        },
-        "features": "Features",
-        "viewMore": "View More",
-        "save": "Save",
-        "accessories": "Accessories",
-        "product": "Product",
-        "productsFeatures": "Products Features",
-        "productsDefaults": "Products Defaults",
-        "productsSale": "Products Sale",
-        "productsCountdownTimer": "Products Countdown Timer",
-        "productsGrouped": "Products Grouped",
-        "frequentlyBoughtTogether": "Frequently Bought Together",
-        "productsOutOfStock": "Products Out Of Stock",
-        "productsVariable": "Products Variable",
-        "productsExternal": "Products External",
-        "productsOnSale": "Products On Sale",
-        "productsWithDiscount": "Products With Discount",
-        "productsWithSidebar": "Products With Sidebar",
-        "productsFixedPrice": "Products Fixed Price",
-        "productsThumbnailsLeft": "Products Thumbnails Left",
-        "productsThumbnailsBottom": "Products Thumbnails Bottom",
-        "productsGrid1Scrolling": "Products Grid 1 Scrolling",
-        "productsGrid2Scrolling": "Products Grid 2 Scrolling",
-        "productsCombined1": "Products Combined 1",
-        "productsCombined2": "Products Combined 2",
-        "search": {
-            "placeholder": "What are you looking for today?",
-            "button": "Search"
-        },
-        "auth": {
-            "login": "Login",
-            "register": "Register",
-            "noAccount": "Don't have an account?"
-        },
-        "department": "Department",
-        "home": "Home",
-        "features": "Features",
-        "shop": "Shop",
-        "blog": "Blog",
-        "pages": "Pages",
-        "about": "About",
-        "contact": "Contact",
-        "storeLocation": "Store Location",
-        "help": "Help",
-        "slogan": "Free shipping on all orders over $75",
-        "languages": {
-            "english": "English",
-            "spanish": "Spanish",
-            "french": "French",
-            "arabic": "Arabic",
-            "german": "German",
-            "kurdish": "Kurdish",
-            "ukrainian": "Ukrainian"
-        },
-        "currencies": {
-            "usd": "USD",
-            "eur": "EUR",
-            "gbp": "GBP"
         }
     },
     "benefit": {
@@ -609,5 +667,113 @@
             "title": "Shipping worldwide",
             "description": "We ship our products worldwide, making them accessible to customers everywhere."
         }
+    },
+    "searchResult": {
+        "title": "Search Result",
+        "subtitle": "Search Result",
+        "foundResults": "Found {{count}} results for",
+        "searchPlaceholder": "Search...",
+        "searchButton": "search",
+        "productSearch": "product Search",
+        "noResults": "No products match the selected criteria."
+    },
+    "comingSoon": {
+        "title": "Coming Soon",
+        "days": "Days",
+        "hours": "Hours",
+        "minutes": "Minutes",
+        "seconds": "Seconds"
+    },
+    "shop": {
+        "title": "Shop",
+        "homepage": "Homepage",
+        "sidebar": {
+            "searchPlaceholder": "Search products...",
+            "categories": "Categories",
+            "priceRange": "Price Range",
+            "minPrice": "Min Price",
+            "maxPrice": "Max Price",
+            "colors": "Colors",
+            "saleItems": "Sale Items",
+            "clearAll": "Clear All Filters",
+            "showMore": "Show More",
+            "showLess": "Show Less"
+        },
+        "sort": {
+            "default": "Default Sorting",
+            "priceHighToLow": "Price: High to Low",
+            "priceLowToHigh": "Price: Low to High"
+        },
+        "sortBy": "Sort By",
+        "productsFound": "Products Found",
+        "clearAllFilters": "Clear All Filters",
+        "loadingProducts": "Loading Products...",
+        "error": "Error",
+        "noProductsFoundFor": "No products found for",
+        "clearSearchAndTryAgain": "Clear search and try again",
+        "noProductsMatchFilters": "No products match your current filters",
+        "clearSearch": "Clear Search",
+        "showingResultsFor": "Showing results for"
+    },
+    "faqs": {
+        "title": "FAQs",
+        "sections": {
+            "howToBuy": {
+                "title": "How to Buy",
+                "questions": {
+                    "covid19": {
+                        "question": "How does COVID-19 affect my online orders and store purchases?",
+                        "answer": "The courier companies have adapted their procedures to guarantee the safety of our employees and our community. We thank you for your patience, as there may be some delays to deliveries. We remind you that you can still find us at Mango.com"
+                    },
+                    "plusSizes": {
+                        "question": "NEW! Plus sizes for Woman",
+                        "answer": "The courier companies have adapted their procedures to guarantee the safety of our employees and our community. We thank you for your patience, as there may be some delays to deliveries. We remind you that you can still find us at Mango.com and on all our online channels. Our customer services are still there for you, to answer any questions you may have, although due to the current situation, we are operating with longer waiting times."
+                    }
+                }
+            },
+            "paymentMethods": {
+                "title": "Payment Methods",
+                "questions": {
+                    "paymentOptions": {
+                        "question": "What payment methods do you accept?",
+                        "answer": "We accept various payment methods including credit cards, PayPal, and other major payment providers."
+                    },
+                    "security": {
+                        "question": "Is my payment information secure?",
+                        "answer": "Yes, we use industry-standard encryption to protect your payment information."
+                    }
+                }
+            },
+            "delivery": {
+                "title": "Delivery",
+                "questions": {
+                    "deliveryOptions": {
+                        "question": "What are your delivery options?",
+                        "answer": "We offer standard and express delivery options to most locations."
+                    },
+                    "deliveryTime": {
+                        "question": "How long does delivery take?",
+                        "answer": "Standard delivery typically takes 3-5 business days, while express delivery takes 1-2 business days."
+                    }
+                }
+            }
+        }
+    },
+    "breadcrumb": {
+        "home": "Homepage",
+        "separator": ">",
+        "shop": "Shop",
+        "product": "Product",
+        "cart": "Shopping Cart",
+        "checkout": "Checkout",
+        "account": "My Account",
+        "wishlist": "Wishlist",
+        "compare": "Compare Products",
+        "blog": "Blog",
+        "search": "Search Results",
+        "faqs": "FAQs",
+        "contact": "Contact Us",
+        "about": "About Us",
+        "notFound": "Page Not Found"
     }
 }

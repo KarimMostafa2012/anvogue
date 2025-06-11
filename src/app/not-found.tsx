@@ -5,9 +5,9 @@ import Link from 'next/link';
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Footer from '@/components/Footer/Footer'
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import * as Icon from "@phosphor-icons/react/dist/ssr";
 
-const PageNotFound = () => {
+export default function NotFound() {
     return (
         <>
             <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
@@ -21,7 +21,7 @@ const PageNotFound = () => {
                             src={'/images/other/404-img.png'}
                             width={2000}
                             height={2000}
-                            alt='bg-img'
+                            alt='404 Not Found'
                             priority={true}
                             className='sm:w-1/2 w-3/4'
                         />
@@ -31,7 +31,7 @@ const PageNotFound = () => {
                                 <div className="heading2 mt-4">Something is Missing.</div>
                                 <div className="body1 text-secondary mt-4 pb-4">The page you are looking for cannot be found. <br className='max-xl:hidden' />Take a break before trying again </div>
                                 <Link className="flex items-center gap-3" href={'/'}>
-                                    <ArrowLeft />
+                                    <Icon.ArrowLeft />
                                     <div className="text-button">Back To Homepage</div>
                                 </Link>
                             </div>
@@ -42,6 +42,4 @@ const PageNotFound = () => {
             <Footer />
         </>
     )
-}
-
-export default PageNotFound
+} 

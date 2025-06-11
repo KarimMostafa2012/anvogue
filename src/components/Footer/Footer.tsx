@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next';
 
 const Footer = () => {
     const { t } = useTranslation();
-    
+
     return (
         <>
             <div id="footer" className='footer'>
@@ -20,9 +20,9 @@ const Footer = () => {
                                 </Link>
                                 <div className='flex gap-3 mt-3'>
                                     <div className="flex flex-col ">
-                                        <span className="text-button">{t('footer.mail')}:</span>
-                                        <span className="text-button mt-3">{t('footer.phone')}:</span>
-                                        <span className="text-button mt-3">{t('footer.address')}:</span>
+                                        <span className="text-button">{t('footer.company.mail')}:</span>
+                                        <span className="text-button mt-3">{t('footer.company.phone')}:</span>
+                                        <span className="text-button mt-3">{t('footer.company.address')}:</span>
                                     </div>
                                     <div className="flex flex-col ">
                                         <span className=''>hi.avitex@gmail.com</span>
@@ -34,35 +34,35 @@ const Footer = () => {
                             <div className="right-content flex flex-wrap gap-y-8 basis-3/4 max-lg:basis-full">
                                 <div className="list-nav flex justify-between basis-2/3 max-md:basis-full gap-4">
                                     <div className="item flex flex-col basis-1/3 ">
-                                        <div className="text-button-uppercase pb-3">{t('footer.information')}</div>
-                                        <Link className='caption1 has-line-before duration-300 w-fit' href={'/pages/contact'}>{t('footer.contactUs')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'#!'}>{t('footer.career')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/my-account'}>{t('footer.myAccount')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/order-tracking'}>{t('footer.orderAndReturns')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/pages/faqs'}>{t('footer.faqs')}</Link>
+                                        <div className="text-button-uppercase pb-3">{t('footer.navigation.information')}</div>
+                                        <Link className='caption1 has-line-before duration-300 w-fit' href={'/pages/contact'}>{t('footer.links.contactUs')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'#!'}>{t('footer.links.career')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/my-account'}>{t('footer.links.myAccount')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/order-tracking'}>{t('footer.links.orderAndReturns')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/pages/faqs'}>{t('footer.links.faqs')}</Link>
                                     </div>
                                     <div className="item flex flex-col basis-1/3 ">
-                                        <div className="text-button-uppercase pb-3">{t('footer.quickShop')}</div>
-                                        <Link className='caption1 has-line-before duration-300 w-fit' href={'/shop/breadcrumb1'}>{t('footer.women')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.men')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.clothes')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.accessories')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/blog'}>{t('footer.blog')}</Link>
+                                        <div className="text-button-uppercase pb-3">{t('footer.navigation.quickShop')}</div>
+                                        <Link className='caption1 has-line-before duration-300 w-fit' href={'/shop/breadcrumb1'}>{t('footer.links.women')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.links.men')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.links.clothes')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.links.accessories')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/blog'}>{t('footer.links.blog')}</Link>
                                     </div>
                                     <div className="item flex flex-col basis-1/3 ">
-                                        <div className="text-button-uppercase pb-3">{t('footer.customerServices')}</div>
-                                        <Link className='caption1 has-line-before duration-300 w-fit' href={'/pages/faqs'}>{t('footer.ordersFaqs')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/pages/faqs'}>{t('footer.shipping')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/pages/faqs'}>{t('footer.privacyPolicy')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/order-tracking'}>{t('footer.returnAndRefund')}</Link>
+                                        <div className="text-button-uppercase pb-3">{t('footer.navigation.customerServices')}</div>
+                                        <Link className='caption1 has-line-before duration-300 w-fit' href={'/pages/faqs'}>{t('footer.links.ordersFaqs')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/pages/faqs'}>{t('footer.links.shipping')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/pages/faqs'}>{t('footer.links.privacyPolicy')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/order-tracking'}>{t('footer.links.returnAndRefund')}</Link>
                                     </div>
                                 </div>
                                 <div className="newsletter basis-1/3 pl-7 max-md:basis-full max-md:pl-0">
-                                    <div className="text-button-uppercase">{t('footer.newsletter')}</div>
-                                    <div className="caption1 mt-3">{t('footer.newsletterSignup')}</div>
+                                    <div className="text-button-uppercase">{t('footer.navigation.newsletter')}</div>
+                                    <div className="caption1 mt-3">{t('footer.newsletter.signup')}</div>
                                     <div className="input-block w-full h-[52px] mt-4">
                                         <form className='w-full h-full relative' action="post">
-                                            <input type="email" placeholder={t('footer.enterEmail')} className='caption1 w-full h-full pl-4 pr-14 rounded-xl border border-line' required />
+                                            <input type="email" placeholder={t('footer.newsletter.emailPlaceholder')} className='caption1 w-full h-full pl-4 pr-14 rounded-xl border border-line' required />
                                             <button className='w-[44px] h-[44px] bg-black flex items-center justify-center rounded-xl absolute top-1 right-1'>
                                                 <Icon.ArrowRight size={24} color='#fff' />
                                             </button>
@@ -90,28 +90,28 @@ const Footer = () => {
                         </div>
                         <div className="footer-bottom py-3 flex items-center justify-between gap-5 max-lg:justify-center max-lg:flex-col border-t border-line">
                             <div className="left flex items-center gap-8">
-                                <div className="copyright caption1 text-secondary">{t('footer.copyright')}</div>
+                                <div className="copyright caption1 text-secondary">{t('footer.bottom.copyright')}</div>
                                 <div className="select-block flex items-center gap-5 max-md:hidden">
                                     <div className="choose-language flex items-center gap-1.5">
                                         <select name="language" id="chooseLanguageFooter" className='caption2 bg-transparent'>
-                                            <option value="English">{t('footer.languages.english')}</option>
-                                            <option value="Espana">{t('footer.languages.spanish')}</option>
-                                            <option value="France">{t('footer.languages.french')}</option>
+                                            <option value="English">{t('footer.bottom.languages.english')}</option>
+                                            <option value="Espana">{t('footer.bottom.languages.spanish')}</option>
+                                            <option value="France">{t('footer.bottom.languages.french')}</option>
                                         </select>
                                         <Icon.CaretDown size={12} color='#1F1F1F' />
                                     </div>
                                     <div className="choose-currency flex items-center gap-1.5">
                                         <select name="currency" id="chooseCurrencyFooter" className='caption2 bg-transparent'>
-                                            <option value="USD">{t('footer.currencies.usd')}</option>
-                                            <option value="EUR">{t('footer.currencies.eur')}</option>
-                                            <option value="GBP">{t('footer.currencies.gbp')}</option>
+                                            <option value="USD">{t('footer.bottom.currencies.usd')}</option>
+                                            <option value="EUR">{t('footer.bottom.currencies.eur')}</option>
+                                            <option value="GBP">{t('footer.bottom.currencies.gbp')}</option>
                                         </select>
                                         <Icon.CaretDown size={12} color='#1F1F1F' />
                                     </div>
                                 </div>
                             </div>
                             <div className="right flex items-center gap-2">
-                                <div className="caption1 text-secondary">{t('footer.payment')}:</div>
+                                <div className="caption1 text-secondary">{t('footer.bottom.payment')}:</div>
                                 <div className="payment-img">
                                     <Image
                                         src={'/images/payment/Frame-0.png'}

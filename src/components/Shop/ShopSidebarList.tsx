@@ -58,7 +58,7 @@ const HandlePagination: React.FC<PaginationProps> = ({
       previousLinkClassName="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
       nextLinkClassName="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
       disabledClassName="opacity-50 cursor-not-allowed"
-      breakLabel={t("...")}
+      breakLabel="..."
       breakClassName="mx-1 px-3 py-1"
       forcePage={forcePage}
     />

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -57,7 +57,7 @@ const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
                                         }
                                     </ul>
                                 </div>
-                                <Icon.CaretDown size={12} color='#fff' />
+                                <CaretDown size={12} color='#fff' />
                             </div>
                         </div>
                         <div className="text-center text-button-uppercase text-white flex items-center">

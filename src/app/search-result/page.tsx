@@ -10,9 +10,10 @@ import { ProductType } from "@/type/ProductType";
 import productData from "@/data/Product.json";
 import Product from "@/components/Product/Product";
 import HandlePagination from "@/components/Other/HandlePagination";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { useTranslation } from "next-i18next";
 
 const SearchResult = () => {
+  const { t } = useTranslation();
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(0);
   const productsPerPage = 8;
@@ -109,13 +110,13 @@ const SearchResult = () => {
       />
       <div id="header" className="relative w-full">
         <MenuOne props="bg-transparent" />
-        <Breadcrumb heading="Search Result" subHeading="Search Result" />
+        <Breadcrumb heading={t('searchResult.title')} subHeading={t('searchResult.subtitle')} />
       </div>
       <div className="shop-product breadcrumb1 lg:py-20 md:py-14 py-10">
         <div className="container">
           <div className="heading flex flex-col items-center">
             <div className="heading4 text-center">
-              Found {filteredData.length} results for {String.raw`"`}
+              {t('searchResult.foundResults', { count: filteredData.length })} {String.raw`"`}
               {query}
               {String.raw`"`}
             </div>
@@ -123,7 +124,7 @@ const SearchResult = () => {
               <div className="w-full h-full relative">
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder={t('searchResult.searchPlaceholder')}
                   className="caption1 w-full h-full pl-4 md:pr-[150px] pr-32 rounded-xl border border-line"
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
@@ -135,20 +136,20 @@ const SearchResult = () => {
                   className="button-main absolute top-1 bottom-1 right-1 flex items-center justify-center"
                   onClick={() => handleSearch(searchKeyword)}
                 >
-                  search
+                  {t('searchResult.searchButton')}
                 </button>
               </div>
             </div>
           </div>
           <div className="list-product-block relative md:pt-10 pt-6">
-            <div className="heading6">product Search: {query}</div>
+            <div className="heading6">{t('searchResult.productSearch')}: {query}</div>
             <div
               className={`list-product hide-product-sold grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 sm:gap-[30px] gap-[20px] mt-5`}
             >
               {currentProducts.map((item) =>
                 item.id === "no-data" ? (
                   <div key={item.id} className="no-data-product">
-                    No products match the selected criteria.
+                    {t('searchResult.noResults')}
                   </div>
                 ) : (
                   <Product key={item.id} data={item} type="grid" />

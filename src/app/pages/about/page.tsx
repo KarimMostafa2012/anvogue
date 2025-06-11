@@ -5,7 +5,7 @@ import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 import Benefit from '@/components/Home1/Benefit'
-import Newsletter from '@/components/Home4/Newsletter'
+import Newsletter from '@/components/Other/Newsletter'
 import Instagram from '@/components/New/Instagram'
 import Brand from '@/components/Home1/Brand'
 import Footer from '@/components/Footer/Footer'

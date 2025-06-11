@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { MagnifyingGlass, User, Heart, Handbag, X, CaretRight, CaretLeft, House, List } from "@phosphor-icons/react/dist/ssr";
 import { usePathname } from "next/navigation";
 import Product from "@/components/Product/Product";
 import useSubMenuDepartment from "@/store/useSubMenuDepartment";
@@ -557,7 +557,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/blog") ? "active" : ""
                       }`}
                     >
-                      {t('header.blog')}
+                      {t('header.blog.title')}
                     </Link>
                     <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                       <ul className="w-full">
@@ -596,12 +596,12 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                   </li>
                   <li className="h-full relative">
                     <Link
-                      href="#!"
+                      href="/pages"
                       className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${
                         pathname.includes("/pages") ? "active" : ""
                       }`}
                     >
-                      {t('header.pages')}
+                      {t('header.pages.title')}
                     </Link>
                     <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                       <ul className="w-full">
@@ -689,7 +689,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
             </div>
             <div className="right flex gap-12">
               <div className="max-md:hidden search-icon flex items-center cursor-pointer relative">
-                <Icon.MagnifyingGlass
+                <MagnifyingGlass
                   size={24}
                   color="black"
                   onClick={openModalSearch}
@@ -701,7 +701,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                   {!loggedIn ||
                   window.sessionStorage.getItem("loggedIn") != "true" ? (
                     <>
-                      <Icon.User
+                      <User
                         size={24}
                         color="black"
                         onClick={handleLoginPopup}
@@ -742,7 +742,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                       </div>
                     </>
                   ) : (
-                    <Icon.User
+                    <User
                       size={24}
                       color="black"
                       onClick={() => {
@@ -755,13 +755,13 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                   className="max-md:hidden wishlist-icon flex items-center cursor-pointer"
                   onClick={openModalWishlist}
                 >
-                  <Icon.Heart size={24} color="black" />
+                  <Heart size={24} color="black" />
                 </div>
                 <div
                   className="cart-icon flex items-center relative cursor-pointer"
                   onClick={openModalCart}
                 >
-                  <Icon.Handbag size={24} color="black" />
+                  <Handbag size={24} color="black" />
                   <span className="quantity cart-quantity absolute -right-1.5 -top-1.5 text-xs text-white bg-black w-4 h-4 flex items-center justify-center rounded-full">
                     {cartState.cartArray.length}
                   </span>
@@ -781,7 +781,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                   className="close-menu-mobile-btn absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-surface flex items-center justify-center"
                   onClick={handleMenuMobile}
                 >
-                  <Icon.X size={14} />
+                  <X size={14} />
                 </div>
                 <Link
                   href={"/"}
@@ -791,13 +791,13 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                 </Link>
               </div>
               <div className="form-search relative mt-2">
-                <Icon.MagnifyingGlass
+                <MagnifyingGlass
                   size={20}
                   className="absolute left-3 top-1/2 -translate-y-1/2 cursor-pointer"
                 />
                 <input
                   type="text"
-                  placeholder={t('header.search.placeholder')}
+                  placeholder={t('header.mobile.search.placeholder')}
                   className=" h-12 rounded-lg border border-line text-sm w-full pl-10 pr-4"
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
@@ -818,7 +818,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                     >
                       {t('header.mobile.demo')}
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -826,7 +826,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(1)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         {t('header.mobile.back')}
                       </div>
                       <div className="list-nav-item w-full grid grid-cols-2 pt-2 pb-6">
@@ -1113,7 +1113,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                     >
                       Features
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1121,7 +1121,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(2)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
                       </div>
                       <div className="list-nav-item w-full pt-3 pb-12">
@@ -1474,7 +1474,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                     >
                       Product
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1482,7 +1482,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(4)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
                       </div>
                       <div className="list-nav-item w-full pt-3 pb-12">
@@ -1750,7 +1750,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                     >
                       Blog
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1758,7 +1758,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(5)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
                       </div>
                       <div className="list-nav-item w-full pt-2 pb-6">
@@ -1827,7 +1827,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                     >
                       Pages
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1835,7 +1835,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(6)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
                       </div>
                       <div className="list-nav-item w-full pt-2 pb-6">
@@ -1933,14 +1933,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
             href={"/"}
             className="menu_bar-link flex flex-col items-center gap-1"
           >
-            <Icon.House weight="bold" className="text-2xl" />
+            <House weight="bold" className="text-2xl" />
             <span className="menu_bar-title caption2 font-semibold">{t('header.mobile.menuBar.home')}</span>
           </Link>
           <Link
             href={"/shop/filter-canvas"}
             className="menu_bar-link flex flex-col items-center gap-1"
           >
-            <Icon.List weight="bold" className="text-2xl" />
+            <List weight="bold" className="text-2xl" />
             <span className="menu_bar-title caption2 font-semibold">
               {t('header.mobile.menuBar.category')}
             </span>
@@ -1950,7 +1950,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
             className="menu_bar-link flex flex-col items-center gap-1"
             onClick={(e) => { e.stopPropagation() }}
           >
-            <Icon.MagnifyingGlass weight="bold" className="text-2xl" />
+            <MagnifyingGlass weight="bold" className="text-2xl" />
             <span
               className="menu_bar-title caption2 font-semibold"
               onClick={() => {
@@ -1965,7 +1965,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
             className="menu_bar-link flex flex-col items-center gap-1"
           >
             <div className="icon relative">
-              <Icon.Handbag weight="bold" className="text-2xl" />
+              <Handbag weight="bold" className="text-2xl" />
               <span className="quantity cart-quantity absolute -right-1.5 -top-1.5 text-xs text-white bg-black w-4 h-4 flex items-center justify-center rounded-full">
                 {cartState.cartArray.length}
               </span>

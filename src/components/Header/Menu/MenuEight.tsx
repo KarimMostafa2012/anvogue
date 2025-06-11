@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { User, Heart, Handbag, CaretDown, X, MagnifyingGlass, CaretRight, CaretLeft } from "@phosphor-icons/react/dist/ssr";
 import { usePathname } from "next/navigation";
 import Product from "@/components/Product/Product";
 import productData from "@/data/Product.json";
@@ -363,7 +363,7 @@ const MenuEight = () => {
                   {!loggedIn ||
                     window.sessionStorage.getItem("loggedIn") != "true" ? (
                     <>
-                      <Icon.User
+                      <User
                         size={24}
                         color="black"
                         onClick={handleLoginPopup}
@@ -382,7 +382,7 @@ const MenuEight = () => {
                           Login
                         </Link>
                         <div className="text-secondary text-center mt-3">
-                          Don’t have an account?
+                          Don&apos;t have an account?
                           <Link
                             href={"/register"}
                             className="text-black pl-1 hover:underline"
@@ -393,7 +393,7 @@ const MenuEight = () => {
                       </div>
                     </>
                   ) : (
-                    <Icon.User
+                    <User
                       size={24}
                       color="black"
                       onClick={() => {
@@ -406,13 +406,13 @@ const MenuEight = () => {
                   className="max-md:hidden wishlist-icon flex items-center cursor-pointer"
                   onClick={openModalWishlist}
                 >
-                  <Icon.Heart size={24} color="black" />
+                  <Heart size={24} color="black" />
                 </div>
                 <div
                   className="cart-icon flex items-center relative cursor-pointer"
                   onClick={openModalCart}
                 >
-                  <Icon.Handbag size={24} color="black" />
+                  <Handbag size={24} color="black" />
                   <span className="quantity cart-quantity absolute -right-1.5 -top-1.5 text-xs text-white bg-black w-4 h-4 flex items-center justify-center rounded-full">
                     {cartState.cartArray.length}
                   </span>
@@ -435,7 +435,7 @@ const MenuEight = () => {
                   <div className="text-button-uppercase text-white whitespace-nowrap">
                     Department
                   </div>
-                  <Icon.CaretDown
+                  <CaretDown
                     color="#ffffff"
                     className="text-xl max-sm:text-base"
                   />
@@ -1004,7 +1004,7 @@ const MenuEight = () => {
                   className="close-menu-mobile-btn absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-surface flex items-center justify-center"
                   onClick={handleMenuMobile}
                 >
-                  <Icon.X size={14} />
+                  <X size={14} />
                 </div>
                 <Link
                   href={"/"}
@@ -1014,7 +1014,7 @@ const MenuEight = () => {
                 </Link>
               </div>
               <div className="form-search relative mt-2">
-                <Icon.MagnifyingGlass
+                <MagnifyingGlass
                   size={20}
                   className="absolute left-3 top-1/2 -translate-y-1/2 cursor-pointer"
                 />
@@ -1036,7 +1036,7 @@ const MenuEight = () => {
                     >
                       Demo
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1044,7 +1044,7 @@ const MenuEight = () => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(1)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
                       </div>
                       <div className="list-nav-item w-full grid grid-cols-2 pt-2 pb-6">
@@ -1308,7 +1308,7 @@ const MenuEight = () => {
                     >
                       Features
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1316,7 +1316,7 @@ const MenuEight = () => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(2)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
                       </div>
                       <div className="list-nav-item w-full pt-3 pb-12">
@@ -1507,7 +1507,7 @@ const MenuEight = () => {
                                   onClick={() => handleTypeClick("toy")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  Boy{String.raw`'s`} Toy
+                                  Boy&apos;s Toy
                                 </div>
                               </li>
                               <li>
@@ -1636,7 +1636,7 @@ const MenuEight = () => {
                     >
                       Product
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1644,243 +1644,8 @@ const MenuEight = () => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(4)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
-                      </div>
-                      <div className="list-nav-item w-full pt-3 pb-12">
-                        <div className="">
-                          <div className="nav-link grid grid-cols-2 gap-5 gap-y-6 justify-between">
-                            <div className="nav-item">
-                              <div className="text-button-uppercase pb-1">
-                                Products Features
-                              </div>
-                              <ul>
-                                <li>
-                                  <Link
-                                    href={"/product/default"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/default"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Defaults
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/sale"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/sale"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Sale
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/countdown-timer"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/countdown-timer"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Countdown Timer
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/grouped"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/grouped"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Grouped
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/bought-together"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/bought-together"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Frequently Bought Together
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/out-of-stock"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/out-of-stock"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Out Of Stock
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/variable"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/variable"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Variable
-                                  </Link>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="nav-item">
-                              <div className="text-button-uppercase pb-1">
-                                Products Features
-                              </div>
-                              <ul>
-                                <li>
-                                  <Link
-                                    href={"/product/external"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/external"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products External
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/on-sale"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/on-sale"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products On Sale
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/discount"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/discount"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products With Discount
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/sidebar"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/sidebar"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products With Sidebar
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/fixed-price"}
-                                    className={`text-secondary duration-300 ${pathname === "/product/fixed-price"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Fixed Price
-                                  </Link>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="nav-item col-span-2">
-                              <div className="text-button-uppercase pb-1">
-                                Products Layout
-                              </div>
-                              <ul>
-                                <li>
-                                  <Link
-                                    href={"/product/thumbnail-left"}
-                                    className={`link text-secondary duration-300 ${pathname === "/product/thumbnail-left"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Thumbnails Left
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/thumbnail-bottom"}
-                                    className={`link text-secondary duration-300 ${pathname === "/product/thumbnail-bottom"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Thumbnails Bottom
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/one-scrolling"}
-                                    className={`link text-secondary duration-300 ${pathname === "/product/one-scrolling"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Grid 1 Scrolling
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/two-scrolling"}
-                                    className={`link text-secondary duration-300 ${pathname === "/product/two-scrolling"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Grid 2 Scrolling
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/combined-one"}
-                                    className={`link text-secondary duration-300 ${pathname === "/product/combined-one"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Combined 1
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href={"/product/combined-two"}
-                                    className={`link text-secondary duration-300 ${pathname === "/product/combined-two"
-                                      ? "active"
-                                      : ""
-                                      }`}
-                                  >
-                                    Products Combined 2
-                                  </Link>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="recent-product pt-4">
-                            <div className="text-button-uppercase pb-1">
-                              Recent Products
-                            </div>
-                            <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
-                              {productData.slice(0, 2).map((prd, index) => (
-                                <Product key={index} data={prd} type="grid" />
-                              ))}
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </li>
@@ -1894,7 +1659,7 @@ const MenuEight = () => {
                     >
                       Blog
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1902,7 +1667,7 @@ const MenuEight = () => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(5)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
                       </div>
                       <div className="list-nav-item w-full pt-2 pb-6">
@@ -1966,7 +1731,7 @@ const MenuEight = () => {
                     >
                       Pages
                       <span className="text-right">
-                        <Icon.CaretRight size={20} />
+                        <CaretRight size={20} />
                       </span>
                     </a>
                     <div className="sub-nav-mobile">
@@ -1974,7 +1739,7 @@ const MenuEight = () => {
                         className="back-btn flex items-center gap-3"
                         onClick={() => handleOpenSubNavMobile(6)}
                       >
-                        <Icon.CaretLeft />
+                        <CaretLeft />
                         Back
                       </div>
                       <div className="list-nav-item w-full pt-2 pb-6">

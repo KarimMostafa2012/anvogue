@@ -5,7 +5,7 @@ import TopNavOne from "@/components/Header/TopNav/TopNavOne";
 import MenuOne from "@/components/Header/Menu/MenuOne";
 import Breadcrumb from "@/components/Breadcrumb/Breadcrumb";
 import Footer from "@/components/Footer/Footer";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { CheckSquare } from "@phosphor-icons/react/dist/ssr";
 
 const Login = () => {
   const handleLogin = (form: HTMLFormElement) => {
@@ -93,7 +93,7 @@ const Login = () => {
                   <div className="flex items-center">
                     <div className="block-input">
                       <input type="checkbox" name="remember" id="remember" />
-                      <Icon.CheckSquare
+                      <CheckSquare
                         size={20}
                         weight="fill"
                         className="icon-checkbox"

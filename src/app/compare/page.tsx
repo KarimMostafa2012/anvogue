@@ -9,7 +9,6 @@ import Footer from "@/components/Footer/Footer";
 import { ProductType } from "@/type/ProductType";
 import productData from "@/data/Product.json";
 import Product from "@/components/Product/Product";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { useCompare } from "@/context/CompareContext";
 import { useCart } from "@/context/CartContext";
 import { useModalCartContext } from "@/context/ModalCartContext";
@@ -96,10 +95,10 @@ const Compare = () => {
                     Add To Cart
                   </div>
                 </div>
-                <table className="right border-collapse w-full border-t border-r border-line">
-                  <tr className={`flex w-full items-center`}>
+                <div className="right border-collapse w-full border-t border-r border-line">
+                  <div className="flex w-full items-center">
                     {compareState.compareArray.map((item, index) => (
-                      <td
+                      <div
                         className="w-full border border-line h-[60px] border-t-0 border-r-0"
                         key={index}
                       >
@@ -107,48 +106,48 @@ const Compare = () => {
                           <Rate currentRate={item.rate} size={12} />
                           <p className="pl-1">(1.234)</p>
                         </div>
-                      </td>
+                      </div>
                     ))}
-                  </tr>
-                  <tr className={`flex w-full items-center`}>
+                  </div>
+                  <div className="flex w-full items-center">
                     {compareState.compareArray.map((item, index) => (
-                      <td
+                      <div
                         className="w-full border border-line h-[60px] border-t-0 border-r-0"
                         key={index}
                       >
                         <div className="h-full flex items-center justify-center">
                           ${item.price}.00
                         </div>
-                      </td>
+                      </div>
                     ))}
-                  </tr>
-                  <tr className={`flex w-full items-center`}>
+                  </div>
+                  <div className="flex w-full items-center">
                     {compareState.compareArray.map((item, index) => (
-                      <td
+                      <div
                         className="w-full border border-line h-[60px] border-t-0 border-r-0"
                         key={index}
                       >
                         <div className="h-full flex items-center justify-center capitalize">
                           {item.type}
                         </div>
-                      </td>
+                      </div>
                     ))}
-                  </tr>
-                  <tr className={`flex w-full items-center`}>
+                  </div>
+                  <div className="flex w-full items-center">
                     {compareState.compareArray.map((item, index) => (
-                      <td
+                      <div
                         className="w-full border border-line h-[60px] border-t-0 border-r-0"
                         key={index}
                       >
                         <div className="h-full flex items-center justify-center capitalize">
                           {item.brand}
                         </div>
-                      </td>
+                      </div>
                     ))}
-                  </tr>
-                  <tr className={`flex w-full items-center`}>
+                  </div>
+                  <div className="flex w-full items-center">
                     {compareState.compareArray.map((item, index) => (
-                      <td
+                      <div
                         className="w-full border border-line h-[60px] border-t-0 border-r-0 size"
                         key={index}
                       >
@@ -158,12 +157,12 @@ const Compare = () => {
                             <span>,</span>
                           </p>
                         </div>
-                      </td>
+                      </div>
                     ))}
-                  </tr>
-                  <tr className={`flex w-full items-center`}>
+                  </div>
+                  <div className="flex w-full items-center">
                     {compareState.compareArray.map((item, index) => (
-                      <td
+                      <div
                         className="w-full border border-line h-[60px] border-t-0 border-r-0 size"
                         key={index}
                       >
@@ -177,12 +176,12 @@ const Compare = () => {
                             ></span>
                           ))}
                         </div>
-                      </td>
+                      </div>
                     ))}
-                  </tr>
-                  <tr className={`flex w-full items-center`}>
+                  </div>
+                  <div className="flex w-full items-center">
                     {compareState.compareArray.map((item, index) => (
-                      <td
+                      <div
                         className="w-full border border-line h-[60px] border-t-0 border-r-0"
                         key={index}
                       >
@@ -194,10 +193,10 @@ const Compare = () => {
                             Add To Cart
                           </div>
                         </div>
-                      </td>
+                      </div>
                     ))}
-                  </tr>
-                </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

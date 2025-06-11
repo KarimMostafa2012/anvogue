@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { countdownTime } from "@/store/countdownTime";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { useTranslation } from "next-i18next";
 
 const ComingSoon = () => {
+  const { t } = useTranslation();
   const [timeLeft, setTimeLeft] = useState(countdownTime("2025-5-31"));
 
   useEffect(() => {
@@ -33,13 +34,13 @@ const ComingSoon = () => {
               <div>
                 <img src="/images/logo.png" className="w-[120px] mb-2" alt="logo" />
               </div>
-              <div className="text-display">Coming Soon</div>
+              <div className="text-display">{t('comingSoon.title')}</div>
               <div className="countdown-time flex items-center gap-5 lg:mt-[60px] md:mt-10 mt-6">
                 <div className="item flex flex-col items-center">
                   <div className="days time heading1">
                     {timeLeft.days < 10 ? `0${timeLeft.days}` : timeLeft.days}
                   </div>
-                  <div className="text-button-uppercase font-medium">Days</div>
+                  <div className="text-button-uppercase font-medium">{t('comingSoon.days')}</div>
                 </div>
                 <span className="heading4">:</span>
                 <div className="item flex flex-col items-center">
@@ -48,7 +49,7 @@ const ComingSoon = () => {
                       ? `0${timeLeft.hours}`
                       : timeLeft.hours}
                   </div>
-                  <div className="text-button-uppercase font-medium">Hours</div>
+                  <div className="text-button-uppercase font-medium">{t('comingSoon.hours')}</div>
                 </div>
                 <span className="heading4">:</span>
                 <div className="item flex flex-col items-center">
@@ -58,7 +59,7 @@ const ComingSoon = () => {
                       : timeLeft.minutes}
                   </div>
                   <div className="text-button-uppercase font-medium">
-                    Minutes
+                    {t('comingSoon.minutes')}
                   </div>
                 </div>
                 <span className="heading4">:</span>
@@ -69,7 +70,7 @@ const ComingSoon = () => {
                       : timeLeft.seconds}
                   </div>
                   <div className="text-button-uppercase font-medium">
-                    Seconds
+                    {t('comingSoon.seconds')}
                   </div>
                 </div>
               </div>

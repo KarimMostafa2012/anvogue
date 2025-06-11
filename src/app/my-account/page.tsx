@@ -6,7 +6,7 @@ import TopNavOne from "@/components/Header/TopNav/TopNavOne";
 import MenuOne from "@/components/Header/Menu/MenuOne";
 import Breadcrumb from "@/components/Breadcrumb/Breadcrumb";
 import Footer from "@/components/Footer/Footer";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+import { HouseLine, Package, Tag, GearSix, SignOut, HourglassMedium, ReceiptX, CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { Console } from "console";
@@ -32,9 +32,8 @@ interface UserProfile {
   house_num?: string;
   street_name?: string;
   zip_code?: string;
-  addresses?: [];
+  addresses?: Address[];
   profile_img?: string;
-  // Add other expected properties here
 }
 
 type Order = {
@@ -52,14 +51,12 @@ type Order = {
       zip_code: string;
     };
   };
-  order_items: [
-    {
-      id: number;
-      order: string;
-      color: string;
-      product: ProductType;
-    }
-  ];
+  order_items: Array<{
+    id: number;
+    order: string;
+    color: string;
+    product: ProductType;
+  }>;
   notes: string;
   total: string;
   status: string;
@@ -70,22 +67,22 @@ type Order = {
 
 const MyAccount = () => {
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
-  const [activeTab, setActiveTab] = useState<string | undefined>("dashboard");
+  const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [activeAddress, setActiveAddress] = useState<string | null>("billing");
-  const [activeOrders, setActiveOrders] = useState<string | undefined>("");
+  const [activeOrders, setActiveOrders] = useState<string>("");
   const [detailOrder, setDetailOrder] = useState<Order | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [openDetail, setOpenDetail] = useState<boolean | undefined>(false);
-  const [newForm, setNewForm] = useState<boolean | undefined>(false);
+  const [openDetail, setOpenDetail] = useState<boolean>(false);
+  const [newForm, setNewForm] = useState<boolean>(false);
   const [profile, setProfile] = useState<UserProfile>({});
   const [cancel, setCancel] = useState<{
     state: boolean;
     id: null | string | number;
   }>({ state: false, id: null });
   const [totalDiscount, setTotalDiscount] = useState<number>(0);
-  //   const router = useRouter();
   const searchParams = useSearchParams();
   let numConf = 0;
+
   const handleActiveAddress = (order: string) => {
     setActiveAddress((prevOrder) => (prevOrder === order ? null : order));
   };
@@ -674,7 +671,7 @@ const MyAccount = () => {
                     }`}
                     onClick={() => setActiveTab("dashboard")}
                   >
-                    <Icon.HouseLine size={20} />
+                    <HouseLine size={20} />
                     <strong className="heading6">Dashboard</strong>
                   </Link>
                   <Link
@@ -685,7 +682,7 @@ const MyAccount = () => {
                     }`}
                     onClick={() => setActiveTab("orders")}
                   >
-                    <Icon.Package size={20} />
+                    <Package size={20} />
                     <strong className="heading6">History Orders</strong>
                   </Link>
                   <Link
@@ -696,7 +693,7 @@ const MyAccount = () => {
                     }`}
                     onClick={() => setActiveTab("address")}
                   >
-                    <Icon.Tag size={20} />
+                    <Tag size={20} />
                     <strong className="heading6">My Address</strong>
                   </Link>
                   <Link
@@ -707,7 +704,7 @@ const MyAccount = () => {
                     }`}
                     onClick={() => setActiveTab("setting")}
                   >
-                    <Icon.GearSix size={20} />
+                    <GearSix size={20} />
                     <strong className="heading6">Update Profile</strong>
                   </Link>
                   <Link
@@ -718,7 +715,7 @@ const MyAccount = () => {
                     }}
                     className="item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5"
                   >
-                    <Icon.SignOut size={20} />
+                    <SignOut size={20} />
                     <strong className="heading6">Logout</strong>
                   </Link>
                 </div>
@@ -751,7 +748,7 @@ const MyAccount = () => {
                             : 0}
                         </h5>
                       </div>
-                      <Icon.HourglassMedium className="text-4xl" />
+                      <HourglassMedium className="text-4xl" />
                     </div>
                     <div className="item flex items-center justify-between p-5 border border-line rounded-lg box-shadow-xs">
                       <div className="counter">
@@ -774,7 +771,7 @@ const MyAccount = () => {
                             : 0}
                         </h5>
                       </div>
-                      <Icon.ReceiptX className="text-4xl" />
+                      <ReceiptX className="text-4xl" />
                     </div>
                     <div className="item flex items-center justify-between p-5 border border-line rounded-lg box-shadow-xs">
                       <div className="counter">
@@ -783,7 +780,7 @@ const MyAccount = () => {
                         </span>
                         <h5 className="heading5 mt-1">{orders.length}</h5>
                       </div>
-                      <Icon.Package className="text-4xl" />
+                      <Package className="text-4xl" />
                     </div>
                   </div>
                   <div className="recent_order pt-5 px-5 pb-2 mt-7 border border-line rounded-xl">
@@ -998,7 +995,7 @@ const MyAccount = () => {
                       onClick={() => handleActiveAddress("mainShipping")}
                     >
                       <strong className="heading6">Main address</strong>
-                      <Icon.CaretDown className="text-2xl ic_down duration-300" />
+                      <CaretDown className="text-2xl ic_down duration-300" />
                     </button>
 
                     <div
@@ -1083,7 +1080,7 @@ const MyAccount = () => {
                           <strong className="heading6">
                             Shipping address {i + 2}
                           </strong>
-                          <Icon.CaretDown className="text-2xl ic_down duration-300" />
+                          <CaretDown className="text-2xl ic_down duration-300" />
                         </button>
                         <form
                           className="otherAddresses"

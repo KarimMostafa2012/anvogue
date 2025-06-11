@@ -52,25 +52,25 @@ const ModalSearch = () => {
                                 className="item px-4 py-1.5 border border-line rounded-full cursor-pointer duration-300 hover:bg-black hover:text-white"
                                 onClick={() => handleSearch('dress')}
                             >
-                                {t('dress')}
+                                {t('modal.search.keywords.dress')}
                             </div>
                             <div
                                 className="item px-4 py-1.5 border border-line rounded-full cursor-pointer duration-300 hover:bg-black hover:text-white"
                                 onClick={() => handleSearch('t-shirt')}
                             >
-                                {t('t-shirt')}
+                                {t('modal.search.keywords.t-shirt')}
                             </div>
                             <div
                                 className="item px-4 py-1.5 border border-line rounded-full cursor-pointer duration-300 hover:bg-black hover:text-white"
                                 onClick={() => handleSearch('underwear')}
                             >
-                                {t('underwear')}
+                                {t('modal.search.keywords.underwear')}
                             </div>
                             <div
                                 className="item px-4 py-1.5 border border-line rounded-full cursor-pointer duration-300 hover:bg-black hover:text-white"
                                 onClick={() => handleSearch('top')}
                             >
-                                {t('top')}
+                                {t('modal.search.keywords.top')}
                             </div>
                         </div>
                     </div>
