@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 
