@@ -10,9 +10,32 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useTranslation } from 'react-i18next';
-import { Category } from '@/types/categories';
-import axios from 'axios';
-import { baseUrl } from '@/utils/constants';
+
+type Category = {
+  id: number;
+  icon?: {
+    id: number;
+    icon: string;
+  };
+  name: string
+  translations: {
+    en: {
+      name: string;
+    };
+    ar: {
+      name: string;
+    };
+    de: {
+      name: string;
+    };
+    ckb: {
+      name: string;
+    };
+    uk: {
+      name: string;
+    };
+  };
+};
 
 const TrendingNow = () => {
   const { t } = useTranslation();
@@ -21,25 +44,32 @@ const TrendingNow = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/products/category/`, {
-          params: {
-            lang: currentLanguage
-          },
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        setCategories(response.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
+    fetch(
+      "https://api.malalshammobel.com/products/category/?lang=" +
+        currentLanguage,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    };
-
-    fetchCategories();
-  }, [currentLanguage]);
-
+    )
+      .then((response) => {
+        if (!response.ok) {
+          console.log(response);
+          // auth/api/users/me/
+        } else {
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setCategories(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
   const handleTypeClick = (type: string) => {
     router.push(`/shop/?category=${type}`);
   };

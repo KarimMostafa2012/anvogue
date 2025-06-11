@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import { BlogType } from '@/type/BlogType'
 import { useTranslation } from 'react-i18next'
