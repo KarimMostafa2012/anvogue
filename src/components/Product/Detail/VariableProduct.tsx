@@ -149,7 +149,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
       console.log(data);
       setFilteredData(filterById(data, productId));
     }
-  }, [data]);
+  }, [data, productId]);
 
   const handleActiveColor = (item: string) => {
     setActiveColor(item);

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
@@ -15,13 +15,13 @@ interface Props {
 }
 
 const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
-    const languages = [
+    const languages = useMemo(() => [
         { key: "ar", name: 'العربية' },
         { key: "en", name: 'English' },
         { key: "de", name: 'Deutsch' },
         { key: "ckb", name: 'Kurdî' },
         { key: "uk", name: 'український' },
-    ];
+    ], []);
     const [isOpenLanguage, setIsOpenLanguage] = useState(false)
     const currentLanguage = useSelector((state: RootState) => state.language);
     const [selectedLanguage, setSelectedLanguage] = useState<string>("Deutsch")
@@ -33,7 +33,7 @@ const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
     console.log(currentLanguage)
     useEffect(() => {
         setSelectedLanguage(languages.find(item => item.key === currentLanguage)?.name || "Deutsch")
-    }, [currentLanguage])
+    }, [languages, currentLanguage])
 
     return (
         <>

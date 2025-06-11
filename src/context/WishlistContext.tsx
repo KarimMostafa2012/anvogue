@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useState, useReducer, useEffect, useCallback } from 'react';
 import { ProductType } from '@/type/ProductType';
 
 export interface WishlistItem {
@@ -78,7 +78,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken');
     };
 
-    const fetchWishlist = async () => {
+    const fetchWishlist = useCallback(async () => {
         dispatch({ type: 'SET_LOADING', payload: true });
         try {
             const token = getAuthToken();
@@ -105,7 +105,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         } finally {
             dispatch({ type: 'SET_LOADING', payload: false });
         }
-    };
+    }, [dispatch]);
 
     const addToWishlist = async (product: ProductType) => {
         console.log(product)
@@ -174,7 +174,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Load wishlist on component mount
     useEffect(() => {
         fetchWishlist();
-    }, []);
+    }, [fetchWishlist]);
 
     return (
         <WishlistContext.Provider value={{ 

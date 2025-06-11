@@ -151,7 +151,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     fetch("https://api.malalshammobel.com/products/subcategory/", {

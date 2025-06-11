@@ -52,7 +52,7 @@ const TabFeatures: React.FC<Props> = ({ data, start, limit }) => {
       }
     };
     getFilterData();
-  }, [dispatch, activeTab]);
+  }, [dispatch, activeTab, currentLanguage]);
 
   return (
     <>

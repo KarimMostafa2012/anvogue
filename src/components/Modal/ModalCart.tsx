@@ -47,7 +47,7 @@ const ModalCart = ({
 
   useEffect(() => {
     loadCart();
-  }, []);
+  }, [loadCart]);
 
   const handleAddToCart = (productItem: ProductType) => {
     if (!cartState.cartArray.find((item) => item.id === productItem.id)) {

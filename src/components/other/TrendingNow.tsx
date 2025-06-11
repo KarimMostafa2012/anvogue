@@ -69,7 +69,7 @@ const TrendingNow = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
+  }, [currentLanguage]);
   const handleTypeClick = (type: string) => {
     router.push(`/shop/?category=${type}`);
   };

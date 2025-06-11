@@ -43,7 +43,7 @@ const Deal: React.FC<Props> = ({ start, limit }) => {
   useEffect(() => {
     // console.log("Fetching with params:", params);
     dispatch(getAllProducts({ params: { lang: currentLanguage, has_offer: true } }));
-  }, [dispatch]);
+  }, [dispatch, currentLanguage]);
 
   return (
     <>
