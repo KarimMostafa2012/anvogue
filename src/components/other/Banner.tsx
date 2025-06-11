@@ -3,10 +3,16 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 
 const Banner = () => {
     const { t } = useTranslation();
+    
+    // Helper function to ensure string output
+    const getTranslation = (key: string): string => {
+        const translation = t(key);
+        return typeof translation === 'string' ? translation : String(translation);
+    };
     
     return (
         <>
@@ -24,8 +30,8 @@ const Banner = () => {
                                 />
                             </div>
                             <div className="banner-content absolute left-[30px] top-1/2 -translate-y-1/2">
-                                <div className="heading6">{t('slider.collections.womensFashion')}</div>
-                                <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">{t('slider.shopNow')}</div>
+                                <div className="heading6">{getTranslation('slider.collections.womensFashion')}</div>
+                                <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">{getTranslation('slider.shopNow')}</div>
                             </div>
                         </Link>
                         <Link href={'/shop/breadcrumb-img'} className="banner-item relative block duration-500">

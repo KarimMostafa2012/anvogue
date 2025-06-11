@@ -25,9 +25,9 @@ const Footer = () => {
                                         <span className="text-button mt-3">{t('footer.company.address')}:</span>
                                     </div>
                                     <div className="flex flex-col ">
-                                        <span className=''>hi.avitex@gmail.com</span>
-                                        <span className='mt-3'>1-333-345-6868</span>
-                                        <span className='mt-3 pt-px'>549 Oak St.Crystal Lake, IL 60014</span>
+                                        <span className=''>{t('footer.company.email')}</span>
+                                        <span className='mt-3'>{t('footer.company.phone')}</span>
+                                        <span className='mt-3 pt-px'>{t('footer.company.address')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -92,14 +92,6 @@ const Footer = () => {
                             <div className="left flex items-center gap-8">
                                 <div className="copyright caption1 text-secondary">{t('footer.bottom.copyright')}</div>
                                 <div className="select-block flex items-center gap-5 max-md:hidden">
-                                    <div className="choose-language flex items-center gap-1.5">
-                                        <select name="language" id="chooseLanguageFooter" className='caption2 bg-transparent'>
-                                            <option value="English">{t('footer.bottom.languages.english')}</option>
-                                            <option value="Espana">{t('footer.bottom.languages.spanish')}</option>
-                                            <option value="France">{t('footer.bottom.languages.french')}</option>
-                                        </select>
-                                        <Icon.CaretDown size={12} color='#1F1F1F' />
-                                    </div>
                                     <div className="choose-currency flex items-center gap-1.5">
                                         <select name="currency" id="chooseCurrencyFooter" className='caption2 bg-transparent'>
                                             <option value="USD">{t('footer.bottom.currencies.usd')}</option>

@@ -42,11 +42,11 @@ export default function SidebarList() {
   return (
     <>
       <TopNavOne
-        props="style-one bg-black"
-        slogan="New customers save 10% with the code GET10"
+        className="style-one bg-black"
+        
       />
       <div id="header" className="relative w-full">
-        <MenuOne props="bg-transparent" />
+        <MenuOne className="bg-transparent" />
       </div>
       <ShopSidebarList productPerPage={12} dataType={type} />
       <Footer />

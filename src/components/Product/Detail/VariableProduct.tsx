@@ -137,12 +137,6 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
 
   const productMain: ProductType | undefined =
     product || data?.find((p) => p.id === productId);
-  const percentSale =
-    (productMain?.new_price !=undefined) && productMain?.price
-      ? Math.floor(
-          100 - (productMain.new_price / Number(productMain.price)) * 100
-        )
-      : 0;
 
   useEffect(() => {
     if (data) {
@@ -150,6 +144,18 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
       setFilteredData(filterById(data, productId));
     }
   }, [data, productId]);
+
+  // Add early return if productMain is undefined
+  if (!productMain) {
+    return <div className="container py-20">{t('product.notFound')}</div>;
+  }
+
+  const percentSale =
+    productMain.new_price && productMain.price
+      ? Math.floor(
+        100 - (productMain.new_price / Number(productMain.price)) * 100
+      )
+      : 0;
 
   const handleActiveColor = (item: string) => {
     setActiveColor(item);
@@ -169,12 +175,9 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     }));
   };
 
-  const getImageUrl = (image: string | ProductImage): string => {
-    if (image != undefined) {
-      return typeof image === "string" ? image : image.img;
-    } else {
-      return "";
-    }
+  const getImageUrl = (image: string | ProductImage | undefined): string => {
+    if (!image) return "/images/placeholder.png";
+    return typeof image === "string" ? image : image.img;
   };
 
   const convertToProductType = (product: any): ProductType => {
@@ -183,10 +186,10 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
       id: String(product.id),
       images: Array.isArray(product.images)
         ? product.images.map((img: string | ProductImage, index: number) =>
-            typeof img === "string"
-              ? { img, id: index }
-              : { img: img.img, id: index }
-          )
+          typeof img === "string"
+            ? { img, id: index }
+            : { img: img.img, id: index }
+        )
         : [],
       quantity: quantity || 1,
     };
@@ -316,12 +319,6 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     );
   }
 
-  if (!product && !productMain) {
-    return <div className="container py-20">{t('product.notFound')}</div>;
-  } else if (!productMain) {
-    return <div className="container py-20">{t('product.loading')}</div>;
-  }
-
   return (
     <>
       <div className="product-detail sale">
@@ -344,57 +341,57 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
               <div className="list-img-child flex gap-5 flex-wrap">
                 {productMain.images && productMain.images.length >= 3
                   ? productMain.images.slice(1).map((item, index) => {
-                      if (
-                        index == productMain.images.length - 2 &&
-                        index % 2 == 0
-                      ) {
-                        return (
-                          <Image
-                            key={index}
-                            src={getImageUrl(item)}
-                            width={1000}
-                            height={1000}
-                            alt="prd-img"
-                            className="w-full aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
-                            onClick={() => {
-                              swiperRef.current?.slideTo(index + 1);
-                              setOpenPopupImg(true);
-                            }}
-                          />
-                        );
-                      } else {
-                        return (
-                          <Image
-                            key={index}
-                            src={getImageUrl(item)}
-                            width={1000}
-                            height={1000}
-                            alt="prd-img"
-                            className="w-[calc(50%-10px)] aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
-                            onClick={() => {
-                              swiperRef.current?.slideTo(index + 1);
-                              setOpenPopupImg(true);
-                            }}
-                          />
-                        );
-                      }
-                    })
-                  : productMain.images &&
-                    productMain.images.length == 2 && (
-                      <>
+                    if (
+                      index == productMain.images.length - 2 &&
+                      index % 2 == 0
+                    ) {
+                      return (
                         <Image
-                          src={getImageUrl(productMain.images[1])}
+                          key={index}
+                          src={getImageUrl(item)}
                           width={1000}
                           height={1000}
                           alt="prd-img"
                           className="w-full aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
                           onClick={() => {
-                            swiperRef.current?.slideTo(2);
+                            swiperRef.current?.slideTo(index + 1);
                             setOpenPopupImg(true);
                           }}
                         />
-                      </>
-                    )}
+                      );
+                    } else {
+                      return (
+                        <Image
+                          key={index}
+                          src={getImageUrl(item)}
+                          width={1000}
+                          height={1000}
+                          alt="prd-img"
+                          className="w-[calc(50%-10px)] aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
+                          onClick={() => {
+                            swiperRef.current?.slideTo(index + 1);
+                            setOpenPopupImg(true);
+                          }}
+                        />
+                      );
+                    }
+                  })
+                  : productMain.images &&
+                  productMain.images.length == 2 && (
+                    <>
+                      <Image
+                        src={getImageUrl(productMain.images[1])}
+                        width={1000}
+                        height={1000}
+                        alt="prd-img"
+                        className="w-full aspect-[3/4] object-cover rounded-[20px] cursor-pointer"
+                        onClick={() => {
+                          swiperRef.current?.slideTo(2);
+                          setOpenPopupImg(true);
+                        }}
+                      />
+                    </>
+                  )}
               </div>
               <div className={`popup-img ${openPopupImg ? "open" : ""}`}>
                 <span
@@ -448,13 +445,12 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                   <div className="heading4 mt-1">{productMain.name}</div>
                 </div>
                 <div
-                  className={`add-wishlist-btn w-12 h-12 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white ${
-                    wishlistState.wishlistArray.some(
-                      (item) => item.product.id === productMain.id
-                    )
+                  className={`add-wishlist-btn w-12 h-12 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white ${wishlistState.wishlistArray.some(
+                    (item) => item.product.id === productMain.id
+                  )
                       ? "active"
                       : ""
-                  }`}
+                    }`}
                   onClick={handleAddToWishlist}
                 >
                   {wishlistState.wishlistArray.some(
@@ -615,9 +611,8 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                                 );
                               }
                             }}
-                            className={`${
-                              quantity[item.id] === 0 ? "disabled" : ""
-                            } cursor-pointer`}
+                            className={`${quantity[item.id] === 0 ? "disabled" : ""
+                              } cursor-pointer`}
                           />
                           <div className="body1 font-semibold">
                             {quantity[item.id] || 0}
@@ -652,9 +647,8 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                           return (
                             <div
                               key={index}
-                              className={`color-item w-6 h-6 rounded-full !duration-0 relative ${
-                                activeColor === item.color ? "active" : ""
-                              }`}
+                              className={`color-item w-6 h-6 rounded-full !duration-0 relative ${activeColor === item.color ? "active" : ""
+                                }`}
                               style={{ backgroundColor: `${item.color}` }}
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -691,11 +685,10 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                                   return (
                                     <div
                                       key={index}
-                                      className={`color-item w-6 h-6 rounded-full !duration-0 relative ${
-                                        activeColor === item.color
+                                      className={`color-item w-6 h-6 rounded-full !duration-0 relative ${activeColor === item.color
                                           ? "active"
                                           : ""
-                                      }`}
+                                        }`}
                                       style={{
                                         backgroundColor: `${item.color}`,
                                       }}
@@ -735,9 +728,8 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                           productMain.id
                         )
                       }
-                      className={`${
-                        quantity[productId] === 1 ? "disabled" : ""
-                      } cursor-pointer`}
+                      className={`${quantity[productId] === 1 ? "disabled" : ""
+                        } cursor-pointer`}
                     />
                     <div className="body1 font-semibold">
                       {quantity[productId]}
@@ -927,17 +919,15 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
             <div className="flex items-center justify-center w-full">
               <div className="menu-tab flex items-center md:gap-[60px] gap-8">
                 <div
-                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${
-                    activeTab === "description" ? "active" : ""
-                  }`}
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "description" ? "active" : ""
+                    }`}
                   onClick={() => handleActiveTab("description")}
                 >
                   {t('product.detail.description')}
                 </div>
                 <div
-                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${
-                    activeTab === "specifications" ? "active" : ""
-                  }`}
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "specifications" ? "active" : ""
+                    }`}
                   onClick={() => handleActiveTab("specifications")}
                 >
                   {t('product.detail.specifications')}

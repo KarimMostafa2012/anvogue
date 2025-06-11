@@ -141,11 +141,11 @@ const Wishlist = () => {
   return (
     <>
       <TopNavOne
-        props="style-one bg-black"
-        slogan="New customers save 10% with the code GET10"
+        className="style-one bg-black"
+        
       />
       <div id="header" className="relative w-full">
-        <MenuOne props="bg-transparent" />
+        <MenuOne className="bg-transparent" />
         <Breadcrumb heading="Wish list" subHeading="Wish list" />
       </div>
       <div className="shop-product breadcrumb1 lg:py-20 md:py-14 py-10">

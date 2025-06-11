@@ -18,9 +18,9 @@ const ProductVariableProduct = () => {
 
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
+            <TopNavOne className="style-one bg-black"  />
             <div id="header" className='relative w-full'>
-                <MenuOne props="bg-white" />
+                <MenuOne className="bg-white" />
                 <BreadcrumbProduct data={productData} productPage='variable' productId={productId} />
             </div>
             <VariableProduct data={productData} productId={productId} />

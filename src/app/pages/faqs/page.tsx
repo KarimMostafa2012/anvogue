@@ -93,9 +93,9 @@ const Faqs = () => {
 
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
+            <TopNavOne className="style-one bg-black"  />
             <div id="header" className='relative w-full'>
-                <MenuOne props="bg-transparent" />
+                <MenuOne className="bg-transparent" />
                 <Breadcrumb heading={t('faqs.title')} subHeading={t('faqs.title')} />
             </div>
             <div className='faqs-block md:py-20 py-10'>

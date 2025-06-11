@@ -33,14 +33,7 @@
             "error": "Error"
         },
         "language": {
-            "select": "Select Language",
-            "options": {
-                "ar": "العربية",
-                "en": "English",
-                "de": "Deutsch",
-                "ckb": "Kurdî",
-                "uk": "український"
-            }
+            "select": "Select Language"
         }
     },
     "header": {
@@ -221,11 +214,6 @@
         "bottom": {
             "copyright": "©2023 Anvogue. All Rights Reserved.",
             "payment": "Payment",
-            "languages": {
-                "english": "English",
-                "spanish": "Espana",
-                "french": "France"
-            },
             "currencies": {
                 "usd": "USD",
                 "eur": "EUR",

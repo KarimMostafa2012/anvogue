@@ -19,7 +19,7 @@ import { useSearchParams } from "next/navigation";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "@/redux/slices/productSlice";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 type Category = {
   id: number;
@@ -76,13 +76,17 @@ type SubCategory = {
   };
 };
 
+interface Props {
+  className?: string;
+}
 
-const MenuEight = () => {
-  const currentLanguage = useSelector((state: RootState) => state.language);
+const MenuEight = ({ className }: Props) => {
+  const { t } = useTranslation();
   const pathname = usePathname();
+  const dispatch = useDispatch<AppDispatch>();
+  const currentLanguage = useSelector((state: RootState) => state.language);
   const { openLoginPopup, handleLoginPopup } = useLoginPopup();
-  const { openSubMenuDepartment, handleSubMenuDepartment } =
-    useSubMenuDepartment();
+  const { openSubMenuDepartment, handleSubMenuDepartment } = useSubMenuDepartment();
   const { openMenuMobile, handleMenuMobile } = useMenuMobile();
   const [openSubNavMobile, setOpenSubNavMobile] = useState<number | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
@@ -96,11 +100,16 @@ const MenuEight = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   let shadowCat = "";
-  const dispatch = useDispatch<AppDispatch>();
   const { products } = useSelector((state: RootState) => state.products);
-  const { t } = useTranslation();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     if (searchParams.get("uid") && searchParams.get("token")) {
       fetch("https://api.malalshammobel.com/auth/api/users/activation/", {
         method: "GET",
@@ -114,9 +123,7 @@ const MenuEight = () => {
       })
         .then((response) => {
           if (!response.ok) {
-            console.log(response);
-          } else {
-            console.log("okaaaaay", response);
+            throw new Error('Failed to activate user');
           }
           return response.json();
         })
@@ -127,10 +134,11 @@ const MenuEight = () => {
           console.error("Error:", error);
         });
     }
-  }, [searchParams]);
+  }, [searchParams, isMounted]);
 
   useEffect(() => {
-    console.log("currentLanguage", currentLanguage);
+    if (!isMounted) return;
+
     fetch("https://api.malalshammobel.com/products/category/?lang=" + currentLanguage, {
       method: "GET",
       headers: {
@@ -139,22 +147,19 @@ const MenuEight = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
-          // auth/api/users/me/
-        } else {
+          throw new Error('Failed to fetch categories');
         }
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setCategories(data);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+
     fetch(
-      "https://api.malalshammobel.com/products/subcategory/?lang=" +
-      currentLanguage,
+      "https://api.malalshammobel.com/products/subcategory/?lang=" + currentLanguage,
       {
         method: "GET",
         headers: {
@@ -164,114 +169,65 @@ const MenuEight = () => {
     )
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
-        } else {
-          console.log(response);
+          throw new Error('Failed to fetch subcategories');
         }
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setSubCategories(data);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [t, currentLanguage]);
+  }, [t, currentLanguage, isMounted]);
 
   useEffect(() => {
-    if (window.sessionStorage.getItem("loggedIn") == "true") {
-      setLoggedIn(true);
-    } else if (
-      window.localStorage.getItem("accessToken") ||
-      window.sessionStorage.getItem("accessToken")
-    ) {
-      // auth/api/users/me/
-      fetch("https://api.malalshammobel.com/auth/api/users/me/", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("accessToken") ||
-            window.sessionStorage.getItem("accessToken")
-            }`,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            console.log(response);
-            // auth/api/users/me/
-            fetch("https://api.malalshammobel.com/auth/api/token/refresh/", {
-              method: "post",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                refresh:
-                  window.localStorage.getItem("refreshToken") ||
-                  window.sessionStorage.getItem("refreshToken"),
-              }),
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  setLoggedIn(false);
-                }
-                return response.json();
-              })
-              .then((data) => {
-                console.log(data);
-                setLoggedIn(true);
-                window.localStorage.setItem("accessToken", data.access);
-                window.sessionStorage.setItem("accessToken", data.access);
-                window.sessionStorage.setItem("loggedIn", "true");
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-              });
-          } else {
-            window.sessionStorage.setItem("loggedIn", "true");
-            setLoggedIn(true);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } else if (
-      window.localStorage.getItem("refreshToken") ||
-      window.sessionStorage.getItem("refreshToken")
-    ) {
-      fetch("https://api.malalshammobel.com/auth/api/token/refresh/", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          refresh:
-            window.localStorage.getItem("refreshToken") ||
-            window.sessionStorage.getItem("refreshToken"),
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            setLoggedIn(false);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
+    if (!isMounted) return;
+
+    const checkLoginStatus = () => {
+      try {
+        if (window.sessionStorage.getItem("loggedIn") === "true") {
           setLoggedIn(true);
-          window.localStorage.setItem("accessToken", data.access);
-          window.sessionStorage.setItem("accessToken", data.access);
-          window.sessionStorage.setItem("loggedIn", "true");
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-  }, []);
+        } else if (
+          window.localStorage.getItem("accessToken") ||
+          window.sessionStorage.getItem("accessToken")
+        ) {
+          fetch("https://api.malalshammobel.com/auth/api/users/me/", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${
+                window.localStorage.getItem("accessToken") ||
+                window.sessionStorage.getItem("accessToken")
+              }`,
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch user data");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              setLoggedIn(true);
+              window.sessionStorage.setItem("loggedIn", "true");
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              setLoggedIn(false);
+              window.sessionStorage.removeItem("loggedIn");
+              window.localStorage.removeItem("accessToken");
+              window.sessionStorage.removeItem("accessToken");
+            });
+        }
+      } catch (error) {
+        console.error("Error checking login status:", error);
+        setLoggedIn(false);
+      }
+    };
+
+    checkLoginStatus();
+  }, [isMounted]);
 
   useEffect(() => {
     dispatch(
@@ -316,6 +272,22 @@ const MenuEight = () => {
   const handleTypeClick = (type: string) => {
     router.push(`/shop?type=${type}`);
   };
+
+  // Helper function to ensure string output
+  const getTranslation = (key: string): string => {
+    const translation = t(key);
+    return typeof translation === 'string' ? translation : String(translation);
+  };
+  
+  // Helper function to get category name in current language
+  const getCategoryName = (category: any): string => {
+    if (!category?.translations) return '';
+    return category.translations[currentLanguage as keyof typeof category.translations]?.name || '';
+  };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <>

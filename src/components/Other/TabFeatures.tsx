@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts, newArrivals, bestSelling } from "@/redux/slices/productSlice";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   data: Array<ProductType>;
@@ -54,6 +54,12 @@ const TabFeatures: React.FC<Props> = ({ data, start, limit }) => {
     getFilterData();
   }, [dispatch, activeTab, currentLanguage]);
 
+  // Helper function to ensure string output
+  const getTranslation = (key: string): string => {
+    const translation = t(key);
+    return typeof translation === 'string' ? translation : String(translation);
+  };
+
   return (
     <>
       <div className="tab-features-block md:pt-20 pt-10">
@@ -79,7 +85,7 @@ const TabFeatures: React.FC<Props> = ({ data, start, limit }) => {
                         className="absolute inset-0 rounded-2xl bg-white"
                       ></motion.div>
                     )}
-                    <span className="relative heading5 z-[1]">{t(`slider.collections.${item.key}`)}</span>
+                    <span className="relative heading5 z-[1]">{getTranslation(`slider.collections.${item.key}`)}</span>
                   </div>
                 )
               )}

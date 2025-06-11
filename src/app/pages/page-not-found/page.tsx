@@ -10,9 +10,9 @@ import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 const PageNotFound = () => {
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
+            <TopNavOne className="style-one bg-black"  />
             <div id="header" className='relative w-full'>
-                <MenuOne props="bg-white" />
+                <MenuOne className="bg-white" />
             </div>
             <div className='page-not-found md:py-20 py-10 bg-linear md:mt-[74px] mt-14'>
                 <div className="container">

@@ -8,7 +8,7 @@ import { countdownTime } from "@/store/countdownTime";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "@/redux/slices/productSlice";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   start: number;
@@ -45,19 +45,25 @@ const Deal: React.FC<Props> = ({ start, limit }) => {
     dispatch(getAllProducts({ params: { lang: currentLanguage, has_offer: true } }));
   }, [dispatch, currentLanguage]);
 
+  // Helper function to ensure string output
+  const getTranslation = (key: string): string => {
+    const translation = t(key);
+    return typeof translation === 'string' ? translation : String(translation);
+  };
+
   return (
     <>
       <div className="tab-features-block md:pt-20 pt-10">
         <div className="container">
           <div className="heading flex items-center justify-between gap-5 flex-wrap">
             <div className="left flex items-center gap-6 gap-y-3 flex-wrap">
-              <div className="heading3">{t('slider.collections.deals')}</div>
+              <div className="heading3">{getTranslation('slider.collections.deals')}</div>
             </div>
             <Link
               href={"/shop?sale=true"}
               className="text-button pb-1 border-b-2 border-black"
             >
-              {t('slider.collections.viewAllDeals')}
+              {getTranslation('slider.collections.viewAllDeals')}
             </Link>
           </div>
 

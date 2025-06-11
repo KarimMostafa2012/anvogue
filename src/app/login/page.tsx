@@ -52,11 +52,11 @@ const Login = () => {
   return (
     <>
       <TopNavOne
-        props="style-one bg-black"
-        slogan="New customers save 10% with the code GET10"
+        className="style-one bg-black"
+        
       />
       <div id="header" className="relative w-full">
-        <MenuOne props="bg-transparent" />
+        <MenuOne className="bg-transparent" />
         <Breadcrumb heading="Login" subHeading="Login" />
       </div>
       <div className="login-block md:py-20 py-10">

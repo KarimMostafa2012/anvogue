@@ -19,7 +19,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslation } from 'next-i18next';
 
 interface Props {
-  props: string;
+  className?: string;
 }
 
 type CategoryOfSub = {
@@ -60,9 +60,7 @@ type Category = {
 
 type SubCategory = {
   id: number;
-
   category: CategoryOfSub;
-
   translations: {
     en: {
       name: string;
@@ -82,192 +80,199 @@ type SubCategory = {
   };
 };
 
-const MenuOne: React.FC<Props> = ({ props }) => {
-  const { t } = useTranslation();
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.malalshammobel.com';
+
+const MenuOne: React.FC<Props> = ({ className = '' }) => {
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+
+  // Helper function to ensure string output
+  const getTranslation = (key: string): string => {
+    const translation = t(key);
+    return typeof translation === 'string' ? translation : String(translation);
+  };
+
+  // Helper function to get nested translation with type safety
+  const getNestedTranslation = (obj: Record<string, any>, path: string): string => {
+    try {
+      const keys = path.split('.');
+      let result = obj;
+      for (const key of keys) {
+        if (result && typeof result === 'object' && key in result) {
+          result = result[key];
+        } else {
+          return '';
+        }
+      }
+      return typeof result === 'string' ? result : String(result);
+    } catch (error) {
+      console.error('Translation error:', error);
+      return '';
+    }
+  };
+
+  // Helper function to get category name in current language
+  const getCategoryName = (category: Category): string => {
+    if (!category?.translations) return '';
+    return getNestedTranslation(category.translations, `${currentLanguage}.name`) || '';
+  };
+
+  // Helper function to get subcategory name in current language
+  const getSubCategoryName = (subCategory: SubCategory): string => {
+    if (!subCategory?.translations) return '';
+    return getNestedTranslation(subCategory.translations, `${currentLanguage}.name`) || '';
+  };
+
   const pathname = usePathname();
   const { openLoginPopup, handleLoginPopup } = useLoginPopup();
-  const { openSubMenuDepartment, handleSubMenuDepartment } =
-    useSubMenuDepartment();
+  const { openSubMenuDepartment, handleSubMenuDepartment } = useSubMenuDepartment();
   const { openMenuMobile, handleMenuMobile } = useMenuMobile();
   const [openSubNavMobile, setOpenSubNavMobile] = useState<number | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
-  const [categories, setCategories] = useState<Category[] | null>([]);
-  const [subCategories, setSubCategories] = useState<SubCategory[] | null>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const { openModalCart } = useModalCartContext();
   const { cartState } = useCart();
   const { openModalWishlist } = useModalWishlistContext();
-
   const [searchKeyword, setSearchKeyword] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  let shadowCat = "";
   const { openModalSearch } = useModalSearchContext();
+  const [currentCategory, setCurrentCategory] = useState<string>('');
 
   useEffect(() => {
-    if (searchParams.get("uid") && searchParams.get("token")) {
-      fetch("https://api.malalshammobel.com/auth/api/users/activation/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uid: searchParams.get("uid"),
-          token: searchParams.get("token"),
-        }),
-      })
-        .then((response) => {
+    const activateUser = async () => {
+      if (searchParams.get("uid") && searchParams.get("token")) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/api/users/activation/`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              uid: searchParams.get("uid"),
+              token: searchParams.get("token"),
+            }),
+          });
+          
           if (!response.ok) {
-            console.log(response);
-          } else {
-            console.log("okaaaaay", response);
+            console.error('Activation failed:', response.statusText);
+            return;
           }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-    fetch("https://api.malalshammobel.com/products/category/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          console.log(response);
-          // auth/api/users/me/
-        } else {
+          
+          const data = await response.json();
+          console.log('Activation successful:', data);
+        } catch (error) {
+          console.error('Activation error:', error);
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
+      }
+    };
+
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/products/category/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
         setCategories(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategories([]);
+      }
+    };
+
+    activateUser();
+    fetchCategories();
   }, [searchParams]);
 
   useEffect(() => {
-    fetch("https://api.malalshammobel.com/products/subcategory/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
+    const fetchSubCategories = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/products/subcategory/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        
         if (!response.ok) {
-          console.log(response);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
+        
+        const data = await response.json();
         setSubCategories(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      } catch (error) {
+        console.error('Error fetching subcategories:', error);
+        setSubCategories([]);
+      }
+    };
+
+    fetchSubCategories();
   }, []);
 
   useEffect(() => {
-    if (window.sessionStorage.getItem("loggedIn") == "true") {
-      setLoggedIn(true);
-    } else if (
-      window.localStorage.getItem("accessToken") ||
-      window.sessionStorage.getItem("accessToken")
-    ) {
-      // auth/api/users/me/
-      fetch("https://api.malalshammobel.com/auth/api/users/me/", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${
-            window.localStorage.getItem("accessToken") ||
-            window.sessionStorage.getItem("accessToken")
-          }`,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            console.log(response);
-            // auth/api/users/me/
-            fetch("https://api.malalshammobel.com/auth/api/token/refresh/", {
-              method: "post",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                refresh:
-                  window.localStorage.getItem("refreshToken") ||
-                  window.sessionStorage.getItem("refreshToken"),
-              }),
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  setLoggedIn(false);
-                }
-                return response.json();
-              })
-              .then((data) => {
-                console.log(data);
-                setLoggedIn(true);
-                window.localStorage.setItem("accessToken", data.access);
-                window.sessionStorage.setItem("accessToken", data.access);
-                window.sessionStorage.setItem("loggedIn", "true");
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-              });
-          } else {
-            window.sessionStorage.setItem("loggedIn", "true");
-            setLoggedIn(true);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
+    const checkLoginStatus = async () => {
+      if (window.sessionStorage.getItem("loggedIn") === "true") {
+        setLoggedIn(true);
+        return;
+      }
+
+      const accessToken = window.localStorage.getItem("accessToken") || window.sessionStorage.getItem("accessToken");
+      if (!accessToken) {
+        setLoggedIn(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/api/users/me/`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
         });
-    } else if (
-      window.localStorage.getItem("refreshToken") ||
-      window.sessionStorage.getItem("refreshToken")
-    ) {
-      fetch("https://api.malalshammobel.com/auth/api/token/refresh/", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          refresh:
-            window.localStorage.getItem("refreshToken") ||
-            window.sessionStorage.getItem("refreshToken"),
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
+
+        if (!response.ok) {
+          const refreshToken = window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken");
+          if (!refreshToken) {
             setLoggedIn(false);
+            return;
           }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
+
+          const refreshResponse = await fetch(`${API_BASE_URL}/auth/api/token/refresh/`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ refresh: refreshToken }),
+          });
+
+          if (!refreshResponse.ok) {
+            setLoggedIn(false);
+            return;
+          }
+
+          const refreshData = await refreshResponse.json();
+          window.localStorage.setItem("accessToken", refreshData.access);
           setLoggedIn(true);
-          window.localStorage.setItem("accessToken", data.access);
-          window.sessionStorage.setItem("accessToken", data.access);
-          window.sessionStorage.setItem("loggedIn", "true");
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
+        } else {
+          setLoggedIn(true);
+        }
+      } catch (error) {
+        console.error('Error checking login status:', error);
+        setLoggedIn(false);
+      }
+    };
+
+    checkLoginStatus();
   }, []);
 
   const handleSearch = (value: string) => {
@@ -299,11 +304,13 @@ const MenuOne: React.FC<Props> = ({ props }) => {
   }, [lastScrollPosition]);
 
   const handleSubCategoryClick = (category: string) => {
-    router.push(`/shop?sub_category=${category}`);
+    handleSubMenuDepartment();
+    router.push(`/shop?category=${category}`);
   };
 
   const handleTypeClick = (type: string) => {
-    router.push(`/shop/breadcrumb1?type=${type}`);
+    handleSubMenuDepartment();
+    router.push(`/shop?type=${type}`);
   };
 
   return (
@@ -311,7 +318,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
       <div
         className={`header-menu style-one ${
           fixedHeader ? "fixed" : "absolute"
-        } top-0 left-0 right-0 w-full md:h-[74px] h-[56px] ${props}`}
+        } top-0 left-0 right-0 w-full md:h-[74px] h-[56px] ${className}`}
       >
         <div className="container mx-auto h-full">
           <div className="header-main flex justify-between h-full">
@@ -337,7 +344,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname === "/" ? "active" : ""
                       }`}
                     >
-                      {t('header.home')}
+                      {getTranslation('header.home')}
                     </Link>
                   </li>
                   <li className="h-full">
@@ -345,7 +352,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                       href="#!"
                       className="text-button-uppercase duration-300 h-full flex items-center justify-center"
                     >
-                      {t('header.features')}
+                      {getTranslation('header.features')}
                     </Link>
                     <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                       <div className="container">
@@ -353,23 +360,21 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           <div className="nav-link basis-2/3 grid grid-cols-4 gap-y-8">
                             {subCategories?.map((subCat) => {
                               let i = 0;
-                              let show = shadowCat != subCat.category.name.en;
+                              let show = currentCategory !== subCat.category.name.en;
                               let onTime = true;
-                              shadowCat =
-                                shadowCat == subCat.category.name.en
-                                  ? shadowCat
-                                  : subCat.category.name.en;
+                              if (show) {
+                                setCurrentCategory(subCat.category.name.en);
+                              }
                               return (
                                 show && (
                                   <div className="nav-item" key={subCat.id}>
                                     <div className="text-button-uppercase pb-2">
-                                      {subCat.category.name.en}
+                                      {getSubCategoryName(subCat)}
                                     </div>
                                     <ul>
                                       {subCategories.map((subCatName) => {
                                         if (
-                                          subCatName.category.name.en ==
-                                            shadowCat &&
+                                          subCatName.category.name.en === currentCategory &&
                                           i <= 4
                                         ) {
                                           i++;
@@ -378,20 +383,16 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                               <div
                                                 onClick={() =>
                                                   handleSubCategoryClick(
-                                                    subCatName.translations.en
-                                                      .name
+                                                    getSubCategoryName(subCatName)
                                                   )
                                                 }
                                                 className={`link text-secondary duration-300 cursor-pointer`}
                                               >
-                                                {
-                                                  subCatName.translations.en
-                                                    .name
-                                                }
+                                                {getSubCategoryName(subCatName)}
                                               </div>
                                             </li>
                                           );
-                                        } else if (i == 5) {
+                                        } else if (i === 5) {
                                           i++;
                                           return (
                                             <li key={subCatName.id}>
@@ -401,11 +402,12 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                 }}
                                                 className={`link text-secondary duration-300 cursor-pointer`}
                                               >
-                                                {t('header.viewMore')}
+                                                {getTranslation('header.viewMore')}
                                               </div>
                                             </li>
                                           );
                                         }
+                                        return null;
                                       })}
                                     </ul>
                                   </div>
@@ -420,14 +422,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             >
                               <div className="text-content py-14 pl-8 relative z-[1]">
                                 <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                  {t('header.save')} $10
+                                  {getTranslation('header.save')} $10
                                 </div>
                                 <div className="heading6 mt-2">
-                                  {t('header.diveIntoSavings')} <br />
-                                  {t('header.onSwimwear')}
+                                  {getTranslation('header.diveIntoSavings')} <br />
+                                  {getTranslation('header.onSwimwear')}
                                 </div>
                                 <div className="body1 mt-3 text-secondary">
-                                  {t('header.startingAt')}{" "}
+                                  {getTranslation('header.startingAt')}{" "}
                                   <span className="text-red">$59.99</span>
                                 </div>
                               </div>
@@ -445,14 +447,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             >
                               <div className="text-content py-14 pl-8 relative z-[1]">
                                 <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                  {t('header.save')} $10
+                                  {getTranslation('header.save')} $10
                                 </div>
                                 <div className="heading6 mt-2">
-                                  20% {t('header.off')} <br />
-                                  {t('header.accessories')}
+                                  20% {getTranslation('header.off')} <br />
+                                  {getTranslation('header.accessories')}
                                 </div>
                                 <div className="body1 mt-3 text-secondary">
-                                  {t('header.startingAt')}{" "}
+                                  {getTranslation('header.startingAt')}{" "}
                                   <span className="text-red">$59.99</span>
                                 </div>
                               </div>
@@ -476,7 +478,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/shop") ? "active" : ""
                       }`}
                     >
-                      {t('header.shop')}
+                      {getTranslation('header.shop')}
                     </Link>
                   </li>
                   <li className="h-full">
@@ -486,14 +488,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/product/") ? "active" : ""
                       }`}
                     >
-                      {t('header.product')}
+                      {getTranslation('header.product')}
                     </Link>
                     <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                       <div className="container">
                         <div className="nav-link w-full flex justify-between py-8">
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-2">
-                              {t('header.productsFeatures')}
+                              {getTranslation('header.productsFeatures')}
                             </div>
                             <ul>
                               <li>
@@ -505,7 +507,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                       : ""
                                   }`}
                                 >
-                                  {t('header.defaultProduct')}
+                                  {getTranslation('header.defaultProduct')}
                                 </Link>
                               </li>
                               <li>
@@ -517,7 +519,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                       : ""
                                   }`}
                                 >
-                                  {t('header.variableProduct')}
+                                  {getTranslation('header.variableProduct')}
                                 </Link>
                               </li>
                               <li>
@@ -529,7 +531,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                       : ""
                                   }`}
                                 >
-                                  {t('header.groupedProduct')}
+                                  {getTranslation('header.groupedProduct')}
                                 </Link>
                               </li>
                               <li>
@@ -541,7 +543,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                       : ""
                                   }`}
                                 >
-                                  {t('header.externalProduct')}
+                                  {getTranslation('header.externalProduct')}
                                 </Link>
                               </li>
                             </ul>
@@ -557,7 +559,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/blog") ? "active" : ""
                       }`}
                     >
-                      {t('header.blog.title')}
+                      {getTranslation('header.blog.title')}
                     </Link>
                     <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                       <ul className="w-full">
@@ -568,7 +570,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/blog/default" ? "active" : ""
                             }`}
                           >
-                            {t('header.blog.default')}
+                            {getTranslation('header.blog.default')}
                           </Link>
                         </li>
                         <li>
@@ -578,7 +580,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/blog/list" ? "active" : ""
                             }`}
                           >
-                            {t('header.blog.list')}
+                            {getTranslation('header.blog.list')}
                           </Link>
                         </li>
                         <li>
@@ -588,7 +590,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/blog/grid" ? "active" : ""
                             }`}
                           >
-                            {t('header.blog.grid')}
+                            {getTranslation('header.blog.grid')}
                           </Link>
                         </li>
                       </ul>
@@ -601,7 +603,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         pathname.includes("/pages") ? "active" : ""
                       }`}
                     >
-                      {t('header.pages.title')}
+                      {getTranslation('header.pages.title')}
                     </Link>
                     <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                       <ul className="w-full">
@@ -612,7 +614,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/pages/about" ? "active" : ""
                             }`}
                           >
-                            {t('header.pages.about')}
+                            {getTranslation('header.pages.about')}
                           </Link>
                         </li>
                         <li>
@@ -622,7 +624,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/pages/contact" ? "active" : ""
                             }`}
                           >
-                            {t('header.pages.contact')}
+                            {getTranslation('header.pages.contact')}
                           </Link>
                         </li>
                         <li>
@@ -632,7 +634,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/pages/store-list" ? "active" : ""
                             }`}
                           >
-                            {t('header.pages.storeList')}
+                            {getTranslation('header.pages.storeList')}
                           </Link>
                         </li>
                         <li>
@@ -644,7 +646,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 : ""
                             }`}
                           >
-                            {t('header.pages.notFound')}
+                            {getTranslation('header.pages.notFound')}
                           </Link>
                         </li>
                         <li>
@@ -654,7 +656,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                               pathname === "/pages/faqs" ? "active" : ""
                             }`}
                           >
-                            {t('header.pages.faqs')}
+                            {getTranslation('header.pages.faqs')}
                           </Link>
                         </li>
                         <li>
@@ -666,7 +668,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 : ""
                             }`}
                           >
-                            {t('header.pages.comingSoon')}
+                            {getTranslation('header.pages.comingSoon')}
                           </Link>
                         </li>
                         <li>
@@ -678,7 +680,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 : ""
                             }`}
                           >
-                            {t('header.pages.customerFeedbacks')}
+                            {getTranslation('header.pages.customerFeedbacks')}
                           </Link>
                         </li>
                       </ul>
@@ -797,7 +799,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                 />
                 <input
                   type="text"
-                  placeholder={t('header.mobile.search.placeholder')}
+                  placeholder={getTranslation('header.mobile.search.placeholder')}
                   className=" h-12 rounded-lg border border-line text-sm w-full pl-10 pr-4"
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
@@ -816,7 +818,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                       href={"#!"}
                       className={`text-xl font-semibold flex items-center justify-between`}
                     >
-                      {t('header.mobile.demo')}
+                      {getTranslation('header.mobile.demo')}
                       <span className="text-right">
                         <CaretRight size={20} />
                       </span>
@@ -827,7 +829,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         onClick={() => handleOpenSubNavMobile(1)}
                       >
                         <CaretLeft />
-                        {t('header.mobile.back')}
+                        {getTranslation('header.mobile.back')}
                       </div>
                       <div className="list-nav-item w-full grid grid-cols-2 pt-2 pb-6">
                         <ul>
@@ -1128,14 +1130,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                         <div className="nav-link grid grid-cols-2 gap-5 gap-y-6">
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              {t('header.mobile.features.forMen')}
+                              {getTranslation('header.mobile.features.forMen')}
                             </div>
                             <ul>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.startingFrom50')}
+                                  {getTranslation('header.mobile.features.startingFrom50')}
                                 </div>
                               </li>
                               <li>
@@ -1143,7 +1145,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("outerwear")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.outerwear')}
+                                  {getTranslation('header.mobile.features.outerwear')}
                                 </div>
                               </li>
                               <li>
@@ -1151,7 +1153,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("sweater")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.sweaters')}
+                                  {getTranslation('header.mobile.features.sweaters')}
                                 </div>
                               </li>
                               <li>
@@ -1159,21 +1161,21 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("shirt")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.shirts')}
+                                  {getTranslation('header.mobile.features.shirts')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  {t('header.mobile.features.viewAll')}
+                                  {getTranslation('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              {t('header.mobile.features.skincare')}
+                              {getTranslation('header.mobile.features.skincare')}
                             </div>
                             <ul>
                               <li>
@@ -1181,7 +1183,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("face")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.faceSkin')}
+                                  {getTranslation('header.mobile.features.faceSkin')}
                                 </div>
                               </li>
                               <li>
@@ -1189,7 +1191,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("eye")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.eyeMakeup')}
+                                  {getTranslation('header.mobile.features.eyeMakeup')}
                                 </div>
                               </li>
                               <li>
@@ -1197,7 +1199,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("lip")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.lipPolish')}
+                                  {getTranslation('header.mobile.features.lipPolish')}
                                 </div>
                               </li>
                               <li>
@@ -1205,21 +1207,21 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("hair")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.hairCare')}
+                                  {getTranslation('header.mobile.features.hairCare')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  {t('header.mobile.features.viewAll')}
+                                  {getTranslation('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              {t('header.mobile.features.health')}
+                              {getTranslation('header.mobile.features.health')}
                             </div>
                             <ul>
                               <li>
@@ -1227,7 +1229,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("candle")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.centedCandle')}
+                                  {getTranslation('header.mobile.features.centedCandle')}
                                 </div>
                               </li>
                               <li>
@@ -1235,7 +1237,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("drinks")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.healthDrinks')}
+                                  {getTranslation('header.mobile.features.healthDrinks')}
                                 </div>
                               </li>
                               <li>
@@ -1243,7 +1245,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("clothes")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.yogaClothes')}
+                                  {getTranslation('header.mobile.features.yogaClothes')}
                                 </div>
                               </li>
                               <li>
@@ -1251,28 +1253,28 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("mats")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.yogaEquipment')}
+                                  {getTranslation('header.mobile.features.yogaEquipment')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  {t('header.mobile.features.viewAll')}
+                                  {getTranslation('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              {t('header.mobile.features.forWomen')}
+                              {getTranslation('header.mobile.features.forWomen')}
                             </div>
                             <ul>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.startingFrom60')}
+                                  {getTranslation('header.mobile.features.startingFrom60')}
                                 </div>
                               </li>
                               <li>
@@ -1280,7 +1282,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("dress")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.dresses')}
+                                  {getTranslation('header.mobile.features.dresses')}
                                 </div>
                               </li>
                               <li>
@@ -1288,7 +1290,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("t-shirt")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.tshirts')}
+                                  {getTranslation('header.mobile.features.tshirts')}
                                 </div>
                               </li>
                               <li>
@@ -1296,21 +1298,21 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("accessories")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.accessoriesJewelry')}
+                                  {getTranslation('header.mobile.features.accessoriesJewelry')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  {t('header.mobile.features.viewAll')}
+                                  {getTranslation('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              {t('header.mobile.features.forKid')}
+                              {getTranslation('header.mobile.features.forKid')}
                             </div>
                             <ul>
                               <li>
@@ -1318,7 +1320,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("bed")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.kidsBed')}
+                                  {getTranslation('header.mobile.features.kidsBed')}
                                 </div>
                               </li>
                               <li>
@@ -1326,7 +1328,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("toy")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.boysToy')}
+                                  {getTranslation('header.mobile.features.boysToy')}
                                 </div>
                               </li>
                               <li>
@@ -1334,7 +1336,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("blanket")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.babyBlanket')}
+                                  {getTranslation('header.mobile.features.babyBlanket')}
                                 </div>
                               </li>
                               <li>
@@ -1342,28 +1344,28 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("clothing")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.newbornClothing')}
+                                  {getTranslation('header.mobile.features.newbornClothing')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  {t('header.mobile.features.viewAll')}
+                                  {getTranslation('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
                           </div>
                           <div className="nav-item">
                             <div className="text-button-uppercase pb-1">
-                              {t('header.mobile.features.forHome')}
+                              {getTranslation('header.mobile.features.forHome')}
                             </div>
                             <ul>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.furnitureDecor')}
+                                  {getTranslation('header.mobile.features.furnitureDecor')}
                                 </div>
                               </li>
                               <li>
@@ -1371,7 +1373,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("table")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.tableLivingRoom')}
+                                  {getTranslation('header.mobile.features.tableLivingRoom')}
                                 </div>
                               </li>
                               <li>
@@ -1379,7 +1381,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("chair")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.chairWorkRoom')}
+                                  {getTranslation('header.mobile.features.chairWorkRoom')}
                                 </div>
                               </li>
                               <li>
@@ -1387,14 +1389,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   onClick={() => handleTypeClick("lighting")}
                                   className={`link text-secondary duration-300 cursor-pointer`}
                                 >
-                                  {t('header.mobile.features.lightingBedRoom')}
+                                  {getTranslation('header.mobile.features.lightingBedRoom')}
                                 </div>
                               </li>
                               <li>
                                 <div
                                   className={`link text-secondary duration-300 view-all-btn`}
                                 >
-                                  {t('header.mobile.features.viewAll')}
+                                  {getTranslation('header.mobile.features.viewAll')}
                                 </div>
                               </li>
                             </ul>
@@ -1407,14 +1409,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           >
                             <div className="text-content py-14 pl-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                {t('header.mobile.features.save10')}
+                                {getTranslation('header.mobile.features.save10')}
                               </div>
                               <div className="heading6 mt-2">
-                                {t('header.mobile.features.diveIntoSavings')} <br />
-                                {t('header.mobile.features.onSwimwear')}
+                                {getTranslation('header.mobile.features.diveIntoSavings')} <br />
+                                {getTranslation('header.mobile.features.onSwimwear')}
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                {t('header.mobile.features.startingAt')} <span className="text-red">$59.99</span>
+                                {getTranslation('header.mobile.features.startingAt')} <span className="text-red">$59.99</span>
                               </div>
                             </div>
                             <Image
@@ -1431,14 +1433,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           >
                             <div className="text-content py-14 pl-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                {t('header.mobile.features.save10')}
+                                {getTranslation('header.mobile.features.save10')}
                               </div>
                               <div className="heading6 mt-2">
-                                20% {t('header.mobile.features.off')} <br />
-                                {t('header.mobile.features.accessories')}
+                                20% {getTranslation('header.off')} <br />
+                                {getTranslation('header.mobile.features.accessories')}
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                {t('header.mobile.features.startingAt')} <span className="text-red">$59.99</span>
+                                {getTranslation('header.mobile.features.startingAt')} <span className="text-red">$59.99</span>
                               </div>
                             </div>
                             <Image
@@ -1490,7 +1492,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           <div className="nav-link grid grid-cols-2 gap-5 gap-y-6 justify-between">
                             <div className="nav-item">
                               <div className="text-button-uppercase pb-1">
-                                {t('header.mobile.product.features')}
+                                {getTranslation('header.mobile.product.features')}
                               </div>
                               <ul>
                                 <li>
@@ -1502,7 +1504,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.default')}
+                                    {getTranslation('header.mobile.product.default')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1514,7 +1516,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.sale')}
+                                    {getTranslation('header.mobile.product.sale')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1526,7 +1528,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.countdownTimer')}
+                                    {getTranslation('header.mobile.product.countdownTimer')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1538,7 +1540,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.grouped')}
+                                    {getTranslation('header.mobile.product.grouped')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1550,7 +1552,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.boughtTogether')}
+                                    {getTranslation('header.mobile.product.boughtTogether')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1562,7 +1564,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.outOfStock')}
+                                    {getTranslation('header.mobile.product.outOfStock')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1574,14 +1576,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.variable')}
+                                    {getTranslation('header.mobile.product.variable')}
                                   </Link>
                                 </li>
                               </ul>
                             </div>
                             <div className="nav-item">
                               <div className="text-button-uppercase pb-1">
-                                {t('header.mobile.product.features')}
+                                {getTranslation('header.mobile.product.features')}
                               </div>
                               <ul>
                                 <li>
@@ -1593,7 +1595,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.external')}
+                                    {getTranslation('header.mobile.product.external')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1605,7 +1607,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.onSale')}
+                                    {getTranslation('header.mobile.product.onSale')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1617,7 +1619,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.withDiscount')}
+                                    {getTranslation('header.mobile.product.withDiscount')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1629,7 +1631,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.withSidebar')}
+                                    {getTranslation('header.mobile.product.withSidebar')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1641,14 +1643,14 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.fixedPrice')}
+                                    {getTranslation('header.mobile.product.fixedPrice')}
                                   </Link>
                                 </li>
                               </ul>
                             </div>
                             <div className="nav-item col-span-2">
                               <div className="text-button-uppercase pb-1">
-                                {t('header.mobile.product.layout')}
+                                {getTranslation('header.mobile.product.layout')}
                               </div>
                               <ul>
                                 <li>
@@ -1660,7 +1662,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.thumbnailsLeft')}
+                                    {getTranslation('header.mobile.product.thumbnailsLeft')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1672,7 +1674,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.thumbnailsBottom')}
+                                    {getTranslation('header.mobile.product.thumbnailsBottom')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1684,7 +1686,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.grid1Scrolling')}
+                                    {getTranslation('header.mobile.product.grid1Scrolling')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1696,7 +1698,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.grid2Scrolling')}
+                                    {getTranslation('header.mobile.product.grid2Scrolling')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1708,7 +1710,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.combined1')}
+                                    {getTranslation('header.mobile.product.combined1')}
                                   </Link>
                                 </li>
                                 <li>
@@ -1720,7 +1722,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         : ""
                                     }`}
                                   >
-                                    {t('header.mobile.product.combined2')}
+                                    {getTranslation('header.mobile.product.combined2')}
                                   </Link>
                                 </li>
                               </ul>
@@ -1728,7 +1730,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                           </div>
                           <div className="recent-product pt-4">
                             <div className="text-button-uppercase pb-1">
-                              {t('header.mobile.product.recentProducts')}
+                              {getTranslation('header.mobile.product.recentProducts')}
                             </div>
                             <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
                               {productData.slice(0, 2).map((prd, index) => (
@@ -1770,7 +1772,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/default" ? "active" : ""
                               }`}
                             >
-                              {t('header.mobile.blog.default')}
+                              {getTranslation('header.mobile.blog.default')}
                             </Link>
                           </li>
                           <li>
@@ -1780,7 +1782,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/list" ? "active" : ""
                               }`}
                             >
-                              {t('header.mobile.blog.list')}
+                              {getTranslation('header.mobile.blog.list')}
                             </Link>
                           </li>
                           <li>
@@ -1790,7 +1792,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/grid" ? "active" : ""
                               }`}
                             >
-                              {t('header.mobile.blog.grid')}
+                              {getTranslation('header.mobile.blog.grid')}
                             </Link>
                           </li>
                           <li>
@@ -1800,7 +1802,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/detail2" ? "active" : ""
                               }`}
                             >
-                              {t('header.mobile.blog.detail1')}
+                              {getTranslation('header.mobile.blog.detail1')}
                             </Link>
                           </li>
                           <li>
@@ -1810,7 +1812,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/blog/detail2" ? "active" : ""
                               }`}
                             >
-                              {t('header.mobile.blog.detail2')}
+                              {getTranslation('header.mobile.blog.detail2')}
                             </Link>
                           </li>
                         </ul>
@@ -1879,7 +1881,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   : ""
                               }`}
                             >
-                              {t('header.pages.notFound')}
+                              {getTranslation('header.pages.notFound')}
                             </Link>
                           </li>
                           <li>
@@ -1889,7 +1891,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                 pathname === "/pages/faqs" ? "active" : ""
                               }`}
                             >
-                              {t('header.pages.faqs')}
+                              {getTranslation('header.pages.faqs')}
                             </Link>
                           </li>
                           <li>
@@ -1901,7 +1903,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   : ""
                               }`}
                             >
-                              {t('header.pages.comingSoon')}
+                              {getTranslation('header.pages.comingSoon')}
                             </Link>
                           </li>
                           <li>
@@ -1913,7 +1915,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                   : ""
                               }`}
                             >
-                              {t('header.pages.customerFeedbacks')}
+                              {getTranslation('header.pages.customerFeedbacks')}
                             </Link>
                           </li>
                         </ul>
@@ -1934,7 +1936,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
             className="menu_bar-link flex flex-col items-center gap-1"
           >
             <House weight="bold" className="text-2xl" />
-            <span className="menu_bar-title caption2 font-semibold">{t('header.mobile.menuBar.home')}</span>
+            <span className="menu_bar-title caption2 font-semibold">{getTranslation('header.mobile.menuBar.home')}</span>
           </Link>
           <Link
             href={"/shop/filter-canvas"}
@@ -1942,7 +1944,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
           >
             <List weight="bold" className="text-2xl" />
             <span className="menu_bar-title caption2 font-semibold">
-              {t('header.mobile.menuBar.category')}
+              {getTranslation('header.mobile.menuBar.category')}
             </span>
           </Link>
           <Link
@@ -1957,7 +1959,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                 handleSearch(searchKeyword);
               }}
             >
-              {t('header.mobile.menuBar.search')}
+              {getTranslation('header.mobile.menuBar.search')}
             </span>
           </Link>
           <Link
@@ -1970,7 +1972,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                 {cartState.cartArray.length}
               </span>
             </div>
-            <span className="menu_bar-title caption2 font-semibold">{t('header.mobile.menuBar.cart')}</span>
+            <span className="menu_bar-title caption2 font-semibold">{getTranslation('header.mobile.menuBar.cart')}</span>
           </Link>
         </div>
       </div>

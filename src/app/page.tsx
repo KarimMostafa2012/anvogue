@@ -17,19 +17,16 @@ export default function Home() {
 
   return (
     <>
-      <TopNavOne
-        props="style-one bg-black"
-        slogan="New customers save 10% with the code GET10"
-      />
+      <TopNavOne className="style-one bg-black" />
       <div id="header" className="relative w-full style-nine">
-        <MenuEight />
+        <MenuEight className="bg-white" />
         <SliderNine />
       </div>
       <TrendingNow />
       <Deal start={0} limit={4} />
       <Banner />
       <TabFeatures data={productData} start={0} limit={8} />
-      <Benefit props="md:mt-20 mt-10 py-10 px-2.5 bg-surface rounded-[32px]" />
+      <Benefit className="md:mt-20 mt-10 py-10 px-2.5 bg-surface rounded-[32px]" />
       {/* <NewsInsight data={blogData} start={0} limit={3} /> */}
       <Brand />
       <Footer />

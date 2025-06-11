@@ -2,19 +2,17 @@
 
 import React, { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link';
-import Image from 'next/image';
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { changeLanguage } from '@/redux/slices/languageSlice';
 
 interface Props {
-    props: string;
-    slogan: string;
+    className?: string;
 }
 
-const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
+const TopNavOne: React.FC<Props> = ({ className = '' }) => {
     const languages = useMemo(() => [
         { key: "ar", name: 'العربية' },
         { key: "en", name: 'English' },
@@ -30,14 +28,20 @@ const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
         dispatch(changeLanguage(language));
     };
     const { t } = useTranslation();
-    console.log(currentLanguage)
+
+    // Helper function to ensure string output
+    const getTranslation = (key: string): string => {
+        const translation = t(key);
+        return typeof translation === 'string' ? translation : String(translation);
+    };
+
     useEffect(() => {
         setSelectedLanguage(languages.find(item => item.key === currentLanguage)?.name || "Deutsch")
     }, [languages, currentLanguage])
 
     return (
         <>
-            <div className={`top-nav md:h-[44px] h-[30px] ${props}`}>
+            <div className={`top-nav md:h-[44px] h-[30px] ${className}`}>
                 <div className="container mx-auto h-full">
                     <div className="top-nav-main flex justify-between max-md:justify-center h-full">
                         <div className="left-content flex items-center gap-5 max-md:hidden">
@@ -61,7 +65,7 @@ const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
                             </div>
                         </div>
                         <div className="text-center text-button-uppercase text-white flex items-center">
-                            {t('header.slogan')}
+                            {getTranslation('header.slogan')}
                         </div>
                         <div className="right-content flex items-center gap-5 max-md:hidden">
                             <Link href={'https://www.facebook.com/'} target='_blank'>
@@ -80,7 +84,6 @@ const TopNavOne: React.FC<Props> = ({ props, slogan }) => {
                                 <i className="icon-pinterest text-white"></i>
                             </Link>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -4,41 +4,36 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
-import productData from "@/data/Product.json";
 import { ProductType } from "@/type/ProductType";
 import { useModalCartContext } from "@/context/ModalCartContext";
 import { useCart } from "@/context/CartContext";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { countdownTime } from "@/store/countdownTime";
+// import { countdownTime } from "@/store/countdownTime";
 import CountdownTimeType from "@/type/CountdownType";
 import { useTranslation } from 'next-i18next';
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
-const ModalCart = ({
-  serverTimeLeft,
-}: {
-  serverTimeLeft: CountdownTimeType;
-}) => {
+const ModalCart = () => {
   const { t } = useTranslation();
-  const [timeLeft, setTimeLeft] = useState(serverTimeLeft);
+  // const [timeLeft, setTimeLeft] = useState(serverTimeLeft);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        const newTime = countdownTime();
-        // Only update if time actually changed
-        return prev.minutes !== newTime.minutes ||
-          prev.seconds !== newTime.seconds
-          ? newTime
-          : prev;
-      });
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTimeLeft((prev) => {
+  //       const newTime = countdownTime();
+  //       // Only update if time actually changed
+  //       return prev.minutes !== newTime.minutes ||
+  //         prev.seconds !== newTime.seconds
+  //         ? newTime
+  //         : prev;
+  //     });
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   const [activeTab, setActiveTab] = useState<string | undefined>("");
   const { isModalOpen, closeModalCart } = useModalCartContext();

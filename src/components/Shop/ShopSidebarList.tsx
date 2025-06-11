@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "@/redux/slices/productSlice";
 import Product from "../Product/Product";
 import ReactPaginate from "react-paginate";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { getAllCategories } from "@/redux/slices/categorySlice";
 import { ProductType } from "@/type/ProductType";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
@@ -65,13 +65,11 @@ const HandlePagination: React.FC<PaginationProps> = ({
   );
 };
 
-const ShopSidebarList = ({
-  data,
-  productPerPage,
-}: {
-  data: ProductType[];
-  productPerPage: Number;
-}) => {
+interface ShopSidebarListProps {
+  className?: string;
+}
+
+const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -275,6 +273,12 @@ const ShopSidebarList = ({
 
   // Calculate page count for pagination
   const pageCount = Math.ceil((count ?? 0) / (params.page_size || 12));
+
+  // Helper function to ensure string output
+  const getTranslation = (key: string): string => {
+    const translation = t(key);
+    return typeof translation === 'string' ? translation : String(translation);
+  };
 
   return (
     <>

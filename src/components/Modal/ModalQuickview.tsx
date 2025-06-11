@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { ProductType } from "@/type/ProductType";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { useModalQuickviewContext } from "@/context/ModalQuickviewContext";
 import { useCart } from "@/context/CartContext";
@@ -12,14 +11,10 @@ import { useModalWishlistContext } from "@/context/ModalWishlistContext";
 import { useCompare } from "@/context/CompareContext";
 import { useModalCompareContext } from "@/context/ModalCompareContext";
 import Rate from "../Other/Rate";
-import ModalSizeguide from "./ModalSizeguide";
 import { useTranslation } from 'next-i18next';
 
 const ModalQuickview = () => {
   const { t } = useTranslation();
-  const [photoIndex, setPhotoIndex] = useState(0);
-  const [openPopupImg, setOpenPopupImg] = useState(false);
-  const [openSizeGuide, setOpenSizeGuide] = useState<boolean>(false);
   const { selectedProduct, closeQuickview } = useModalQuickviewContext();
   const [activeColor, setActiveColor] = useState<string>("");
   const [activeSize, setActiveSize] = useState<number | undefined>(undefined);
