@@ -127,7 +127,7 @@ const MenuEight = () => {
           console.error("Error:", error);
         });
     }
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     console.log("currentLanguage", currentLanguage);

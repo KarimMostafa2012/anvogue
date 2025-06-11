@@ -10,11 +10,8 @@ import productData from "@/data/Product.json";
 import Banner from "@/components/Other/Banner";
 import TabFeatures from "@/components/Other/TabFeatures";
 import Benefit from "@/components/Home1/Benefit";
-import blogData from "@/data/Blog.json";
-import NewsInsight from "@/components/Other/NewsInsight";
 import Brand from "@/components/Home1/Brand";
 import Footer from "@/components/Footer/Footer";
-import ModalNewsletter from "@/components/Modal/ModalNewsletter";
 
 export default function Home() {
 

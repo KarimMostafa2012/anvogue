@@ -32,7 +32,13 @@ const ComingSoon = () => {
           <div className="text-content w-full h-full flex items-center justify-center relative">
             <div className="content-main flex flex-col items-center lg:w-1/2 sm:w-3/5 w-full">
               <div>
-                <img src="/images/logo.png" className="w-[120px] mb-2" alt="logo" />
+                <Image
+                  src="/images/logo.png"
+                  width={120}
+                  height={120}
+                  alt="logo"
+                  className="w-[120px] mb-2"
+                />
               </div>
               <div className="text-display">{t('comingSoon.title')}</div>
               <div className="countdown-time flex items-center gap-5 lg:mt-[60px] md:mt-10 mt-6">
