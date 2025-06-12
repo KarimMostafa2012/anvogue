@@ -49,7 +49,7 @@ const TrendingNow = () => {
             .catch((error) => {
                 console.error("Error:", error);
             });
-    }, [])
+    }, [currentLanguage])
 
     return (
         <>
