@@ -1,0 +1,76 @@
+.compare-block {
+    .list-product {
+        .right {
+            .product-item {
+                &:last-child {
+                    border-right: none;
+                }
+            }
+        }
+    }
+
+    .compare-table {
+        .left {
+            .item {
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        .right {
+            .size {
+                p {
+                    &:last-child {
+                        span {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width:767.98px) {
+        .content-main {
+            overflow-x: auto;
+
+            >div {
+                max-width: 700px;
+                width: 700px;
+                overflow-x: auto;
+            }
+        }
+    }
+}
+
+// RTL Support
+[dir="rtl"] {
+    .compare-block {
+        .list-product {
+            .right {
+                .product-item {
+                    &:last-child {
+                        border-right: 1px solid var(--line);
+                        border-left: none;
+                    }
+                    &:first-child {
+                        border-left: none;
+                    }
+                }
+            }
+        }
+        .compare-table {
+            .left {
+                .item {
+                    text-align: right;
+                }
+            }
+            .right {
+                .size p {
+                    text-align: right;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+.style-watch {
+    .footer {
+        .footer-main {
+            background: var(--surface1);
+            color: var(--white);
+        }
+
+        .has-line-before {
+            &::before {
+                background-color: var(--white);
+            }
+        }
+
+        .input-block {
+            input {
+                background: rgba($color: #FFFFFF, $alpha: 0.2);
+            }
+        }
+
+        .text-black {
+            color: var(--white);
+        }
+
+        .text-secondary {
+            color: var(--white);
+        }
+
+        svg {
+            fill: var(--white);
+        }
+    }
+}
+
+// RTL Support
+[dir="rtl"] {
+  .footer {
+    .has-line-before::before {
+      left: unset;
+      right: 0;
+    }
+    .input-block {
+      input {
+        padding-left: unset;
+        padding-right: 16px;
+      }
+    }
+  }
+}
