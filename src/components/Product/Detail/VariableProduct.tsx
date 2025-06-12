@@ -147,6 +147,19 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     }
   }, [data, productId]);
 
+
+  const debounce = <T extends (...args: any[]) => void>(
+    func: T,
+    delay: number
+  ) => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return (...args: Parameters<T>) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
+  };
+  const debouncedAddToCart = debounce(addToCart, 300);
+
   // Add early return if productMain is undefined
   if (!productMain) {
     return <div className="container py-20">{t('product.notFound')}</div>;
@@ -197,68 +210,22 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     };
   };
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (
+    item: ProductType,
+    selectedColor: string,
+    quantity?: number
+  ) => {
     try {
-      // First add all items from data array
-      const addPromises = data.map(async (ele, i) => {
-        if (i < 3 && quantity[ele.id] > 0) {
-          console.log(
-            ele,
-            selectedSubColor[ele.id]
-              ? selectedSubColor[ele.id]
-              : ele.colors[0].color,
-            quantity[ele.id]
-          );
-          if (!cartState.cartArray.find((item) => item.id === ele.id)) {
-            console.log(`found: ${ele.id}`);
-            await addToCart(
-              ele,
-              selectedSubColor[ele.id]
-                ? selectedSubColor[ele.id]
-                : ele.colors[0].color,
-              quantity[ele.id]
-            );
-          } else {
-            await updateCart(
-              ele.id,
-              Number(quantity[ele.id]),
-              selectedSubColor[ele.id]
-                ? selectedSubColor[ele.id]
-                : ele.colors[0].color
-            );
-          }
-        }
-      });
-
-      // Wait for all data items to be added
-      await Promise.all(addPromises);
-
-      // Then add the main product if it exists
-      if (productMain) {
-        if (!cartState.cartArray.find((item) => item.id === productMain.id)) {
-          console.log(`found: ${productMain.id}`);
-          await addToCart(
-            productMain,
-            activeColor == undefined
-              ? productMain.colors[0].color
-              : activeColor,
-            quantity[productMain.id]
-          );
-        } else {
-          await updateCart(
-            productMain.id,
-            quantity[productMain.id],
-            activeColor == undefined ? productMain.colors[0].color : activeColor
-          );
-        }
-      }
-
-      // Show success message once all items are added
-      alert(t('product.detail.addedToCart'));
+      await addToCart(item, selectedColor, quantity); // Wait for success
+      window.location.href = "/cart"; // Redirect only if successful
     } catch (error) {
-      console.error(t('product.detail.addToCartError'), error);
+      console.error("Failed to add item to cart:", error);
+      // Optionally show an error message instead of redirecting
     }
   };
+
+  const debouncedCheckout = debounce(handleAddToCart, 300);
+
 
   const handleAddToWishlist = () => {
     if (!productMain) return;
@@ -298,8 +265,6 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
       } else {
         addToCompare(productToAdd);
       }
-    } else {
-      alert(t('product.detail.compareLimit'));
     }
     openModalCompare();
   };
@@ -748,14 +713,14 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                     />
                   </div>
                   <div
-                    onClick={handleAddToCart}
+                    onClick={() => { debouncedAddToCart(productMain, String(activeColor), quantity[productId]) }}
                     className="button-main w-full text-center bg-white text-black border border-black"
                   >
                     {t('product.addToCart')}
                   </div>
                 </div>
                 <div className="button-block mt-5">
-                  <div className="button-main w-full text-center">
+                  <div className="button-main w-full text-center" onClick={() => { debouncedCheckout(productMain, String(activeColor), quantity[productId]) }}>
                     {t('product.detail.buyNow')}
                   </div>
                 </div>

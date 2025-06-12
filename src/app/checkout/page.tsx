@@ -32,6 +32,7 @@ interface UserProfile {
   city?: string;
   house_num?: string;
   street_name?: string;
+  id?: number | string;
   zip_code?: string;
   addresses?: [];
   profile_img?: string;
@@ -48,9 +49,7 @@ const Checkout = () => {
   const [openDetail, setOpenDetail] = useState<boolean | undefined>(false);
   const [newForm, setNewForm] = useState<boolean | undefined>(false);
   const [profile, setProfile] = useState<UserProfile>({});
-  const [activeAddress, setActiveAddress] = useState<string | null>(
-    "mainShipping"
-  );
+  const [activeAddress, setActiveAddress] = useState<string | null>("mainShipping");
 
   const { t } = useTranslation();
 
@@ -326,6 +325,7 @@ const Checkout = () => {
           house_num: selectedFormChilds[2].value,
           city: selectedFormChilds[1].value,
           zip_code: selectedFormChilds[3].value,
+          user: profile.id
         }),
       })
         .then((response) => {
@@ -383,7 +383,7 @@ const Checkout = () => {
                   <div className="form-login-block mt-3">
                     <form className="p-5 border border-line rounded-lg">
                       <div className="grid sm:grid-cols-2 gap-5">
-                        <div className="email ">
+                        <div className="email">
                           <input
                             className="border-line px-4 pt-3 pb-3 w-full rounded-lg"
                             id="username"
@@ -392,7 +392,7 @@ const Checkout = () => {
                             required
                           />
                         </div>
-                        <div className="pass ">
+                        <div className="pass">
                           <input
                             className="border-line px-4 pt-3 pb-3 w-full rounded-lg"
                             id="password"
@@ -412,9 +412,7 @@ const Checkout = () => {
                 </>
               ) : profile.verified ? (
                 <>
-                  <div
-                    className={`tab_address text-content w-full p-7 border border-line rounded-xl block`}
-                  >
+                  <div className="tab_address text-content w-full p-7 border border-line rounded-xl block">
                     <div className="heading5 pb-3">{t('checkout.address.title')}</div>
                     <form id="mainForm" data-id="mainform">
                       <button
@@ -441,17 +439,10 @@ const Checkout = () => {
                         <Icon.CaretDown className="text-2xl ic_down duration-300" />
                       </button>
 
-                      <div
-                        className={`form_address ${
-                          activeAddress === "mainShipping" ? "block" : "hidden"
-                        }`}
-                      >
+                      <div className={`form_address ${activeAddress === "mainShipping" ? "block" : "hidden"}`}>
                         <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
                           <div className="street">
-                            <label
-                              htmlFor="shippingStreet"
-                              className="caption1 capitalize"
-                            >
+                            <label htmlFor="shippingStreet" className="caption1 capitalize">
                               {t('checkout.address.streetName')} <span className="text-red">{t('checkout.address.required')}</span>
                             </label>
                             <input
@@ -463,10 +454,7 @@ const Checkout = () => {
                             />
                           </div>
                           <div className="city">
-                            <label
-                              htmlFor="shippingCity"
-                              className="caption1 capitalize"
-                            >
+                            <label htmlFor="shippingCity" className="caption1 capitalize">
                               {t('checkout.address.city')} <span className="text-red">{t('checkout.address.required')}</span>
                             </label>
                             <input
@@ -478,10 +466,7 @@ const Checkout = () => {
                             />
                           </div>
                           <div className="state">
-                            <label
-                              htmlFor="house_num"
-                              className="caption1 capitalize"
-                            >
+                            <label htmlFor="house_num" className="caption1 capitalize">
                               {t('checkout.address.houseNumber')} <span className="text-red">{t('checkout.address.required')}</span>
                             </label>
                             <input
@@ -493,10 +478,7 @@ const Checkout = () => {
                             />
                           </div>
                           <div className="zip">
-                            <label
-                              htmlFor="shippingZip"
-                              className="caption1 capitalize"
-                            >
+                            <label htmlFor="shippingZip" className="caption1 capitalize">
                               {t('checkout.address.zip')} <span className="text-red">{t('checkout.address.required')}</span>
                             </label>
                             <input
@@ -510,119 +492,95 @@ const Checkout = () => {
                         </div>
                       </div>
                     </form>
-                    {profile.addresses?.map((address: Address, i) => {
-                      return (
-                        <>
-                          <button
-                            key={i}
-                            type="button"
-                            className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${
-                              activeAddress === "shipping" + i ? "active" : ""
-                            }`}
-                            onClick={() => handleActiveAddress("shipping" + i)}
-                          >
-                            <strong className="heading6">
-                              Shipping address {i + 2}
-                            </strong>
-                            {activeAddress === "shipping" + i && (
-                              <div className="ms-auto pe-2 text-success font-bold">
-                                {t('checkout.address.chosenAddress')}
+                    {profile.addresses?.map((address: Address, i) => (
+                      <div key={i}>
+                        <button
+                          type="button"
+                          className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${
+                            activeAddress === "shipping" + i ? "active" : ""
+                          }`}
+                          onClick={() => handleActiveAddress("shipping" + i)}
+                        >
+                          <strong className="heading6">
+                            {t('checkout.address.mainAddress')} {i + 2}
+                          </strong>
+                          {activeAddress === "shipping" + i && (
+                            <div className="ms-auto pe-2 text-success font-bold">
+                              {t('checkout.address.chosenAddress')}
+                              <input
+                                data-id={address.id}
+                                className="hidden"
+                                type="checkbox"
+                                name="address"
+                                id="address"
+                                defaultChecked
+                              />
+                            </div>
+                          )}
+                          <Icon.CaretDown className="text-2xl ic_down duration-300" />
+                        </button>
+                        <form
+                          className="otherAddresses"
+                          data-id={address.id}
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                          }}
+                        >
+                          <div className={`form_address ${activeAddress === "shipping" + i ? "block" : "hidden"}`}>
+                            <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
+                              <div className="street">
+                                <label htmlFor={"shippingStreet" + i} className="caption1 capitalize">
+                                  {t('checkout.address.streetName')} <span className="text-red">{t('checkout.address.required')}</span>
+                                </label>
                                 <input
-                                  data-id={address.id}
-                                  className="hidden"
-                                  type="checkbox"
-                                  name="address"
-                                  id="address"
-                                  defaultChecked
+                                  className="border-line mt-2 px-4 py-3 w-full rounded-lg"
+                                  id={"shippingStreet" + i}
+                                  type="text"
+                                  defaultValue={address.street_name}
+                                  required
                                 />
                               </div>
-                            )}
-                            <Icon.CaretDown className="text-2xl ic_down duration-300" />
-                          </button>
-                          <form
-                            className="otherAddresses"
-                            data-id={address.id}
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                            }}
-                          >
-                            <div
-                              className={`form_address ${
-                                activeAddress === "shipping" + i
-                                  ? "block"
-                                  : "hidden"
-                              }`}
-                            >
-                              <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
-                                <div className="street">
-                                  <label
-                                    htmlFor={"shippingStreet" + i}
-                                    className="caption1 capitalize"
-                                  >
-                                    street Name{" "}
-                                    <span className="text-red">*</span>
-                                  </label>
-                                  <input
-                                    className="border-line mt-2 px-4 py-3 w-full rounded-lg"
-                                    id={"shippingStreet" + i}
-                                    type="text"
-                                    defaultValue={address.street_name}
-                                    required
-                                  />
-                                </div>
-                                <div className="city">
-                                  <label
-                                    htmlFor={"shippingCity" + i}
-                                    className="caption1 capitalize"
-                                  >
-                                    Town / city{" "}
-                                    <span className="text-red">*</span>
-                                  </label>
-                                  <input
-                                    className="border-line mt-2 px-4 py-3 w-full rounded-lg"
-                                    id={"shippingCity" + i}
-                                    type="text"
-                                    defaultValue={address.city}
-                                    required
-                                  />
-                                </div>
-                                <div className="state">
-                                  <label
-                                    htmlFor={"house_num" + i}
-                                    className="caption1 capitalize"
-                                  >
-                                    House Number{" "}
-                                    <span className="text-red">*</span>
-                                  </label>
-                                  <input
-                                    className="border-line mt-2 px-4 py-3 w-full rounded-lg"
-                                    id={"house_num" + i}
-                                    type="text"
-                                    defaultValue={address.house_num}
-                                    required
-                                  />
-                                </div>
-                                <div className="zip">
-                                  <label
-                                    htmlFor={"shippingZip" + i}
-                                    className="caption1 capitalize"
-                                  >
-                                    ZIP <span className="text-red">*</span>
-                                  </label>
-                                  <input
-                                    className="border-line mt-2 px-4 py-3 w-full rounded-lg"
-                                    id={"shippingZip" + i}
-                                    type="text"
-                                    defaultValue={address.zip_code}
-                                    required
-                                  />
-                                </div>
+                              <div className="city">
+                                <label htmlFor={"shippingCity" + i} className="caption1 capitalize">
+                                  {t('checkout.address.city')} <span className="text-red">{t('checkout.address.required')}</span>
+                                </label>
+                                <input
+                                  className="border-line mt-2 px-4 py-3 w-full rounded-lg"
+                                  id={"shippingCity" + i}
+                                  type="text"
+                                  defaultValue={address.city}
+                                  required
+                                />
+                              </div>
+                              <div className="state">
+                                <label htmlFor={"house_num" + i} className="caption1 capitalize">
+                                  {t('checkout.address.houseNumber')} <span className="text-red">{t('checkout.address.required')}</span>
+                                </label>
+                                <input
+                                  className="border-line mt-2 px-4 py-3 w-full rounded-lg"
+                                  id={"house_num" + i}
+                                  type="text"
+                                  defaultValue={address.house_num}
+                                  required
+                                />
+                              </div>
+                              <div className="zip">
+                                <label htmlFor={"shippingZip" + i} className="caption1 capitalize">
+                                  {t('checkout.address.zip')} <span className="text-red">{t('checkout.address.required')}</span>
+                                </label>
+                                <input
+                                  className="border-line mt-2 px-4 py-3 w-full rounded-lg"
+                                  id={"shippingZip" + i}
+                                  type="text"
+                                  defaultValue={address.zip_code}
+                                  required
+                                />
                               </div>
                             </div>
-                          </form>
-                        </>
-                      );
-                    })}
+                          </div>
+                        </form>
+                      </div>
+                    ))}
                     <div className="block-button lg:mt-10 mt-6">
                       <form
                         className="newAddress"
@@ -631,18 +589,11 @@ const Checkout = () => {
                           addAddress(e.currentTarget);
                         }}
                       >
-                        <div
-                          className={`form_address ${
-                            newForm ? "block" : "hidden"
-                          }`}
-                        >
+                        <div className={`form_address ${newForm ? "block" : "hidden"}`}>
                           <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
                             <div className="street">
-                              <label
-                                htmlFor={"newshippingStreet"}
-                                className="caption1 capitalize"
-                              >
-                                street Name <span className="text-red">*</span>
+                              <label htmlFor={"newshippingStreet"} className="caption1 capitalize">
+                                {t('checkout.address.streetName')} <span className="text-red">{t('checkout.address.required')}</span>
                               </label>
                               <input
                                 className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -652,11 +603,8 @@ const Checkout = () => {
                               />
                             </div>
                             <div className="city">
-                              <label
-                                htmlFor={"newshippingCity"}
-                                className="caption1 capitalize"
-                              >
-                                Town / city <span className="text-red">*</span>
+                              <label htmlFor={"newshippingCity"} className="caption1 capitalize">
+                                {t('checkout.address.city')} <span className="text-red">{t('checkout.address.required')}</span>
                               </label>
                               <input
                                 className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -666,11 +614,8 @@ const Checkout = () => {
                               />
                             </div>
                             <div className="state">
-                              <label
-                                htmlFor={"newhouse_num"}
-                                className="caption1 capitalize"
-                              >
-                                House Number <span className="text-red">*</span>
+                              <label htmlFor={"newhouse_num"} className="caption1 capitalize">
+                                {t('checkout.address.houseNumber')} <span className="text-red">{t('checkout.address.required')}</span>
                               </label>
                               <input
                                 className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -680,11 +625,8 @@ const Checkout = () => {
                               />
                             </div>
                             <div className="zip">
-                              <label
-                                htmlFor={"newshippingZip"}
-                                className="caption1 capitalize"
-                              >
-                                ZIP <span className="text-red">*</span>
+                              <label htmlFor={"newshippingZip"} className="caption1 capitalize">
+                                {t('checkout.address.zip')} <span className="text-red">{t('checkout.address.required')}</span>
                               </label>
                               <input
                                 className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -749,45 +691,41 @@ const Checkout = () => {
                     <p className="text-button pt-3">{t('checkout.order.noProducts')}</p>
                   ) : (
                     cartState.cartArray.map((product) => (
-                      <>
-                        <div className="item flex items-center justify-between w-full pb-5 border-b border-line gap-6 mt-5">
-                          <div className="bg-img w-[100px] aspect-square flex-shrink-0 rounded-lg overflow-hidden">
-                            <Image
-                              src={product.images[0].img}
-                              width={500}
-                              height={500}
-                              alt="img"
-                              className="w-full h-full"
-                            />
+                      <div key={product.id} className="item flex items-center justify-between w-full pb-5 border-b border-line gap-6 mt-5">
+                        <div className="bg-img w-[100px] aspect-square flex-shrink-0 rounded-lg overflow-hidden">
+                          <Image
+                            src={product.images[0].img}
+                            width={500}
+                            height={500}
+                            alt="img"
+                            className="w-full h-full"
+                          />
+                        </div>
+                        <div className="flex items-center justify-between w-full">
+                          <div>
+                            <div className="name text-title">
+                              {product.name}
+                            </div>
+                            <div className="caption1 text-secondary mt-2">
+                              <span className="color capitalize">
+                                {product.selectedColor}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex items-center justify-between w-full">
-                            <div>
-                              <div className="name text-title">
-                                {product.name}
-                              </div>
-                              <div className="caption1 text-secondary mt-2">
-                                {/* <span className='size capitalize'>{product.selectedSize || product.sizes[0]}</span>
-                                                                <span>/</span> */}
-                                <span className="color capitalize">
-                                  {product.selectedColor}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="text-title">
-                              <span className="quantity">
-                                {product.quantity}
-                              </span>
-                              <span className="px-1">x</span>
-                              <span>
-                                $
-                                {product.new_price
-                                  ? product.new_price
-                                  : product.price}
-                              </span>
-                            </div>
+                          <div className="text-title">
+                            <span className="quantity">
+                              {product.quantity}
+                            </span>
+                            <span className="px-1">x</span>
+                            <span>
+                              $
+                              {product.new_price
+                                ? product.new_price
+                                : product.price}
+                            </span>
                           </div>
                         </div>
-                      </>
+                      </div>
                     ))
                   )}
                 </div>

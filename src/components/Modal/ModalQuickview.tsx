@@ -71,16 +71,15 @@ const ModalQuickview = () => {
 
   const handleAddToCart = () => {
     if (selectedProduct) {
-      const productToAdd = {
-        ...selectedProduct,
-        quantityPurchase: quantity,
-      };
 
+      console.log(`product page: ${selectedProduct}`)
       if (!cartState.cartArray.find((item) => item.id === selectedProduct.id)) {
-        addToCart(selectedProduct, activeColor, quantity);
+        addToCart(selectedProduct, activeColor ? activeColor : selectedProduct.colors[0].color, quantity);
+        updateCart(selectedProduct.id, quantity, activeColor);
       } else {
         updateCart(selectedProduct.id, quantity, activeColor);
       }
+
       openModalCart();
       closeQuickview();
     }
@@ -126,9 +125,8 @@ const ModalQuickview = () => {
     <>
       <div className={`modal-quickview-block`} onClick={closeQuickview}>
         <div
-          className={`modal-quickview-main py-6 ${
-            selectedProduct !== null ? "open" : ""
-          }`}
+          className={`modal-quickview-main py-6 ${selectedProduct !== null ? "open" : ""
+            }`}
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -172,13 +170,12 @@ const ModalQuickview = () => {
                     <div className="heading4 mt-1">{selectedProduct?.name}</div>
                   </div>
                   <div
-                    className={`add-wishlist-btn w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-lg duration-300 flex-shrink-0 hover:bg-black hover:text-white ${
-                      wishlistState.wishlistArray.some(
-                        (item) => item.id === Number(selectedProduct.id)
-                      )
-                        ? "active"
-                        : ""
-                    }`}
+                    className={`add-wishlist-btn w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-lg duration-300 flex-shrink-0 hover:bg-black hover:text-white ${wishlistState.wishlistArray.some(
+                      (item) => item.id === Number(selectedProduct.id)
+                    )
+                      ? "active"
+                      : ""
+                      }`}
                     onClick={handleAddToWishlist}
                   >
                     {wishlistState.wishlistArray.some(
@@ -230,9 +227,8 @@ const ModalQuickview = () => {
                     <div className="list-color flex items-center gap-2 flex-wrap mt-3">
                       {selectedProduct?.colors?.map((item, index) => (
                         <div
-                          className={`color-item w-12 h-12 rounded-xl duration-300 relative ${
-                            activeColor === item.color ? "active" : ""
-                          }`}
+                          className={`color-item w-12 h-12 rounded-xl duration-300 relative ${activeColor === item.color ? "active" : ""
+                            }`}
                           key={index}
                           datatype={item.color}
                           style={{
@@ -257,11 +253,11 @@ const ModalQuickview = () => {
                       </div>
                     </div>
                     <div className="list-size flex items-center gap-2 flex-wrap mt-3">
-                        <div
-                          className={`size-item w-12 h-12 flex items-center justify-center text-button rounded-full bg-white border border-line`}
-                        >
-                          {selectedProduct.size}
-                        </div>
+                      <div
+                        className={`size-item w-12 h-12 flex items-center justify-center text-button rounded-full bg-white border border-line`}
+                      >
+                        {selectedProduct.size}
+                      </div>
                     </div>
                   </div>
                   <div className="text-title mt-5">Quantity:</div>
@@ -270,9 +266,8 @@ const ModalQuickview = () => {
                       {/* Example of changed quantity handlers */}
                       <Icon.Minus
                         onClick={handleDecreaseQuantity}
-                        className={`${
-                          quantity === 1 ? "disabled" : ""
-                        } cursor-pointer body1`}
+                        className={`${quantity === 1 ? "disabled" : ""
+                          } cursor-pointer body1`}
                       />
                       <div className="body1 font-semibold">{quantity}</div>
                       <Icon.Plus

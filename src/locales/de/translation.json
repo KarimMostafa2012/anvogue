@@ -273,28 +273,32 @@
         "clearAllFilters": "Alle Filter löschen"
     },
     "checkout": {
-        "title": "Warenkorb",
-        "subtitle": "Warenkorb",
+        "title": "Zur Kasse",
+        "subtitle": "Zur Kasse",
         "login": {
-            "noAccount": "Sie haben kein Konto?",
+            "noAccount": "Noch kein Konto?",
             "signup": "Registrieren",
             "usernamePlaceholder": "Benutzername oder E-Mail",
             "passwordPlaceholder": "Passwort",
             "loginButton": "Anmelden"
         },
         "address": {
-            "title": "Lieferadresse auswählen",
-            "mainAddress": "Hauptadresse",
+            "title": "Lieferadresse",
+            "mainAddress": "Hauptlieferadresse",
             "chosenAddress": "Ausgewählte Adresse",
             "streetName": "Straßenname",
             "city": "Stadt",
             "houseNumber": "Hausnummer",
             "zip": "PLZ",
             "required": "*",
+            "save": "Speichern",
             "updateAddress": "Adresse aktualisieren",
-            "addAddress": "Adresse hinzufügen",
-            "removeAddress": "Adresse entfernen",
-            "save": "Speichern"
+            "addAddress": "Neue Adresse hinzufügen",
+            "removeAddress": "Adresse entfernen"
+        },
+        "activation": {
+            "title": "Bitte aktivieren Sie Ihr Konto, um fortzufahren",
+            "activate": "Konto aktivieren"
         },
         "order": {
             "title": "Ihre Bestellung",
@@ -302,11 +306,7 @@
             "discounts": "Rabatte",
             "shipping": "Versand",
             "total": "Gesamt",
-            "next": "Weiter"
-        },
-        "activation": {
-            "title": "Bitte aktivieren Sie Ihre E-Mail",
-            "activate": "AKTIVIEREN"
+            "next": "Zur Zahlung"
         }
     },
     "topNav": {

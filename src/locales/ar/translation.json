@@ -273,40 +273,40 @@
         "clearAllFilters": "مسح جميع الفلاتر"
     },
     "checkout": {
-        "title": "سلة التسوق",
-        "subtitle": "سلة التسوق",
+        "title": "الدفع",
+        "subtitle": "الدفع",
         "login": {
             "noAccount": "ليس لديك حساب؟",
-            "signup": "اشتراك",
+            "signup": "إنشاء حساب",
             "usernamePlaceholder": "اسم المستخدم أو البريد الإلكتروني",
             "passwordPlaceholder": "كلمة المرور",
             "loginButton": "تسجيل الدخول"
         },
         "address": {
-            "title": "اختر عنوان الطلب",
-            "mainAddress": "العنوان الرئيسي",
+            "title": "عنوان الشحن",
+            "mainAddress": "العنوان الرئيسي للشحن",
             "chosenAddress": "العنوان المختار",
             "streetName": "اسم الشارع",
             "city": "المدينة",
             "houseNumber": "رقم المنزل",
             "zip": "الرمز البريدي",
             "required": "*",
+            "save": "حفظ",
             "updateAddress": "تحديث العنوان",
-            "addAddress": "إضافة عنوان",
-            "removeAddress": "إزالة العنوان",
-            "save": "حفظ"
+            "addAddress": "إضافة عنوان جديد",
+            "removeAddress": "حذف العنوان"
+        },
+        "activation": {
+            "title": "يرجى تفعيل حسابك للمتابعة",
+            "activate": "تفعيل الحساب"
         },
         "order": {
             "title": "طلبك",
             "noProducts": "لا توجد منتجات في السلة",
-            "discounts": "خصومات",
+            "discounts": "الخصومات",
             "shipping": "الشحن",
-            "total": "الإجمالي",
-            "next": "التالي"
-        },
-        "activation": {
-            "title": "يرجى تفعيل بريدك الإلكتروني",
-            "activate": "تفعيل"
+            "total": "المجموع",
+            "next": "المتابعة إلى الدفع"
         }
     },
     "footer": {

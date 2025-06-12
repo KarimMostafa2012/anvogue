@@ -276,40 +276,40 @@
         "clearAllFilters": "Clear All Filters"
     },
     "checkout": {
-        "title": "Shopping cart",
-        "subtitle": "Shopping cart",
+        "title": "Checkout",
+        "subtitle": "Checkout",
         "login": {
-            "noAccount": "do not have an account?",
-            "signup": "Signup",
+            "noAccount": "Don't have an account?",
+            "signup": "Sign up",
             "usernamePlaceholder": "Username or email",
             "passwordPlaceholder": "Password",
             "loginButton": "Login"
         },
         "address": {
-            "title": "Choose Order Address",
-            "mainAddress": "Main address",
-            "chosenAddress": "Choosen Address",
-            "streetName": "street Name",
-            "city": "Town / city",
+            "title": "Shipping Address",
+            "mainAddress": "Main Shipping Address",
+            "chosenAddress": "Chosen Address",
+            "streetName": "Street Name",
+            "city": "Town / City",
             "houseNumber": "House Number",
             "zip": "ZIP",
             "required": "*",
+            "save": "Save",
             "updateAddress": "Update Address",
-            "addAddress": "Add Address",
-            "removeAddress": "Remove Address",
-            "save": "Save"
+            "addAddress": "Add New Address",
+            "removeAddress": "Remove Address"
+        },
+        "activation": {
+            "title": "Please activate your account to continue",
+            "activate": "Activate Account"
         },
         "order": {
             "title": "Your Order",
-            "noProducts": "No product in cart",
+            "noProducts": "No products in cart",
             "discounts": "Discounts",
             "shipping": "Shipping",
             "total": "Total",
-            "next": "Next"
-        },
-        "activation": {
-            "title": "Please Activate Your Email",
-            "activate": "ACTIVATE"
+            "next": "Proceed to Payment"
         }
     },
     "footer": {

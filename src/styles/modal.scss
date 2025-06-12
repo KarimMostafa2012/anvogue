@@ -76,16 +76,6 @@
                     width: calc(100% - 42px);
                     height: -webkit-fill-available;
                 }
-
-                @media (max-width: 639.98px) {
-                    .product-item {
-
-                        &:last-child,
-                        &:first-child {
-                            display: none;
-                        }
-                    }
-                }
             }
         }
 
@@ -285,7 +275,7 @@
         width: 980px;
 
         .list-product {
-            max-height: calc(100% - 210px - 60px);
+            max-height: calc(100% - 180px);
         }
 
         .tab-item {

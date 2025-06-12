@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,14 +8,48 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+
+
+interface homeCat {
+    id: number;
+    name: string;
+    icon: {
+        id: number;
+        icon: string;
+    }
+}
 
 const TrendingNow = () => {
     const router = useRouter()
     const { t } = useTranslation();
+    const currentLanguage = useSelector((state: RootState) => state.language);
+    const [cat, setCat] = useState<homeCat[]>()
 
     const handleTypeClick = (type: string) => {
         router.push(`/shop/breadcrumb1?type=${type}`);
     };
+    useEffect(() => {
+        fetch(`https://api.malalshammobel.com/products/category/?lang=${currentLanguage}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    console.log(response)
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setCat(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }, [])
 
     return (
         <>
@@ -50,125 +84,30 @@ const TrendingNow = () => {
                             }}
                             className='h-full'
                         >
-                            <SwiperSlide>
-                                <div className="trending-item block relative cursor-pointer" onClick={() => handleTypeClick('t-shirt')}>
-                                    <div className="bg-img rounded-2xl overflow-hidden">
-                                        <Image
-                                            src={'/images/avatar/1.png'}
-                                            width={1000}
-                                            height={1000}
-                                            alt='outerwear'
-                                            priority={true}
-                                            className='w-full'
-                                        />
-                                    </div>
-                                    <div className="trending-name bg-white absolute bottom-5 left-1/2 -translate-x-1/2 w-[140px] h-10 rounded-xl flex items-center justify-center duration-500 hover:bg-black hover:text-white">
-                                        <span className='heading6'>{t("t-shirt")}</span>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <div className="trending-item block relative cursor-pointer" onClick={() => handleTypeClick('sweater')}>
-                                    <div className="bg-img rounded-2xl overflow-hidden">
-                                        <Image
-                                            src={'/images/avatar/2.png'}
-                                            width={1000}
-                                            height={1000}
-                                            alt='swimwear'
-                                            priority={true}
-                                            className='w-full'
-                                        />
-                                    </div>
-                                    <div className="trending-name bg-white absolute bottom-5 left-1/2 -translate-x-1/2 w-[140px] h-10 rounded-xl flex items-center justify-center duration-500 hover:bg-black hover:text-white">
-                                        <span className='heading6'>{t("sweater")}</span>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <div className="trending-item block relative cursor-pointer" onClick={() => handleTypeClick('top')}>
-                                    <div className="bg-img rounded-2xl overflow-hidden">
-                                        <Image
-                                            src={'/images/avatar/4.png'}
-                                            width={1000}
-                                            height={1000}
-                                            alt='clothes'
-                                            priority={true}
-                                            className='w-full'
-                                        />
-                                    </div>
-                                    <div className="trending-name bg-white absolute bottom-5 left-1/2 -translate-x-1/2 w-[140px] h-10 rounded-xl flex items-center justify-center duration-500 hover:bg-black hover:text-white">
-                                        <span className='heading6'>{t("top")}</span>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <div className="trending-item block relative cursor-pointer" onClick={() => handleTypeClick('dress')}>
-                                    <div className="bg-img rounded-2xl overflow-hidden">
-                                        <Image
-                                            src={'/images/avatar/5.png'}
-                                            width={1000}
-                                            height={1000}
-                                            alt='sets'
-                                            priority={true}
-                                            className='w-full'
-                                        />
-                                    </div>
-                                    <div className="trending-name bg-white absolute bottom-5 left-1/2 -translate-x-1/2 w-[140px] h-10 rounded-xl flex items-center justify-center duration-500 hover:bg-black hover:text-white">
-                                        <span className='heading6'>{t("dress")}</span>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <div className="trending-item block relative cursor-pointer" onClick={() => handleTypeClick('swimwear')}>
-                                    <div className="bg-img rounded-2xl overflow-hidden">
-                                        <Image
-                                            src={'/images/avatar/6.png'}
-                                            width={1000}
-                                            height={1000}
-                                            alt='accessories'
-                                            priority={true}
-                                            className='w-full'
-                                        />
-                                    </div>
-                                    <div className="trending-name bg-white absolute bottom-5 left-1/2 -translate-x-1/2 w-[140px] h-10 rounded-xl flex items-center justify-center duration-500 hover:bg-black hover:text-white">
-                                        <span className='heading6'>{t("swimwear")}</span>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <div className="trending-item block relative cursor-pointer" onClick={() => handleTypeClick('outerwear')}>
-                                    <div className="bg-img rounded-2xl overflow-hidden">
-                                        <Image
-                                            src={'/images/avatar/7.png'}
-                                            width={1000}
-                                            height={1000}
-                                            alt='lingerie'
-                                            priority={true}
-                                            className='w-full'
-                                        />
-                                    </div>
-                                    <div className="trending-name bg-white absolute bottom-5 left-1/2 -translate-x-1/2 w-[140px] h-10 rounded-xl flex items-center justify-center duration-500 hover:bg-black hover:text-white">
-                                        <span className='heading6'>{t("outerwear")}</span>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <div className="trending-item block relative cursor-pointer" onClick={() => handleTypeClick('shirt')}>
-                                    <div className="bg-img rounded-2xl overflow-hidden">
-                                        <Image
-                                            src={'/images/avatar/8.png'}
-                                            width={1000}
-                                            height={1000}
-                                            alt='lingerie'
-                                            priority={true}
-                                            className='w-full'
-                                        />
-                                    </div>
-                                    <div className="trending-name bg-white absolute bottom-5 left-1/2 -translate-x-1/2 w-[140px] h-10 rounded-xl flex items-center justify-center duration-500 hover:bg-black hover:text-white">
-                                        <span className='heading6'>{t("shirt")}</span>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
+                            {
+                                cat?.map((c) => {
+                                    return (
+
+                                        <SwiperSlide key={c.id}>
+                                            <div className="trending-item block relative cursor-pointer py-2">
+                                                <div className="bg-img rounded-2xl overflow-hidden shadow-md">
+                                                    <Image
+                                                        src={String(c.icon.icon)}
+                                                        width={1000}
+                                                        height={1000}
+                                                        alt={c.name}
+                                                        priority={true}
+                                                        className='w-full'
+                                                    />
+                                                </div>
+                                                <div className="trending-name bg-white absolute bottom-5 left-1/2 -translate-x-1/2 w-[140px] h-10 rounded-xl flex items-center justify-center duration-500 hover:bg-black hover:text-white shadow">
+                                                    <span className='heading6'>{c.name}</span>
+                                                </div>
+                                            </div>
+                                        </SwiperSlide>
+                                    )
+                                })
+                            }
                         </Swiper>
                     </div>
                 </div>

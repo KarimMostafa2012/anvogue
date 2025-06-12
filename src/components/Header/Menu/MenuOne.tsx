@@ -796,7 +796,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes("/pages") ? "active" : ""
                         }`}
                     >
-                      {t("menu.mobile.aboutUs")}
+                      {t("menu.pages.about")}
                     </Link>
                     <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                       <ul className="w-full">
@@ -806,7 +806,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                             className={`link text-secondary duration-300 ${pathname === "/pages/about" ? "active" : ""
                               }`}
                           >
-                            {t("menu.mobile.aboutUs")}
+                            {t("menu.pages.about")}
                           </Link>
                         </li>
                         <li>
@@ -815,7 +815,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                             className={`link text-secondary duration-300 ${pathname === "/pages/contact" ? "active" : ""
                               }`}
                           >
-                            {t("menu.mobile.contactUs")}
+                            {t("Contact us")}
                           </Link>
                         </li>
                         <li>
@@ -824,7 +824,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                             className={`link text-secondary duration-300 ${pathname === "/pages/store-list" ? "active" : ""
                               }`}
                           >
-                            {t("menu.mobile.storeList")}
+                            {t("menu.pages.storeList")}
                           </Link>
                         </li>
                         <li>
@@ -833,7 +833,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                             className={`link text-secondary duration-300 ${pathname === "/pages/faqs" ? "active" : ""
                               }`}
                           >
-                            {t("menu.mobile.faqs")}
+                            {t("menu.pages.faqs")}
                           </Link>
                         </li>
                         {/* <li>
@@ -894,16 +894,13 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                             Register
                           </Link>
                         </div>
-                        <Link
+                        {/* <Link
                           href={"/my-account"}
                           className="button-main bg-white text-black border border-black w-full text-center"
                         >
                           Dashboard
-                        </Link>
-                        <div className="bottom mt-4 pt-4 border-t border-line"></div>
-                        <Link href={"#!"} className="body1 hover:underline">
-                          Support
-                        </Link>
+                        </Link> */}
+                        {/* <div className="bottom mt-4 pt-4 border-t border-line"></div> */}
                       </div>
                     </>
                   ) : (
@@ -1447,7 +1444,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       href={"#!"}
                       className="text-xl font-semibold flex items-center justify-between mt-5"
                     >
-                      {t("menu.mobile.aboutUs")}
+                      {t("menu.pages.about")}
                       <span className="text-right">
                         <Icon.CaretRight size={20} />
                       </span>
@@ -1468,7 +1465,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                               className={`link text-secondary duration-300 ${pathname === "/pages/about" ? "active" : ""
                                 }`}
                             >
-                              {t("menu.mobile.aboutUs")}
+                              {t("menu.pages.about")}
                             </Link>
                           </li>
                           <li>
@@ -1530,7 +1527,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
             <span className="menu_bar-title caption2 font-semibold">Home</span>
           </Link>
           <Link
-            href={"/shop/filter-canvas"}
+            href={"/shop"}
             className="menu_bar-link flex flex-col items-center gap-1"
           >
             <Icon.List weight="bold" className="text-2xl" />

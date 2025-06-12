@@ -69,7 +69,6 @@ export const getAllCategories = createAsyncThunk<Category[], GetAllCategoriesPar
                 },
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token || defaultToken}`
                 }
             });
             return data;
@@ -82,7 +81,7 @@ export const getAllCategories = createAsyncThunk<Category[], GetAllCategoriesPar
 
 export const getCategoryById = createAsyncThunk<Category, GetOneCategoryParams>(
     "categories/getById",
-    async ({ id, lang, token }) => {
+    async ({ id, lang }) => {
         try {
             const { data } = await axios.get<Category>(`${baseUrl}/products/category/${id}`, {
                 params: {
@@ -90,7 +89,6 @@ export const getCategoryById = createAsyncThunk<Category, GetOneCategoryParams>(
                 },
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token || defaultToken}`
                 }
             });
             return data;

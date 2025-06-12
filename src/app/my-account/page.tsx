@@ -115,8 +115,8 @@ const MyAccount = () => {
           method: "GET",
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-                ? window.localStorage.getItem("accessToken")
-                : window.sessionStorage.getItem("accessToken")
+              ? window.localStorage.getItem("accessToken")
+              : window.sessionStorage.getItem("accessToken")
               }`,
             "Content-Type": "application/json",
           },
@@ -164,8 +164,8 @@ const MyAccount = () => {
               method: "GET",
               headers: {
                 Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-                    ? window.localStorage.getItem("accessToken")
-                    : window.sessionStorage.getItem("accessToken")
+                  ? window.localStorage.getItem("accessToken")
+                  : window.sessionStorage.getItem("accessToken")
                   }`,
                 "Content-Type": "application/json",
               },
@@ -200,8 +200,8 @@ const MyAccount = () => {
         method: "GET",
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-              ? window.localStorage.getItem("accessToken")
-              : window.sessionStorage.getItem("accessToken")
+            ? window.localStorage.getItem("accessToken")
+            : window.sessionStorage.getItem("accessToken")
             }`,
           "Content-Type": "application/json",
         },
@@ -230,8 +230,8 @@ const MyAccount = () => {
         method: "GET",
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-              ? window.localStorage.getItem("accessToken")
-              : window.sessionStorage.getItem("accessToken")
+            ? window.localStorage.getItem("accessToken")
+            : window.sessionStorage.getItem("accessToken")
             }`,
           "Content-Type": "application/json",
         },
@@ -300,8 +300,8 @@ const MyAccount = () => {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-            ? window.localStorage.getItem("accessToken")
-            : window.sessionStorage.getItem("accessToken")
+          ? window.localStorage.getItem("accessToken")
+          : window.sessionStorage.getItem("accessToken")
           }`,
         "Content-Type": "application/json",
       },
@@ -343,8 +343,8 @@ const MyAccount = () => {
           method: "PATCH",
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-                ? window.localStorage.getItem("accessToken")
-                : window.sessionStorage.getItem("accessToken")
+              ? window.localStorage.getItem("accessToken")
+              : window.sessionStorage.getItem("accessToken")
               }`,
             "Content-Type": "application/json",
           },
@@ -386,8 +386,8 @@ const MyAccount = () => {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-              ? window.localStorage.getItem("accessToken")
-              : window.sessionStorage.getItem("accessToken")
+            ? window.localStorage.getItem("accessToken")
+            : window.sessionStorage.getItem("accessToken")
             }`,
           "Content-Type": "application/json",
         },
@@ -418,8 +418,8 @@ const MyAccount = () => {
       method: "POST",
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-            ? window.localStorage.getItem("accessToken")
-            : window.sessionStorage.getItem("accessToken")
+          ? window.localStorage.getItem("accessToken")
+          : window.sessionStorage.getItem("accessToken")
           }`,
         "Content-Type": "application/json",
       },
@@ -493,8 +493,8 @@ const MyAccount = () => {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-            ? window.localStorage.getItem("accessToken")
-            : window.sessionStorage.getItem("accessToken")
+          ? window.localStorage.getItem("accessToken")
+          : window.sessionStorage.getItem("accessToken")
           }`,
       },
       body: formData,
@@ -556,14 +556,13 @@ const MyAccount = () => {
       const response = await fetch(
         `https://api.malalshammobel.com/order/${cancel.id}/`,
         {
-          method: "PATCH",
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("accessToken") ||
               window.sessionStorage.getItem("accessToken")
               }`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: "Retroactive" }),
         }
       );
 
@@ -574,6 +573,36 @@ const MyAccount = () => {
           window.localStorage.removeItem("refreshToken");
           window.sessionStorage.removeItem("refreshToken");
           window.location.href = "/login";
+        } else {
+          setCancel((prev) => ({ ...prev, state: false }))
+          fetch(`https://api.malalshammobel.com/order/`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${window.localStorage.getItem("accessToken")
+                ? window.localStorage.getItem("accessToken")
+                : window.sessionStorage.getItem("accessToken")
+                }`,
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (!response.ok) {
+                if (Number(response.status) == 401) {
+                  window.localStorage.removeItem("accessToken");
+                  window.sessionStorage.removeItem("accessToken");
+                  window.localStorage.removeItem("refreshToken");
+                  window.sessionStorage.removeItem("refreshToken");
+                  window.location.href = "/login";
+                }
+              }
+              return response.json();
+            })
+            .then((data) => {
+              setOrders(data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
         }
         const errorText = await response.text();
         console.error("Failed response:", response.status, errorText);
@@ -822,9 +851,9 @@ const MyAccount = () => {
                           <button
                             key={index}
                             className={`item relative px-3 py-2.5 text-secondary text-center duration-300 hover:text-black border-b-2 ${(activeOrders == "" ? "all" : activeOrders) ===
-                                item
-                                ? "active border-black"
-                                : "border-transparent"
+                              item
+                              ? "active border-black"
+                              : "border-transparent"
                               }`}
                             onClick={() =>
                               handleActiveOrders(item == "all" ? "" : item)
@@ -1048,8 +1077,8 @@ const MyAccount = () => {
                         >
                           <div
                             className={`form_address ${activeAddress === "shipping" + i
-                                ? "block"
-                                : "hidden"
+                              ? "block"
+                              : "hidden"
                               }`}
                           >
                             <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">

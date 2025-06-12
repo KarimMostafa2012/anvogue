@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -73,98 +73,83 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [viewType, setViewType] = useState<"grid" | "list" | "marketplace">(
-    "grid"
-  );
-  const [params, setParams] = useState<Params>({
-    lang: "en",
-    page_size: 12,
-    page: 1,
-  });
+  const [viewType, setViewType] = useState<"grid" | "list" | "marketplace">("grid");
   const [showOnlySale, setShowOnlySale] = useState(false);
   const [sortOption, setSortOption] = useState("");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
-  const [debouncedPriceRange] = useDebounce(priceRange, 500);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(
-    null
-  );
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [showMore, setShowMore] = useState<boolean | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [debouncedSubCategory] = useDebounce(selectedSubCategory, 500);
-  const [colors, setColors] = useState<
-    { id: string; product: number; color: string }[]
-  >([]);
+  const [colors, setColors] = useState<{ id: string; product: number; color: string }[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const currentLanguage = useSelector((state: RootState) => state.language);
   const { t } = useTranslation();
 
-  // Get product_name directly from URL params
+  // Debounced values
+  const [debouncedPriceRange] = useDebounce(priceRange, 500);
+  const [debouncedSubCategory] = useDebounce(selectedSubCategory, 500);
   const productName = searchParams.get("product_name") || "";
   const [debouncedProductName] = useDebounce(productName, 300);
 
   const dispatch = useDispatch<AppDispatch>();
-  const { products, count, loading, error } = useSelector(
-    (state: RootState) => state.products
-  );
+  const { products, count, loading, error } = useSelector((state: RootState) => state.products);
   const { categories } = useSelector((state: RootState) => state.categories);
 
-  // Fetch colors from API
+  // Memoize API parameters to prevent unnecessary updates
+  const apiParams = useMemo(() => ({
+    lang: currentLanguage,
+    page_size: 12,
+    page: currentPage + 1,
+    category: selectedCategory || undefined,
+    sub_category: debouncedSubCategory || undefined,
+    min_price: debouncedPriceRange.min > 0 ? debouncedPriceRange.min : undefined,
+    max_price: debouncedPriceRange.max < 10000 ? debouncedPriceRange.max : undefined,
+    color: selectedColor || undefined,
+    sort: sortOption === "priceHighToLow" ? "-price" : 
+          sortOption === "priceLowToHigh" ? "price" : undefined,
+    has_offer: showOnlySale || undefined,
+    product_name: debouncedProductName || undefined,
+  }), [
+    currentLanguage,
+    currentPage,
+    selectedCategory,
+    debouncedSubCategory,
+    debouncedPriceRange,
+    selectedColor,
+    sortOption,
+    showOnlySale,
+    debouncedProductName,
+  ]);
+
+  // Memoize the fetch products function
+  const fetchProducts = useCallback(() => {
+    dispatch(getAllProducts({ params: apiParams }));
+  }, [dispatch, apiParams]);
+
+  // Single effect for fetching products
   useEffect(() => {
-    fetch("https://api.malalshammobel.com/products/get/colors/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setColors(data))
-      .catch((error) => console.error("Error fetching colors:", error));
-  }, []);
+    const timeoutId = setTimeout(() => {
+      fetchProducts();
+    }, 300); // Add debounce to prevent rapid requests
 
-  // Parse initial URL parameters on mount and when searchParams change
-  useEffect(() => {
-    const category = searchParams.get("category");
-    const color = searchParams.get("color");
-    const subCategory = searchParams.get("sub_category") || "";
-    const minPrice = searchParams.get("min_price");
-    const maxPrice = searchParams.get("max_price");
-    const sort = searchParams.get("sort") || "";
-    const sale = searchParams.get("sale");
-    const page = searchParams.get("page");
+    return () => clearTimeout(timeoutId);
+  }, [fetchProducts]);
 
-    setSelectedCategory(category);
-    setSelectedColor(color);
-    setSelectedSubCategory(subCategory);
-
-    setPriceRange({
-      min: minPrice ? Math.max(0, Number(minPrice)) : 0,
-      max: maxPrice ? Math.min(10000, Number(maxPrice)) : 10000,
-    });
-
-    setSortOption(sort);
-    setShowOnlySale(sale === "true");
-    setCurrentPage(page ? Math.max(0, Number(page) - 1) : 0);
-  }, [searchParams]);
-
-  // Update URL when filters change
+  // Update URL with debounced values
   const updateUrl = useCallback(() => {
     const newParams = new URLSearchParams(searchParams.toString());
 
     if (selectedCategory) newParams.set("category", selectedCategory);
     if (selectedColor) newParams.set("color", selectedColor);
     if (productName) newParams.set("product_name", productName);
-    if (debouncedSubCategory)
-      newParams.set("sub_category", debouncedSubCategory);
-    if (debouncedPriceRange.min > 0)
-      newParams.set("min_price", debouncedPriceRange.min.toString());
-    if (debouncedPriceRange.max < 10000)
-      newParams.set("max_price", debouncedPriceRange.max.toString());
+    if (debouncedSubCategory) newParams.set("sub_category", debouncedSubCategory);
+    if (debouncedPriceRange.min > 0) newParams.set("min_price", debouncedPriceRange.min.toString());
+    if (debouncedPriceRange.max < 10000) newParams.set("max_price", debouncedPriceRange.max.toString());
     if (sortOption) newParams.set("sort", sortOption);
     if (showOnlySale) newParams.set("sale", "true");
-    // Always include the current page in the URL
     newParams.set("page", (currentPage + 1).toString());
 
     router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
@@ -182,71 +167,61 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
     searchParams,
   ]);
 
+  // Debounce URL updates
   useEffect(() => {
-    updateUrl();
+    const timeoutId = setTimeout(updateUrl, 300);
+    return () => clearTimeout(timeoutId);
   }, [updateUrl]);
 
-  // Only reset page when filters change, not when page changes
+  // Parse URL parameters only when searchParams change
   useEffect(() => {
-    if (!searchParams.get("page")) {
-      setCurrentPage(0);
-    }
-  }, [
-    selectedCategory,
-    priceRange,
-    selectedColor,
-    sortOption,
-    showOnlySale,
-    productName,
-    debouncedSubCategory,
-  ]);
+    const category = searchParams.get("category");
+    const color = searchParams.get("color");
+    const subCategory = searchParams.get("sub_category") || "";
+    const minPrice = searchParams.get("min_price");
+    const maxPrice = searchParams.get("max_price");
+    const sort = searchParams.get("sort") || "";
+    const sale = searchParams.get("sale");
+    const page = searchParams.get("page");
 
-  // Fetch categories
+    // Batch state updates to prevent multiple re-renders
+    const updates = () => {
+      setSelectedCategory(category);
+      setSelectedColor(color);
+      setSelectedSubCategory(subCategory);
+      setPriceRange({
+        min: minPrice ? Math.max(0, Number(minPrice)) : 0,
+        max: maxPrice ? Math.min(10000, Number(maxPrice)) : 10000,
+      });
+      setSortOption(sort);
+      setShowOnlySale(sale === "true");
+      setCurrentPage(page ? Math.max(0, Number(page) - 1) : 0);
+    };
+
+    updates();
+  }, [searchParams]);
+
+  // Fetch colors only once on mount
+  useEffect(() => {
+    const fetchColors = async () => {
+      try {
+        const response = await fetch("https://api.malalshammobel.com/products/get/colors/");
+        const data = await response.json();
+        setColors(data);
+      } catch (error) {
+        console.error("Error fetching colors:", error);
+      }
+    };
+    fetchColors();
+  }, []);
+
+  // Fetch categories when language changes
   useEffect(() => {
     dispatch(getAllCategories({ lang: currentLanguage }));
   }, [dispatch, currentLanguage]);
 
-  // Update API params when filters change
-  useEffect(() => {
-    setParams({
-      lang: currentLanguage,
-      page_size: 12,
-      page: currentPage + 1,
-      category: selectedCategory || undefined,
-      sub_category: debouncedSubCategory || undefined,
-      min_price:
-        debouncedPriceRange.min > 0 ? debouncedPriceRange.min : undefined,
-      max_price:
-        debouncedPriceRange.max < 10000 ? debouncedPriceRange.max : undefined,
-      color: selectedColor || undefined,
-      sort:
-        sortOption === "priceHighToLow"
-          ? "-price"
-          : sortOption === "priceLowToHigh"
-            ? "price"
-            : undefined,
-      has_offer: showOnlySale || undefined,
-      product_name: debouncedProductName || undefined,
-    });
-  }, [
-    currentPage,
-    selectedCategory,
-    debouncedPriceRange,
-    selectedColor,
-    sortOption,
-    showOnlySale,
-    currentLanguage,
-    debouncedProductName,
-    debouncedSubCategory,
-  ]);
-
-  // Fetch products when API params change
-  useEffect(() => {
-    dispatch(getAllProducts({ params }));
-  }, [dispatch, params]);
-
-  // Clear all filters
-  const clearAllFilters = () => {
+  // Clear all filters with a single state update
+  const clearAllFilters = useCallback(() => {
     setShowOnlySale(false);
     setPriceRange({ min: 0, max: 10000 });
     setSelectedCategory(null);
@@ -254,10 +229,10 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
     setSortOption("");
     setCurrentPage(0);
     router.replace(pathname, { scroll: false });
-  };
+  }, [pathname, router]);
 
-  // Handle search input changes
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle search input changes with debounce
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newParams = new URLSearchParams(searchParams.toString());
     if (e.target.value) {
       newParams.set("product_name", e.target.value);
@@ -265,18 +240,18 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
       newParams.delete("product_name");
     }
     router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
-  };
+  }, [pathname, router, searchParams]);
 
   // Handle suggestion selection
-  const handleSuggestionClick = (suggestion: string) => {
+  const handleSuggestionClick = useCallback((suggestion: string) => {
     const newParams = new URLSearchParams(searchParams.toString());
     newParams.set("product_name", suggestion);
     router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
     setShowSuggestions(false);
-  };
+  }, [pathname, router, searchParams]);
 
-  // Calculate page count for pagination
-  const pageCount = Math.ceil((count ?? 0) / (params.page_size || 12));
+  // Calculate page count
+  const pageCount = Math.ceil((count ?? 0) / (apiParams.page_size || 12));
 
   // Helper function to ensure string output
   const getTranslation = (key: string): string => {
@@ -340,7 +315,9 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
               <div className="filter-type pb-8 border-b border-line">
                 <div className="heading6">{t('shop.sidebar.categories')}</div>
                 <div className="list-type mt-4">
-                  {categories.map((item, index) => (
+                  {categories.map((item, index) =>{
+                    console.log(item) 
+                    return(
                     <div
                       key={index}
                       className={`item flex items-center justify-between cursor-pointer ${selectedCategory === item.name ? "text-black" : ""
@@ -352,10 +329,10 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
                       }}
                     >
                       <div className="text-secondary has-line-before hover:text-black capitalize">
-                        {t(item.name)}
+                        {item.name}
                       </div>
                     </div>
-                  ))}
+                  )})}
                 </div>
               </div>
 
@@ -451,28 +428,6 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
                     {showMore ? t('shop.sidebar.showLess') : t('shop.sidebar.showMore')}
                   </button>
                 )}
-              </div>
-
-              <div className="sale-block mt-8">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="sale"
-                    checked={showOnlySale}
-                    onChange={(e) => {
-                      const newParams = new URLSearchParams(searchParams.toString());
-                      if (e.target.checked) {
-                        newParams.set("sale", "true");
-                      } else {
-                        newParams.delete("sale");
-                      }
-                      router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
-                    }}
-                  />
-                  <label htmlFor="sale" className="text-title cursor-pointer">
-                    {t('shop.sidebar.saleItems')}
-                  </label>
-                </div>
               </div>
 
               <div className="clear-all mt-8">

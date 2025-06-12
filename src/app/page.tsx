@@ -13,6 +13,7 @@ import Brand from "@/components/Home9/Brand";
 import Footer from "@/components/Footer/Footer";
 import ModalNewsletter from "@/components/Modal/ModalNewsletter";
 
+
 export default function Home() {
   return (
     <>
