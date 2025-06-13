@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
-import productData from "@/data/Product.json";
 import { ProductType } from "@/type/ProductType";
 import { useModalCartContext } from "@/context/ModalCartContext";
 import { useCart } from "@/context/CartContext";
@@ -29,7 +28,6 @@ const ModalCart = ({
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         const newTime = countdownTime();
-        // Only update if time actually changed
         return prev.minutes !== newTime.minutes ||
           prev.seconds !== newTime.seconds
           ? newTime
@@ -63,16 +61,17 @@ const ModalCart = ({
   };
 
   let moneyForFreeship = 150;
-  // Calculate total in useEffect
+ 
   const [totalCart, setTotalCart] = useState<number>(0);
 
   useEffect(() => {
-    const newTotal = cartState.cartArray.reduce(
-      (sum, item) => sum + Number(item.new_price ? item.new_price : item.price) * item.quantity,
-      0
-    );
+    const newTotal = cartState.cartArray.reduce((sum, item) => {
+      const price = item.new_price || item.price;
+      const quantity = item.quantity || 0;
+      return sum + (Number(price) || 0) * quantity;
+    }, 0);
     setTotalCart(newTotal);
-  }, [cartState.cartArray]); // Only recalculate when cart changes
+  }, [cartState.cartArray]); 
 
   let [discountCart, setDiscountCart] = useState<number>(0);
 
@@ -199,14 +198,14 @@ const ModalCart = ({
             </div>
             <div className="footer-modal bg-white absolute bottom-0 left-0 w-full">
               <div className="flex items-center justify-center lg:gap-14 gap-8 px-6 py-4 border-b border-line">
-                <div className="flex items-center gap-2">
-                  <div className="text-secondary2">{t('modal.cart.subtotal')}:</div>
-                  <div className="text-title">${totalCart}</div>
+                <div className="flex items-center ">
+                  {/* <div className="text-secondary2">{t('modal.cart.subtotal')}:</div> */}
+                  {/* <div className="text-title">${totalCart}</div> */}
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="text-secondary2">{t('modal.cart.total')}:</div>
                   <div className="text-title">
-                    ${totalCart >= moneyForFreeship ? totalCart : totalCart + 10}
+                    ${totalCart >= moneyForFreeship ? totalCart : totalCart + 0}
                   </div>
                 </div>
               </div>
