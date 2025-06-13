@@ -899,7 +899,326 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                 >
                   {t('product.detail.specifications')}
                 </div>
+                <div
+                  className={`tab-item heading5 has-line-before text-secondary2 hover:text-black duration-300 ${activeTab === "review" ? "active" : ""
+                    }`}
+                  onClick={() => handleActiveTab("review")}
+                >
+                  {t('product.detail.reviews')}
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div className={`container desc-item review-block ${activeTab === "review" ? "open" : ""}`}>
+          <div className="top-overview flex max-sm:flex-col items-center justify-between gap-12 gap-y-4">
+            <div className="left flex max-sm:flex-col gap-y-4 items-center justify-between lg:w-1/2 sm:w-2/3 w-full sm:pr-5">
+              <div className="rating black-start flex flex-col items-center">
+                <div className="text-display">4.6</div>
+                <Rate currentRate={5} size={18} />
+                <div className="text-center whitespace-nowrap mt-1">
+                  (1,968 Ratings)
+                </div>
+              </div>
+              <div className="list-rating w-2/3">
+                <div className="item flex items-center justify-end gap-1.5">
+                  <div className="flex items-center gap-1">
+                    <div className="caption1">5</div>
+                    <Icon.Star size={14} weight="fill" />
+                  </div>
+                  <div className="progress bg-line relative w-3/4 h-2">
+                    <div className="progress-percent absolute bg-black w-[50%] h-full left-0 top-0"></div>
+                  </div>
+                  <div className="caption1">50%</div>
+                </div>
+                <div className="item flex items-center justify-end gap-1.5 mt-1">
+                  <div className="flex items-center gap-1">
+                    <div className="caption1">4</div>
+                    <Icon.Star size={14} weight="fill" />
+                  </div>
+                  <div className="progress bg-line relative w-3/4 h-2">
+                    <div className="progress-percent absolute bg-black w-[20%] h-full left-0 top-0"></div>
+                  </div>
+                  <div className="caption1">20%</div>
+                </div>
+                <div className="item flex items-center justify-end gap-1.5 mt-1">
+                  <div className="flex items-center gap-1">
+                    <div className="caption1">3</div>
+                    <Icon.Star size={14} weight="fill" />
+                  </div>
+                  <div className="progress bg-line relative w-3/4 h-2">
+                    <div className="progress-percent absolute bg-black w-[10%] h-full left-0 top-0"></div>
+                  </div>
+                  <div className="caption1">10%</div>
+                </div>
+                <div className="item flex items-center justify-end gap-1.5 mt-1">
+                  <div className="flex items-center gap-1">
+                    <div className="caption1">2</div>
+                    <Icon.Star size={14} weight="fill" />
+                  </div>
+                  <div className="progress bg-line relative w-3/4 h-2">
+                    <div className="progress-percent absolute bg-black w-[10%] h-full left-0 top-0"></div>
+                  </div>
+                  <div className="caption1">10%</div>
+                </div>
+                <div className="item flex items-center justify-end gap-1.5 mt-1">
+                  <div className="flex items-center gap-2">
+                    <div className="caption1">1</div>
+                    <Icon.Star size={14} weight="fill" />
+                  </div>
+                  <div className="progress bg-line relative w-3/4 h-2">
+                    <div className="progress-percent absolute bg-black w-[10%] h-full left-0 top-0"></div>
+                  </div>
+                  <div className="caption1">10%</div>
+                </div>
+              </div>
+            </div>
+            <div className="right">
+              <Link
+                href={"#form-review"}
+                className="button-main bg-white text-black border border-black whitespace-nowrap"
+              >
+                Write Reviews
+              </Link>
+            </div>
+          </div>
+          <div className="mt-8">
+            <div className="heading flex items-center justify-between flex-wrap gap-4">
+              <div className="heading4">03 Comments</div>
+              <div className="right flex items-center gap-3">
+                <label htmlFor="select-filter" className="uppercase">
+                  Sort by:
+                </label>
+                <div className="select-block relative">
+                  <select
+                    id="select-filter"
+                    name="select-filter"
+                    className="text-button py-2 pl-3 md:pr-14 pr-10 rounded-lg bg-white border border-line"
+                    defaultValue={"Sorting"}
+                  >
+                    <option value="Sorting" disabled>
+                      Sorting
+                    </option>
+                    <option value="newest">Newest</option>
+                    <option value="5star">5 Star</option>
+                    <option value="4star">4 Star</option>
+                    <option value="3star">3 Star</option>
+                    <option value="2star">2 Star</option>
+                    <option value="1star">1 Star</option>
+                  </select>
+                  <Icon.CaretDown
+                    size={12}
+                    className="absolute top-1/2 -translate-y-1/2 md:right-4 right-2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="list-review mt-6">
+              <div className="item">
+                <div className="heading flex items-center justify-between">
+                  <div className="user-infor flex gap-4">
+                    <div className="avatar">
+                      <Image
+                        src={"/images/avatar/1.png"}
+                        width={200}
+                        height={200}
+                        alt="img"
+                        className="w-[52px] aspect-square rounded-full"
+                      />
+                    </div>
+                    <div className="user">
+                      <div className="flex items-center gap-2">
+                        <div className="text-title">Tony Nguyen</div>
+                        <div className="span text-line">-</div>
+                        <Rate currentRate={5} size={12} />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-secondary2">1 days ago</div>
+                        <div className="text-secondary2">-</div>
+                        <div className="text-secondary2">
+                          <span>Yellow</span> / <span>XL</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="more-action cursor-pointer">
+                    <Icon.DotsThree size={24} weight="bold" />
+                  </div>
+                </div>
+                <div className="mt-3">
+                  I can{String.raw`'t`} get enough of the fashion pieces
+                  from this brand. They have a great selection for every
+                  occasion and the prices are reasonable. The shipping is
+                  fast and the items always arrive in perfect condition.
+                </div>
+                <div className="action mt-3">
+                  <div className="flex items-center gap-4">
+                    <div className="like-btn flex items-center gap-1 cursor-pointer">
+                      <Icon.HandsClapping size={18} />
+                      <div className="text-button">20</div>
+                    </div>
+                    <Link
+                      href={"#form-review"}
+                      className="reply-btn text-button text-secondary cursor-pointer hover:text-black"
+                    >
+                      Reply
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <div className="item mt-8">
+                <div className="heading flex items-center justify-between">
+                  <div className="user-infor flex gap-4">
+                    <div className="avatar">
+                      <Image
+                        src={"/images/avatar/2.png"}
+                        width={200}
+                        height={200}
+                        alt="img"
+                        className="w-[52px] aspect-square rounded-full"
+                      />
+                    </div>
+                    <div className="user">
+                      <div className="flex items-center gap-2">
+                        <div className="text-title">Guy Hawkins</div>
+                        <div className="span text-line">-</div>
+                        <Rate currentRate={4} size={12} />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-secondary2">1 days ago</div>
+                        <div className="text-secondary2">-</div>
+                        <div className="text-secondary2">
+                          <span>Yellow</span> / <span>XL</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="more-action cursor-pointer">
+                    <Icon.DotsThree size={24} weight="bold" />
+                  </div>
+                </div>
+                <div className="mt-3">
+                  I can{String.raw`'t`} get enough of the fashion pieces
+                  from this brand. They have a great selection for every
+                  occasion and the prices are reasonable. The shipping is
+                  fast and the items always arrive in perfect condition.
+                </div>
+                <div className="action mt-3">
+                  <div className="flex items-center gap-4">
+                    <div className="like-btn flex items-center gap-1 cursor-pointer">
+                      <Icon.HandsClapping size={18} />
+                      <div className="text-button">20</div>
+                    </div>
+                    <Link
+                      href={"#form-review"}
+                      className="reply-btn text-button text-secondary cursor-pointer hover:text-black"
+                    >
+                      Reply
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <div className="item mt-8">
+                <div className="heading flex items-center justify-between">
+                  <div className="user-infor flex gap-4">
+                    <div className="avatar">
+                      <Image
+                        src={"/images/avatar/3.png"}
+                        width={200}
+                        height={200}
+                        alt="img"
+                        className="w-[52px] aspect-square rounded-full"
+                      />
+                    </div>
+                    <div className="user">
+                      <div className="flex items-center gap-2">
+                        <div className="text-title">John Smith</div>
+                        <div className="span text-line">-</div>
+                        <Rate currentRate={5} size={12} />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-secondary2">1 days ago</div>
+                        <div className="text-secondary2">-</div>
+                        <div className="text-secondary2">
+                          <span>Yellow</span> / <span>XL</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="more-action cursor-pointer">
+                    <Icon.DotsThree size={24} weight="bold" />
+                  </div>
+                </div>
+                <div className="mt-3">
+                  I can{String.raw`'t`} get enough of the fashion pieces
+                  from this brand. They have a great selection for every
+                  occasion and the prices are reasonable. The shipping is
+                  fast and the items always arrive in perfect condition.
+                </div>
+                <div className="action mt-3">
+                  <div className="flex items-center gap-4">
+                    <div className="like-btn flex items-center gap-1 cursor-pointer">
+                      <Icon.HandsClapping size={18} />
+                      <div className="text-button">20</div>
+                    </div>
+                    <Link
+                      href={"#form-review"}
+                      className="reply-btn text-button text-secondary cursor-pointer hover:text-black"
+                    >
+                      Reply
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="form-review" className="form-review pt-6">
+              <div className="heading4">Leave A comment</div>
+              <form className="grid sm:grid-cols-2 gap-4 gap-y-5 md:mt-6 mt-3">
+                <div className="name ">
+                  <input
+                    className="border-line px-4 pt-3 pb-3 w-full rounded-lg"
+                    id="username"
+                    type="text"
+                    placeholder="Your Name *"
+                    required
+                  />
+                </div>
+                <div className="mail ">
+                  <input
+                    className="border-line px-4 pt-3 pb-3 w-full rounded-lg"
+                    id="email"
+                    type="email"
+                    placeholder="Your Email *"
+                    required
+                  />
+                </div>
+                <div className="col-span-full message">
+                  <textarea
+                    className="border border-line px-4 py-3 w-full rounded-lg"
+                    id="message"
+                    name="message"
+                    placeholder="Your message *"
+                    required
+                  ></textarea>
+                </div>
+                <div className="col-span-full flex items-start -mt-2 gap-2">
+                  <input
+                    type="checkbox"
+                    id="saveAccount"
+                    name="saveAccount"
+                    className="mt-1.5"
+                  />
+                  <label className="" htmlFor="saveAccount">
+                    Save my name, email, and website in this browser for
+                    the next time I comment.
+                  </label>
+                </div>
+                <div className="col-span-full sm:pt-3">
+                  <button className="button-main bg-white text-black border border-black">
+                    Submit Reviews
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
