@@ -469,7 +469,7 @@ const MenuEight = () => {
                           }}
                           className="button-main w-full text-center mt-4"
                         >
-                          {t("menu.login")}
+                          Dashboard
                         </Link>
                         <div className="text-secondary text-center mt-3">
                           <Link
