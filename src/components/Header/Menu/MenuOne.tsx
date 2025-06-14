@@ -17,12 +17,15 @@ import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { getAllProducts, clearProduct } from '@/redux/slices/productSlice'
-import { changeLanguage, initializeLanguage } from '@/redux/slices/languageSlice'
+import { getAllProducts, clearProduct } from "@/redux/slices/productSlice";
+import {
+  changeLanguage,
+  initializeLanguage,
+} from "@/redux/slices/languageSlice";
 
 interface Props {
   props: string;
@@ -43,6 +46,22 @@ type Category = {
   name: string;
 };
 
+interface UserProfile {
+  first_name?: string;
+  last_name?: string;
+  phone_number?: string;
+  balance?: string;
+  email?: string;
+  verified?: boolean;
+  city?: string;
+  house_num?: string;
+  street_name?: string;
+  id?: number | string;
+  zip_code?: string;
+  addresses?: [];
+  profile_img?: string;
+  // Add other expected properties here
+}
 type SubCategory = {
   id: number;
   category: CategoryOfSub;
@@ -51,12 +70,12 @@ type SubCategory = {
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
-
 const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
   const pathname = usePathname();
   const { openLoginPopup, handleLoginPopup } = useLoginPopup();
   const { openSubMenuDepartment, handleSubMenuDepartment } =
     useSubMenuDepartment();
+  const [profile, setProfile] = useState<UserProfile>({});
   const { openModalSearch } = useModalSearchContext();
   const { openMenuMobile, handleMenuMobile } = useMenuMobile();
   const [openSubNavMobile, setOpenSubNavMobile] = useState<number | null>(null);
@@ -83,12 +102,12 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("fetched")
+      console.log("fetched");
       try {
         const params = {
           has_offer: true,
-          lang: lang
-        }
+          lang: lang,
+        };
         await dispatch(getAllProducts({ params }));
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -96,10 +115,8 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
     };
 
     fetchData();
-    console.log(products)
+    console.log(products);
   }, [dispatch, currentLanguage, t, lang]);
-
-
 
   useEffect(() => {
     if (searchParams.get("uid") && searchParams.get("token")) {
@@ -128,12 +145,15 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
           console.error("Error:", error);
         });
     }
-    fetch(`https://api.malalshammobel.com/products/category/?lang=${currentLanguage}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://api.malalshammobel.com/products/category/?lang=${currentLanguage}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           console.log(response);
@@ -151,12 +171,15 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
   }, [t, currentLanguage]);
 
   useEffect(() => {
-    fetch(`https://api.malalshammobel.com/products/subcategory/?lang=${currentLanguage}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://api.malalshammobel.com/products/subcategory/?lang=${currentLanguage}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           console.log(response);
@@ -170,8 +193,6 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
       .catch((error) => {
         console.error("Error:", error);
       });
-
-
   }, [currentLanguage, t]);
 
   useEffect(() => {
@@ -185,9 +206,10 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
       fetch("https://api.malalshammobel.com/auth/api/users/me/", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("accessToken") ||
+          Authorization: `Bearer ${
+            window.localStorage.getItem("accessToken") ||
             window.sessionStorage.getItem("accessToken")
-            }`,
+          }`,
           "Content-Type": "application/json",
         },
       })
@@ -272,6 +294,53 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log("test");
+    if (
+      loggedIn ||
+      window.sessionStorage.getItem("loggedIn") == "true" ||
+      window.localStorage.getItem("accessToken") ||
+      window.sessionStorage.getItem("accessToken")
+    ) {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch(
+            "https://api.malalshammobel.com/auth/api/users/me/",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${
+                  window.localStorage.getItem("accessToken")
+                    ? window.localStorage.getItem("accessToken")
+                    : window.sessionStorage.getItem("accessToken")
+                }`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            if (Number(response.status) == 401) {
+              window.localStorage.removeItem("accessToken");
+              window.sessionStorage.removeItem("accessToken");
+              window.localStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("loggedIn");
+            }
+          }
+
+          const data = await response.json();
+          console.log(data);
+          setProfile(data);
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
+      };
+      fetchProfile();
+    }
+    console.log(profile);
+  }, []);
+
   const handleSearch = (value: string) => {
     router.push(`/shop?product_name=${value}`);
     setSearchKeyword("");
@@ -311,8 +380,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
   return (
     <>
       <div
-        className={`header-menu style-one ${fixedHeader ? "fixed" : "absolute"
-          } top-0 left-0 right-0 w-full md:h-[74px] h-[56px] ${props}`}
+        className={`header-menu style-one ${
+          fixedHeader ? "fixed" : "absolute"
+        } top-0 left-0 right-0 w-full md:h-[74px] h-[56px] ${props}`}
       >
         <div className="container mx-auto h-full">
           <div className="header-main flex justify-between h-full">
@@ -334,10 +404,11 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                   <li className="h-full relative">
                     <Link
                       href="/"
-                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 ${pathname === "/" ? "active" : ""
-                        }`}
+                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 ${
+                        pathname === "/" ? "active" : ""
+                      }`}
                     >
-                      {t('menu.home')}
+                      {t("menu.home")}
                     </Link>
                   </li>
                   <li className="h-full">
@@ -345,7 +416,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       href="#!"
                       className="text-button-uppercase duration-300 h-full flex items-center justify-center"
                     >
-                      {t('menu.mobile.features')}
+                      {t("menu.mobile.features")}
                     </Link>
                     <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                       <div className="container">
@@ -368,7 +439,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                                     <ul>
                                       {subCategories.map((subCatName) => {
                                         if (
-                                          subCatName.category.name == shadowCat && i <= 4
+                                          subCatName.category.name ==
+                                            shadowCat &&
+                                          i <= 4
                                         ) {
                                           i++;
                                           return (
@@ -395,7 +468,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                                                 }}
                                                 className={`link text-secondary duration-300 cursor-pointer`}
                                               >
-                                                {t('menu.viewMore')}
+                                                {t("menu.viewMore")}
                                               </div>
                                             </li>
                                           );
@@ -408,40 +481,40 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                             })}
                           </div>
                           <div className="banner-ads-block ps-2.5 basis-1/3">
-                            {
-                              (products.length > 0) && (
-                                products.slice(0, 2).map((prod, i) => {
-                                  return (
-                                    <div
-                                      key={i}
-                                      className={"banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " + (i == 1 ? "mt-4" : "")}
-                                    >
-                                      <div className="text-content py-14 ps-8 relative z-[1]">
-                                        <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                          Save ${prod.offer_value}
-                                        </div>
-                                        <div className="heading6 mt-2">
-                                          {prod.name}
-                                        </div>
-                                        <div className="body1 mt-3 text-secondary">
-                                          Starting at{" "}
-                                          <span className="text-red">${prod.new_price}</span>
-                                        </div>
+                            {products.length > 0 &&
+                              products.slice(0, 2).map((prod, i) => {
+                                return (
+                                  <div
+                                    key={i}
+                                    className={
+                                      "banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " +
+                                      (i == 1 ? "mt-4" : "")
+                                    }
+                                  >
+                                    <div className="text-content py-14 ps-8 relative z-[1]">
+                                      <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
+                                        Save ${prod.offer_value}
                                       </div>
-                                      <Image
-                                        src={prod.images[0].img}
-                                        width={200}
-                                        height={100}
-                                        alt={prod.name}
-                                        className="basis-1/3 absolute ltr:right-0 rtl:left-0 top-0 duration-700"
-                                      />
+                                      <div className="heading6 mt-2">
+                                        {prod.name}
+                                      </div>
+                                      <div className="body1 mt-3 text-secondary">
+                                        Starting at{" "}
+                                        <span className="text-red">
+                                          ${prod.new_price}
+                                        </span>
+                                      </div>
                                     </div>
-
-                                  )
-                                })
-
-                              )
-                            }
+                                    <Image
+                                      src={prod.images[0].img}
+                                      width={200}
+                                      height={100}
+                                      alt={prod.name}
+                                      className="basis-1/3 absolute ltr:right-0 rtl:left-0 top-0 duration-700"
+                                    />
+                                  </div>
+                                );
+                              })}
                           </div>
                         </div>
                       </div>
@@ -450,10 +523,11 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                   <li className="h-full">
                     <Link
                       href="/shop"
-                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes("/shop") ? "active" : ""
-                        }`}
+                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${
+                        pathname.includes("/shop") ? "active" : ""
+                      }`}
                     >
-                      {t('menu.shop')}
+                      {t("menu.shop")}
                     </Link>
                   </li>
                   {/* <li className="h-full">
@@ -793,8 +867,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                   <li className="h-full relative">
                     <Link
                       href="#!"
-                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes("/pages") ? "active" : ""
-                        }`}
+                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${
+                        pathname.includes("/pages") ? "active" : ""
+                      }`}
                     >
                       {t("menu.pages.about")}
                     </Link>
@@ -803,8 +878,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                         <li>
                           <Link
                             href="/pages/about"
-                            className={`link text-secondary duration-300 ${pathname === "/pages/about" ? "active" : ""
-                              }`}
+                            className={`link text-secondary duration-300 ${
+                              pathname === "/pages/about" ? "active" : ""
+                            }`}
                           >
                             {t("menu.pages.about")}
                           </Link>
@@ -812,8 +888,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                         <li>
                           <Link
                             href="/pages/contact"
-                            className={`link text-secondary duration-300 ${pathname === "/pages/contact" ? "active" : ""
-                              }`}
+                            className={`link text-secondary duration-300 ${
+                              pathname === "/pages/contact" ? "active" : ""
+                            }`}
                           >
                             {t("Contact us")}
                           </Link>
@@ -821,8 +898,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                         <li>
                           <Link
                             href="/pages/store-list"
-                            className={`link text-secondary duration-300 ${pathname === "/pages/store-list" ? "active" : ""
-                              }`}
+                            className={`link text-secondary duration-300 ${
+                              pathname === "/pages/store-list" ? "active" : ""
+                            }`}
                           >
                             {t("menu.pages.storeList")}
                           </Link>
@@ -830,8 +908,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                         <li>
                           <Link
                             href="/pages/faqs"
-                            className={`link text-secondary duration-300 ${pathname === "/pages/faqs" ? "active" : ""
-                              }`}
+                            className={`link text-secondary duration-300 ${
+                              pathname === "/pages/faqs" ? "active" : ""
+                            }`}
                           >
                             {t("menu.pages.faqs")}
                           </Link>
@@ -865,7 +944,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
               <div className="list-action flex items-center gap-4">
                 <div className="user-icon flex items-center justify-center cursor-pointer">
                   {!loggedIn ||
-                    window.sessionStorage.getItem("loggedIn") != "true" ? (
+                  window.sessionStorage.getItem("loggedIn") != "true" ? (
                     <>
                       <Icon.User
                         size={24}
@@ -874,33 +953,64 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       />
                       <div
                         className={`login-popup absolute top-[74px] w-[320px] p-7 rounded-xl bg-white box-shadow-sm 
-                                                        ${openLoginPopup
-                            ? "open"
-                            : ""
-                          }`}
+                                                        ${
+                                                          openLoginPopup
+                                                            ? "open"
+                                                            : ""
+                                                        }`}
                       >
                         <Link
                           href={"/login"}
-                          className="button-main w-full text-center"
+                          className="button-main w-full text-center mt-4"
                         >
-                          Login
+                          {t("menu.login")}
                         </Link>
-                        <div className="text-secondary text-center mt-3 pb-4">
-                          {t('menu.noAccount')}
+                        <div className="text-secondary text-center mt-3">
+                          {t("menu.noAccount")}
                           <Link
                             href={"/register"}
                             className="text-black ps-1 hover:underline"
                           >
-                            Register
+                            {t("menu.register")}
                           </Link>
                         </div>
-                        {/* <Link
-                          href={"/my-account"}
-                          className="button-main bg-white text-black border border-black w-full text-center"
+                      </div>
+                    </>
+                  ) : profile.verified ? (
+                    <>
+                      <Icon.User
+                        size={24}
+                        color="black"
+                        onClick={handleLoginPopup}
+                      />
+                      <div
+                        className={`login-popup absolute top-[74px] w-[320px] p-7 rounded-xl bg-white box-shadow-sm 
+                                                        ${
+                                                          openLoginPopup
+                                                            ? "open"
+                                                            : ""
+                                                        }`}
+                      >
+                        <Link
+                          href={"/"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.location.href =
+                              "https://dashboard.malalshammobel.com/dashboard";
+                          }}
+                          className="button-main w-full text-center mt-4"
                         >
                           Dashboard
-                        </Link> */}
-                        {/* <div className="bottom mt-4 pt-4 border-t border-line"></div> */}
+                        </Link>
+                        <div className="text-secondary text-center mt-3">
+                          {t("menu.noAccount")}
+                          <Link
+                            href={"/register"}
+                            className="text-black ps-1 hover:underline"
+                          >
+                            {t("menu.register")}
+                          </Link>
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -1021,7 +1131,8 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                                   <ul>
                                     {subCategories.map((subCatName) => {
                                       if (
-                                        subCatName.category.name == shadowCat && i <= 4
+                                        subCatName.category.name == shadowCat &&
+                                        i <= 4
                                       ) {
                                         i++;
                                         return (
@@ -1059,13 +1170,13 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                           >
                             <div className="text-content py-14 ps-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                {t('menu.saveAmount')}
+                                {t("menu.saveAmount")}
                               </div>
                               <div className="heading6 mt-2">
-                                {t('menu.diveIntoSavings')}
+                                {t("menu.diveIntoSavings")}
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                {t('menu.startingAt')}{" "}
+                                {t("menu.startingAt")}{" "}
                                 <span className="text-red">$59.99</span>
                               </div>
                             </div>
@@ -1083,13 +1194,13 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                           >
                             <div className="text-content py-14 ps-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                {t('menu.saveAmount')}
+                                {t("menu.saveAmount")}
                               </div>
                               <div className="heading6 mt-2">
-                                {t('menu.offAccessories')}
+                                {t("menu.offAccessories")}
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                {t('menu.startingAt')}{" "}
+                                {t("menu.startingAt")}{" "}
                                 <span className="text-red">$59.99</span>
                               </div>
                             </div>
@@ -1113,7 +1224,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       href={"/shop"}
                       className="text-xl font-semibold flex items-center justify-between mt-5"
                     >
-                      {t('menu.shop')}
+                      {t("menu.shop")}
                     </a>
                   </li>
                   {/* <li
@@ -1462,8 +1573,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                           <li>
                             <Link
                               href="/pages/about"
-                              className={`link text-secondary duration-300 ${pathname === "/pages/about" ? "active" : ""
-                                }`}
+                              className={`link text-secondary duration-300 ${
+                                pathname === "/pages/about" ? "active" : ""
+                              }`}
                             >
                               {t("menu.pages.about")}
                             </Link>
@@ -1471,8 +1583,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                           <li>
                             <Link
                               href="/pages/contact"
-                              className={`link text-secondary duration-300 ${pathname === "/pages/contact" ? "active" : ""
-                                }`}
+                              className={`link text-secondary duration-300 ${
+                                pathname === "/pages/contact" ? "active" : ""
+                              }`}
                             >
                               {t("menu.mobile.contactUs")}
                             </Link>
@@ -1480,8 +1593,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                           <li>
                             <Link
                               href="/pages/store-list"
-                              className={`link text-secondary duration-300 ${pathname === "/pages/store-list" ? "active" : ""
-                                }`}
+                              className={`link text-secondary duration-300 ${
+                                pathname === "/pages/store-list" ? "active" : ""
+                              }`}
                             >
                               {t("menu.mobile.storeList")}
                             </Link>
@@ -1489,8 +1603,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                           <li>
                             <Link
                               href="/pages/faqs"
-                              className={`link text-secondary duration-300 ${pathname === "/pages/faqs" ? "active" : ""
-                                }`}
+                              className={`link text-secondary duration-300 ${
+                                pathname === "/pages/faqs" ? "active" : ""
+                              }`}
                             >
                               {t("menu.mobile.faqs")}
                             </Link>
@@ -1538,7 +1653,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
           <Link
             href={"/shop"}
             className="menu_bar-link flex flex-col items-center gap-1"
-            onClick={(e) => { e.stopPropagation() }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           >
             <Icon.MagnifyingGlass weight="bold" className="text-2xl" />
             <span

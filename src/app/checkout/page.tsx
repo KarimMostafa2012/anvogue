@@ -49,7 +49,9 @@ const Checkout = () => {
   const [openDetail, setOpenDetail] = useState<boolean | undefined>(false);
   const [newForm, setNewForm] = useState<boolean | undefined>(false);
   const [profile, setProfile] = useState<UserProfile>({});
-  const [activeAddress, setActiveAddress] = useState<string | null>("mainShipping");
+  const [activeAddress, setActiveAddress] = useState<string | null>(
+    "mainShipping"
+  );
 
   const { t } = useTranslation();
 
@@ -325,7 +327,7 @@ const Checkout = () => {
           house_num: selectedFormChilds[2].value,
           city: selectedFormChilds[1].value,
           zip_code: selectedFormChilds[3].value,
-          user: profile.id
+          user: profile.id,
         }),
       })
         .then((response) => {
@@ -335,6 +337,7 @@ const Checkout = () => {
               window.sessionStorage.removeItem("accessToken");
               window.localStorage.removeItem("refreshToken");
               window.sessionStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("loggedIn");
               window.location.href = "/login";
             }
           }
@@ -354,12 +357,13 @@ const Checkout = () => {
 
   return (
     <>
-      <TopNavOne
-        props="style-one bg-black"
-      />
+      <TopNavOne props="style-one bg-black" />
       <div id="header" className="relative w-full">
         <MenuOne props="bg-transparent" />
-        <Breadcrumb heading={t('checkout.title')} subHeading={t('checkout.subtitle')} />
+        <Breadcrumb
+          heading={t("checkout.title")}
+          subHeading={t("checkout.subtitle")}
+        />
       </div>
       <div className="cart-block md:py-20 py-10">
         <div className="container">
@@ -370,10 +374,10 @@ const Checkout = () => {
                   <div className="login bg-surface py-3 px-4 flex justify-between rounded-lg">
                     <div className="left flex items-center">
                       <span className="text-on-surface-variant1 pe-4">
-                        {t('checkout.login.noAccount')}{" "}
+                        {t("checkout.login.noAccount")}{" "}
                       </span>
                       <span className="text-button text-on-surface hover-underline cursor-pointer">
-                        <a href="/register">{t('checkout.login.signup')}</a>
+                        <a href="/register">{t("checkout.login.signup")}</a>
                       </span>
                     </div>
                     <div className="right">
@@ -388,7 +392,9 @@ const Checkout = () => {
                             className="border-line px-4 pt-3 pb-3 w-full rounded-lg"
                             id="username"
                             type="email"
-                            placeholder={t('checkout.login.usernamePlaceholder')}
+                            placeholder={t(
+                              "checkout.login.usernamePlaceholder"
+                            )}
                             required
                           />
                         </div>
@@ -397,14 +403,16 @@ const Checkout = () => {
                             className="border-line px-4 pt-3 pb-3 w-full rounded-lg"
                             id="password"
                             type="password"
-                            placeholder={t('checkout.login.passwordPlaceholder')}
+                            placeholder={t(
+                              "checkout.login.passwordPlaceholder"
+                            )}
                             required
                           />
                         </div>
                       </div>
                       <div className="block-button mt-3">
                         <button className="button-main button-blue-hover">
-                          {t('checkout.login.loginButton')}
+                          {t("checkout.login.loginButton")}
                         </button>
                       </div>
                     </form>
@@ -413,7 +421,9 @@ const Checkout = () => {
               ) : profile.verified ? (
                 <>
                   <div className="tab_address text-content w-full p-7 border border-line rounded-xl block">
-                    <div className="heading5 pb-3">{t('checkout.address.title')}</div>
+                    <div className="heading5 pb-3">
+                      {t("checkout.address.title")}
+                    </div>
                     <form id="mainForm" data-id="mainform">
                       <button
                         type="button"
@@ -422,10 +432,12 @@ const Checkout = () => {
                         }`}
                         onClick={() => handleActiveAddress("mainShipping")}
                       >
-                        <strong className="heading6">{t('checkout.address.mainAddress')}</strong>
+                        <strong className="heading6">
+                          {t("checkout.address.mainAddress")}
+                        </strong>
                         {activeAddress === "mainShipping" && (
                           <div className="ms-auto pe-2 text-success font-bold">
-                            {t('checkout.address.chosenAddress')}
+                            {t("checkout.address.chosenAddress")}
                             <input
                               data-id="mainform"
                               className="hidden"
@@ -439,11 +451,21 @@ const Checkout = () => {
                         <Icon.CaretDown className="text-2xl ic_down duration-300" />
                       </button>
 
-                      <div className={`form_address ${activeAddress === "mainShipping" ? "block" : "hidden"}`}>
+                      <div
+                        className={`form_address ${
+                          activeAddress === "mainShipping" ? "block" : "hidden"
+                        }`}
+                      >
                         <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
                           <div className="street">
-                            <label htmlFor="shippingStreet" className="caption1 capitalize">
-                              {t('checkout.address.streetName')} <span className="text-red">{t('checkout.address.required')}</span>
+                            <label
+                              htmlFor="shippingStreet"
+                              className="caption1 capitalize"
+                            >
+                              {t("checkout.address.streetName")}{" "}
+                              <span className="text-red">
+                                {t("checkout.address.required")}
+                              </span>
                             </label>
                             <input
                               className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -454,8 +476,14 @@ const Checkout = () => {
                             />
                           </div>
                           <div className="city">
-                            <label htmlFor="shippingCity" className="caption1 capitalize">
-                              {t('checkout.address.city')} <span className="text-red">{t('checkout.address.required')}</span>
+                            <label
+                              htmlFor="shippingCity"
+                              className="caption1 capitalize"
+                            >
+                              {t("checkout.address.city")}{" "}
+                              <span className="text-red">
+                                {t("checkout.address.required")}
+                              </span>
                             </label>
                             <input
                               className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -466,8 +494,14 @@ const Checkout = () => {
                             />
                           </div>
                           <div className="state">
-                            <label htmlFor="house_num" className="caption1 capitalize">
-                              {t('checkout.address.houseNumber')} <span className="text-red">{t('checkout.address.required')}</span>
+                            <label
+                              htmlFor="house_num"
+                              className="caption1 capitalize"
+                            >
+                              {t("checkout.address.houseNumber")}{" "}
+                              <span className="text-red">
+                                {t("checkout.address.required")}
+                              </span>
                             </label>
                             <input
                               className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -478,8 +512,14 @@ const Checkout = () => {
                             />
                           </div>
                           <div className="zip">
-                            <label htmlFor="shippingZip" className="caption1 capitalize">
-                              {t('checkout.address.zip')} <span className="text-red">{t('checkout.address.required')}</span>
+                            <label
+                              htmlFor="shippingZip"
+                              className="caption1 capitalize"
+                            >
+                              {t("checkout.address.zip")}{" "}
+                              <span className="text-red">
+                                {t("checkout.address.required")}
+                              </span>
                             </label>
                             <input
                               className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -502,11 +542,11 @@ const Checkout = () => {
                           onClick={() => handleActiveAddress("shipping" + i)}
                         >
                           <strong className="heading6">
-                            {t('checkout.address.mainAddress')} {i + 2}
+                            {t("checkout.address.mainAddress")} {i + 2}
                           </strong>
                           {activeAddress === "shipping" + i && (
                             <div className="ms-auto pe-2 text-success font-bold">
-                              {t('checkout.address.chosenAddress')}
+                              {t("checkout.address.chosenAddress")}
                               <input
                                 data-id={address.id}
                                 className="hidden"
@@ -526,11 +566,23 @@ const Checkout = () => {
                             e.preventDefault();
                           }}
                         >
-                          <div className={`form_address ${activeAddress === "shipping" + i ? "block" : "hidden"}`}>
+                          <div
+                            className={`form_address ${
+                              activeAddress === "shipping" + i
+                                ? "block"
+                                : "hidden"
+                            }`}
+                          >
                             <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
                               <div className="street">
-                                <label htmlFor={"shippingStreet" + i} className="caption1 capitalize">
-                                  {t('checkout.address.streetName')} <span className="text-red">{t('checkout.address.required')}</span>
+                                <label
+                                  htmlFor={"shippingStreet" + i}
+                                  className="caption1 capitalize"
+                                >
+                                  {t("checkout.address.streetName")}{" "}
+                                  <span className="text-red">
+                                    {t("checkout.address.required")}
+                                  </span>
                                 </label>
                                 <input
                                   className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -541,8 +593,14 @@ const Checkout = () => {
                                 />
                               </div>
                               <div className="city">
-                                <label htmlFor={"shippingCity" + i} className="caption1 capitalize">
-                                  {t('checkout.address.city')} <span className="text-red">{t('checkout.address.required')}</span>
+                                <label
+                                  htmlFor={"shippingCity" + i}
+                                  className="caption1 capitalize"
+                                >
+                                  {t("checkout.address.city")}{" "}
+                                  <span className="text-red">
+                                    {t("checkout.address.required")}
+                                  </span>
                                 </label>
                                 <input
                                   className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -553,8 +611,14 @@ const Checkout = () => {
                                 />
                               </div>
                               <div className="state">
-                                <label htmlFor={"house_num" + i} className="caption1 capitalize">
-                                  {t('checkout.address.houseNumber')} <span className="text-red">{t('checkout.address.required')}</span>
+                                <label
+                                  htmlFor={"house_num" + i}
+                                  className="caption1 capitalize"
+                                >
+                                  {t("checkout.address.houseNumber")}{" "}
+                                  <span className="text-red">
+                                    {t("checkout.address.required")}
+                                  </span>
                                 </label>
                                 <input
                                   className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -565,8 +629,14 @@ const Checkout = () => {
                                 />
                               </div>
                               <div className="zip">
-                                <label htmlFor={"shippingZip" + i} className="caption1 capitalize">
-                                  {t('checkout.address.zip')} <span className="text-red">{t('checkout.address.required')}</span>
+                                <label
+                                  htmlFor={"shippingZip" + i}
+                                  className="caption1 capitalize"
+                                >
+                                  {t("checkout.address.zip")}{" "}
+                                  <span className="text-red">
+                                    {t("checkout.address.required")}
+                                  </span>
                                 </label>
                                 <input
                                   className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -589,11 +659,21 @@ const Checkout = () => {
                           addAddress(e.currentTarget);
                         }}
                       >
-                        <div className={`form_address ${newForm ? "block" : "hidden"}`}>
+                        <div
+                          className={`form_address ${
+                            newForm ? "block" : "hidden"
+                          }`}
+                        >
                           <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
                             <div className="street">
-                              <label htmlFor={"newshippingStreet"} className="caption1 capitalize">
-                                {t('checkout.address.streetName')} <span className="text-red">{t('checkout.address.required')}</span>
+                              <label
+                                htmlFor={"newshippingStreet"}
+                                className="caption1 capitalize"
+                              >
+                                {t("checkout.address.streetName")}{" "}
+                                <span className="text-red">
+                                  {t("checkout.address.required")}
+                                </span>
                               </label>
                               <input
                                 className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -603,8 +683,14 @@ const Checkout = () => {
                               />
                             </div>
                             <div className="city">
-                              <label htmlFor={"newshippingCity"} className="caption1 capitalize">
-                                {t('checkout.address.city')} <span className="text-red">{t('checkout.address.required')}</span>
+                              <label
+                                htmlFor={"newshippingCity"}
+                                className="caption1 capitalize"
+                              >
+                                {t("checkout.address.city")}{" "}
+                                <span className="text-red">
+                                  {t("checkout.address.required")}
+                                </span>
                               </label>
                               <input
                                 className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -614,8 +700,14 @@ const Checkout = () => {
                               />
                             </div>
                             <div className="state">
-                              <label htmlFor={"newhouse_num"} className="caption1 capitalize">
-                                {t('checkout.address.houseNumber')} <span className="text-red">{t('checkout.address.required')}</span>
+                              <label
+                                htmlFor={"newhouse_num"}
+                                className="caption1 capitalize"
+                              >
+                                {t("checkout.address.houseNumber")}{" "}
+                                <span className="text-red">
+                                  {t("checkout.address.required")}
+                                </span>
                               </label>
                               <input
                                 className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -625,8 +717,14 @@ const Checkout = () => {
                               />
                             </div>
                             <div className="zip">
-                              <label htmlFor={"newshippingZip"} className="caption1 capitalize">
-                                {t('checkout.address.zip')} <span className="text-red">{t('checkout.address.required')}</span>
+                              <label
+                                htmlFor={"newshippingZip"}
+                                className="caption1 capitalize"
+                              >
+                                {t("checkout.address.zip")}{" "}
+                                <span className="text-red">
+                                  {t("checkout.address.required")}
+                                </span>
                               </label>
                               <input
                                 className="border-line mt-2 px-4 py-3 w-full rounded-lg"
@@ -640,7 +738,7 @@ const Checkout = () => {
                             type="submit"
                             className="py-[8px] px-[32px] !border-success rounded-lg !border-[1px] my-[12px] ms-auto block bg-success hover:bg-white text-white font-medium hover:text-success duration-300"
                           >
-                            {t('checkout.address.save')}
+                            {t("checkout.address.save")}
                           </button>
                         </div>
                       </form>
@@ -650,7 +748,7 @@ const Checkout = () => {
                         }}
                         className="button-main"
                       >
-                        {t('checkout.address.updateAddress')}
+                        {t("checkout.address.updateAddress")}
                       </button>
                       <button
                         onClick={() => {
@@ -658,7 +756,9 @@ const Checkout = () => {
                         }}
                         className="ms-4 button-main"
                       >
-                        {!newForm ? t('checkout.address.addAddress') : t('checkout.address.removeAddress')}
+                        {!newForm
+                          ? t("checkout.address.addAddress")
+                          : t("checkout.address.removeAddress")}
                       </button>
                     </div>
                   </div>
@@ -666,7 +766,7 @@ const Checkout = () => {
               ) : (
                 <div className="left md:w-2/3 w-full ps-2.5 items-center flex flex-col mt-[15%]">
                   <div className="text-[24px] text-center font-medium">
-                    {t('checkout.activation.title')}
+                    {t("checkout.activation.title")}
                   </div>
                   <div className="flex justify-center items-center mt-[32px]">
                     <Link
@@ -677,7 +777,7 @@ const Checkout = () => {
                         activate();
                       }}
                     >
-                      {t('checkout.activation.activate')}
+                      {t("checkout.activation.activate")}
                     </Link>
                   </div>
                 </div>
@@ -685,13 +785,18 @@ const Checkout = () => {
             </div>
             <div className="right w-5/12">
               <div className="checkout-block">
-                <div className="heading5 pb-3">{t('checkout.order.title')}</div>
+                <div className="heading5 pb-3">{t("checkout.order.title")}</div>
                 <div className="list-product-checkout">
                   {cartState.cartArray.length < 1 ? (
-                    <p className="text-button pt-3">{t('checkout.order.noProducts')}</p>
+                    <p className="text-button pt-3">
+                      {t("checkout.order.noProducts")}
+                    </p>
                   ) : (
                     cartState.cartArray.map((product) => (
-                      <div key={product.id} className="item flex items-center justify-between w-full pb-5 border-b border-line gap-6 mt-5">
+                      <div
+                        key={product.id}
+                        className="item flex items-center justify-between w-full pb-5 border-b border-line gap-6 mt-5"
+                      >
                         <div className="bg-img w-[100px] aspect-square flex-shrink-0 rounded-lg overflow-hidden">
                           <Image
                             src={product.images[0].img}
@@ -713,9 +818,7 @@ const Checkout = () => {
                             </div>
                           </div>
                           <div className="text-title">
-                            <span className="quantity">
-                              {product.quantity}
-                            </span>
+                            <span className="quantity">{product.quantity}</span>
                             <span className="px-1">x</span>
                             <span>
                               $
@@ -730,20 +833,24 @@ const Checkout = () => {
                   )}
                 </div>
                 <div className="discount-block py-5 flex justify-between border-b border-line">
-                  <div className="text-title">{t('checkout.order.discounts')}</div>
+                  <div className="text-title">
+                    {t("checkout.order.discounts")}
+                  </div>
                   <div className="text-title">
                     -$
                     <span className="discount">{discount ? discount : 0}</span>
                   </div>
                 </div>
                 <div className="ship-block py-5 flex justify-between border-b border-line">
-                  <div className="text-title">{t('checkout.order.shipping')}</div>
+                  <div className="text-title">
+                    {t("checkout.order.shipping")}
+                  </div>
                   <div className="text-title">
                     {Number(ship) === 0 ? "Free" : `$${ship}`}
                   </div>
                 </div>
                 <div className="total-cart-block pt-5 flex justify-between">
-                  <div className="heading5">{t('checkout.order.total')}</div>
+                  <div className="heading5">{t("checkout.order.total")}</div>
                   <div className="heading5 total-cart">
                     ${totalCart - Number(discount) + Number(ship)}
                   </div>
@@ -760,7 +867,7 @@ const Checkout = () => {
                 }}
                 className="button-main mt-6"
               >
-                {t('checkout.order.next')}
+                {t("checkout.order.next")}
               </button>
             </div>
           </div>

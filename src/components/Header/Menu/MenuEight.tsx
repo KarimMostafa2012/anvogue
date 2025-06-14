@@ -17,11 +17,11 @@ import { useModalSearchContext } from "@/context/ModalSearchContext";
 import { useCart } from "@/context/CartContext";
 import { useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { getAllProducts } from '@/redux/slices/productSlice'
+import { getAllProducts } from "@/redux/slices/productSlice";
 
 type Category = {
   id: number;
@@ -30,7 +30,6 @@ type Category = {
     icon: string;
   };
   name: string;
-
 };
 
 type CategoryOfSub = {
@@ -46,8 +45,24 @@ type SubCategory = {
   name: string;
 };
 
-const useAppDispatch = () => useDispatch<AppDispatch>();
+interface UserProfile {
+  first_name?: string;
+  last_name?: string;
+  phone_number?: string;
+  balance?: string;
+  email?: string;
+  verified?: boolean;
+  city?: string;
+  house_num?: string;
+  street_name?: string;
+  id?: number | string;
+  zip_code?: string;
+  addresses?: [];
+  profile_img?: string;
+  // Add other expected properties here
+}
 
+const useAppDispatch = () => useDispatch<AppDispatch>();
 
 const MenuEight = () => {
   const pathname = usePathname();
@@ -66,10 +81,13 @@ const MenuEight = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [profile, setProfile] = useState<UserProfile>({});
   let shadowCat = "";
   const products = useSelector((state: RootState) => state.products.products);
 
   const { t } = useTranslation();
+  const [fixedHeader, setFixedHeader] = useState(false);
+  const [lastScrollPosition, setLastScrollPosition] = useState(0);
 
   const currentLanguage = useSelector((state: RootState) => state.language);
 
@@ -78,8 +96,8 @@ const MenuEight = () => {
       try {
         const params = {
           has_offer: true,
-          lang: currentLanguage
-        }
+          lang: currentLanguage,
+        };
         await dispatch(getAllProducts({ params }));
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -88,7 +106,6 @@ const MenuEight = () => {
 
     fetchData();
   }, [dispatch, currentLanguage, t]);
-
 
   useEffect(() => {
     if (searchParams.get("uid") && searchParams.get("token")) {
@@ -117,12 +134,15 @@ const MenuEight = () => {
           console.error("Error:", error);
         });
     }
-    fetch(`https://api.malalshammobel.com/products/category/?lang=${currentLanguage}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://api.malalshammobel.com/products/category/?lang=${currentLanguage}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           console.log(response);
@@ -141,13 +161,16 @@ const MenuEight = () => {
   }, [currentLanguage]);
 
   useEffect(() => {
-    const currentLang = localStorage.getItem('language') || 'en';
-    fetch(`https://api.malalshammobel.com/products/subcategory/?lang=${currentLanguage}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    const currentLang = localStorage.getItem("language") || "en";
+    fetch(
+      `https://api.malalshammobel.com/products/subcategory/?lang=${currentLanguage}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           console.log(response);
@@ -168,12 +191,18 @@ const MenuEight = () => {
   useEffect(() => {
     if (window.sessionStorage.getItem("loggedIn") == "true") {
       setLoggedIn(true);
-    } else if (window.localStorage.getItem("accessToken") || window.sessionStorage.getItem("accessToken")) {
+    } else if (
+      window.localStorage.getItem("accessToken") ||
+      window.sessionStorage.getItem("accessToken")
+    ) {
       // auth/api/users/me/
       fetch("https://api.malalshammobel.com/auth/api/users/me/", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("accessToken") || window.sessionStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${
+            window.localStorage.getItem("accessToken") ||
+            window.sessionStorage.getItem("accessToken")
+          }`,
           "Content-Type": "application/json",
         },
       })
@@ -187,7 +216,9 @@ const MenuEight = () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                refresh: window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken"),
+                refresh:
+                  window.localStorage.getItem("refreshToken") ||
+                  window.sessionStorage.getItem("refreshToken"),
               }),
             })
               .then((response) => {
@@ -210,6 +241,7 @@ const MenuEight = () => {
               });
           } else {
             window.sessionStorage.setItem("loggedIn", "true");
+            console.log(response);
             setLoggedIn(true);
           }
           return response.json();
@@ -220,14 +252,19 @@ const MenuEight = () => {
         .catch((error) => {
           console.error("Error:", error);
         });
-    } else if (window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken")) {
+    } else if (
+      window.localStorage.getItem("refreshToken") ||
+      window.sessionStorage.getItem("refreshToken")
+    ) {
       fetch("https://api.malalshammobel.com/auth/api/token/refresh/", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          refresh: window.localStorage.getItem("refreshToken") || window.sessionStorage.getItem("refreshToken"),
+          refresh:
+            window.localStorage.getItem("refreshToken") ||
+            window.sessionStorage.getItem("refreshToken"),
         }),
       })
         .then((response) => {
@@ -251,6 +288,53 @@ const MenuEight = () => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log("test");
+    if (
+      loggedIn ||
+      window.sessionStorage.getItem("loggedIn") == "true" ||
+      window.localStorage.getItem("accessToken") ||
+      window.sessionStorage.getItem("accessToken")
+    ) {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch(
+            "https://api.malalshammobel.com/auth/api/users/me/",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${
+                  window.localStorage.getItem("accessToken")
+                    ? window.localStorage.getItem("accessToken")
+                    : window.sessionStorage.getItem("accessToken")
+                }`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            if (Number(response.status) == 401) {
+              window.localStorage.removeItem("accessToken");
+              window.sessionStorage.removeItem("accessToken");
+              window.localStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("refreshToken");
+              window.sessionStorage.removeItem("loggedIn");
+            }
+          }
+
+          const data = await response.json();
+          console.log(data);
+          setProfile(data);
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
+      };
+      fetchProfile();
+    }
+    console.log(profile);
+  }, []);
+
   const handleSearch = (value: string) => {
     router.push(`/shop?product_name=${value}`);
     setSearchKeyword("");
@@ -259,9 +343,6 @@ const MenuEight = () => {
   const handleOpenSubNavMobile = (index: number) => {
     setOpenSubNavMobile(openSubNavMobile === index ? null : index);
   };
-
-  const [fixedHeader, setFixedHeader] = useState(false);
-  const [lastScrollPosition, setLastScrollPosition] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -290,8 +371,9 @@ const MenuEight = () => {
   return (
     <>
       <div
-        className={`header-menu style-eight ${fixedHeader ? " fixed" : "relative"
-          } bg-white w-full md:h-[74px] h-[56px]`}
+        className={`header-menu style-eight ${
+          fixedHeader ? " fixed" : "relative"
+        } bg-white w-full md:h-[74px] h-[56px]`}
       >
         <div className="container mx-auto h-full">
           <div className="header-main flex items-center justify-between h-full">
@@ -309,7 +391,7 @@ const MenuEight = () => {
                 <input
                   type="text"
                   className="search-input h-full px-4 w-full border border-line"
-                  placeholder={t('menu.searchPlaceholder')}
+                  placeholder={t("menu.searchPlaceholder")}
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
                   onKeyDown={(e) =>
@@ -323,7 +405,7 @@ const MenuEight = () => {
                     handleSearch(searchKeyword);
                   }}
                 >
-                  {t('menu.search')}
+                  {t("menu.search")}
                 </button>
               </div>
             </div>
@@ -331,7 +413,7 @@ const MenuEight = () => {
               <div className="list-action flex items-center gap-4">
                 <div className="user-icon flex items-center justify-center cursor-pointer">
                   {!loggedIn ||
-                    window.sessionStorage.getItem("loggedIn") != "true" ? (
+                  window.sessionStorage.getItem("loggedIn") != "true" ? (
                     <>
                       <Icon.User
                         size={24}
@@ -340,24 +422,62 @@ const MenuEight = () => {
                       />
                       <div
                         className={`login-popup absolute top-[74px] w-[320px] p-7 rounded-xl bg-white box-shadow-sm 
-                                                        ${openLoginPopup
-                            ? "open"
-                            : ""
-                          }`}
+                                                        ${
+                                                          openLoginPopup
+                                                            ? "open"
+                                                            : ""
+                                                        }`}
                       >
                         <Link
                           href={"/login"}
                           className="button-main w-full text-center mt-4"
                         >
-                          {t('menu.login')}
+                          {t("menu.login")}
                         </Link>
                         <div className="text-secondary text-center mt-3">
-                          {t('menu.noAccount')}
+                          {t("menu.noAccount")}
                           <Link
                             href={"/register"}
                             className="text-black ps-1 hover:underline"
                           >
-                            {t('menu.register')}
+                            {t("menu.register")}
+                          </Link>
+                        </div>
+                      </div>
+                    </>
+                  ) : profile.verified ? (
+                    <>
+                      <Icon.User
+                        size={24}
+                        color="black"
+                        onClick={handleLoginPopup}
+                      />
+                      <div
+                        className={`login-popup absolute top-[74px] w-[320px] p-7 rounded-xl bg-white box-shadow-sm 
+                                                        ${
+                                                          openLoginPopup
+                                                            ? "open"
+                                                            : ""
+                                                        }`}
+                      >
+                        <Link
+                          href={"/"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.location.href =
+                              "https://dashboard.malalshammobel.com/dashboard";
+                          }}
+                          className="button-main w-full text-center mt-4"
+                        >
+                          Dashboard
+                        </Link>
+                        <div className="text-secondary text-center mt-3">
+                          {t("menu.noAccount")}
+                          <Link
+                            href={"/register"}
+                            className="text-black ps-1 hover:underline"
+                          >
+                            {t("menu.register")}
                           </Link>
                         </div>
                       </div>
@@ -403,7 +523,7 @@ const MenuEight = () => {
                   onClick={handleSubMenuDepartment}
                 >
                   <div className="text-button-uppercase text-white whitespace-nowrap">
-                    {t('menu.department')}
+                    {t("menu.department")}
                   </div>
                   <Icon.CaretDown
                     color="#ffffff"
@@ -411,8 +531,9 @@ const MenuEight = () => {
                   />
                 </div>
                 <div
-                  className={`sub-menu-department absolute top-[44px] left-0 right-0 h-max bg-white rounded-b-2xl ${openSubMenuDepartment ? "open" : ""
-                    }`}
+                  className={`sub-menu-department absolute top-[44px] left-0 right-0 h-max bg-white rounded-b-2xl ${
+                    openSubMenuDepartment ? "open" : ""
+                  }`}
                 >
                   {categories?.map((cat) => {
                     return (
@@ -434,12 +555,13 @@ const MenuEight = () => {
                     <Link
                       href="#!"
                       className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 
-                                            ${pathname.includes("/")
-                          ? "active"
-                          : ""
-                        }`}
+                                            ${
+                                              pathname.includes("/")
+                                                ? "active"
+                                                : ""
+                                            }`}
                     >
-                      {t('menu.home')}
+                      {t("menu.home")}
                     </Link>
                   </li>
                   <li className="h-full">
@@ -447,7 +569,7 @@ const MenuEight = () => {
                       href="#!"
                       className="text-button-uppercase duration-300 h-full flex items-center justify-center"
                     >
-                      {t('menu.mobile.features')}
+                      {t("menu.mobile.features")}
                     </Link>
                     <div className="mega-menu absolute top-[44px] left-0 bg-white w-screen">
                       <div className="container">
@@ -471,7 +593,7 @@ const MenuEight = () => {
                                       {subCategories.map((subCatName, k) => {
                                         if (
                                           subCatName.category.name ==
-                                          shadowCat &&
+                                            shadowCat &&
                                           i <= 4
                                         ) {
                                           i++;
@@ -480,8 +602,7 @@ const MenuEight = () => {
                                               <div
                                                 onClick={() =>
                                                   handleSubCategoryClick(
-                                                    subCatName
-                                                      .name
+                                                    subCatName.name
                                                   )
                                                 }
                                                 className={`link text-secondary duration-300 cursor-pointer`}
@@ -513,40 +634,40 @@ const MenuEight = () => {
                             })}
                           </div>
                           <div className="banner-ads-block ps-2.5 basis-1/3">
-                            {
-                              (products.length > 0) && (
-                                products.slice(0, 2).map((prod, i) => {
-                                  return (
-                                    <div
-                                      key={i}
-                                      className={"banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " + (i == 1 ? "mt-4" : "")}
-                                    >
-                                      <div className="text-content py-14 ps-8 relative z-[1]">
-                                        <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                          Save ${prod.offer_value}
-                                        </div>
-                                        <div className="heading6 mt-2">
-                                          {prod.name}
-                                        </div>
-                                        <div className="body1 mt-3 text-secondary">
-                                          Starting at{" "}
-                                          <span className="text-red">${prod.new_price}</span>
-                                        </div>
+                            {products.length > 0 &&
+                              products.slice(0, 2).map((prod, i) => {
+                                return (
+                                  <div
+                                    key={i}
+                                    className={
+                                      "banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " +
+                                      (i == 1 ? "mt-4" : "")
+                                    }
+                                  >
+                                    <div className="text-content py-14 ps-8 relative z-[1]">
+                                      <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
+                                        Save ${prod.offer_value}
                                       </div>
-                                      <Image
-                                        src={prod.images[0].img}
-                                        width={200}
-                                        height={100}
-                                        alt={prod.name}
-                                        className="basis-1/3 absolute ltr:right-0 rtl:left-0 top-0 duration-700"
-                                      />
+                                      <div className="heading6 mt-2">
+                                        {prod.name}
+                                      </div>
+                                      <div className="body1 mt-3 text-secondary">
+                                        Starting at{" "}
+                                        <span className="text-red">
+                                          ${prod.new_price}
+                                        </span>
+                                      </div>
                                     </div>
-
-                                  )
-                                })
-
-                              )
-                            }
+                                    <Image
+                                      src={prod.images[0].img}
+                                      width={200}
+                                      height={100}
+                                      alt={prod.name}
+                                      className="basis-1/3 absolute ltr:right-0 rtl:left-0 top-0 duration-700"
+                                    />
+                                  </div>
+                                );
+                              })}
                           </div>
                         </div>
                       </div>
@@ -620,8 +741,9 @@ const MenuEight = () => {
                   <li className="h-full relative">
                     <Link
                       href="#!"
-                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes("/pages") ? "active" : ""
-                        }`}
+                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${
+                        pathname.includes("/pages") ? "active" : ""
+                      }`}
                     >
                       {t("menu.mobile.aboutUs")}
                     </Link>
@@ -630,8 +752,9 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/about"
-                            className={`text-secondary duration-300 ${pathname === "/pages/about" ? "active" : ""
-                              }`}
+                            className={`text-secondary duration-300 ${
+                              pathname === "/pages/about" ? "active" : ""
+                            }`}
                           >
                             {t("menu.mobile.aboutUs")}
                           </Link>
@@ -639,8 +762,9 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/contact"
-                            className={`text-secondary duration-300 ${pathname === "/pages/contact" ? "active" : ""
-                              }`}
+                            className={`text-secondary duration-300 ${
+                              pathname === "/pages/contact" ? "active" : ""
+                            }`}
                           >
                             {t("menu.mobile.contactUs")}
                           </Link>
@@ -648,8 +772,9 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/store-list"
-                            className={`text-secondary duration-300 ${pathname === "/pages/store-list" ? "active" : ""
-                              }`}
+                            className={`text-secondary duration-300 ${
+                              pathname === "/pages/store-list" ? "active" : ""
+                            }`}
                           >
                             {t("menu.mobile.storeList")}
                           </Link>
@@ -657,8 +782,9 @@ const MenuEight = () => {
                         <li>
                           <Link
                             href="/pages/faqs"
-                            className={`text-secondary duration-300 ${pathname === "/pages/faqs" ? "active" : ""
-                              }`}
+                            className={`text-secondary duration-300 ${
+                              pathname === "/pages/faqs" ? "active" : ""
+                            }`}
                           >
                             {t("menu.mobile.faqs")}
                           </Link>
@@ -775,7 +901,8 @@ const MenuEight = () => {
                                   <ul>
                                     {subCategories.map((subCatName) => {
                                       if (
-                                        subCatName.category.name == shadowCat && i <= 4
+                                        subCatName.category.name == shadowCat &&
+                                        i <= 4
                                       ) {
                                         i++;
                                         return (
@@ -813,13 +940,13 @@ const MenuEight = () => {
                           >
                             <div className="text-content py-14 ps-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                {t('menu.saveAmount')}
+                                {t("menu.saveAmount")}
                               </div>
                               <div className="heading6 mt-2">
-                                {t('menu.diveIntoSavings')}
+                                {t("menu.diveIntoSavings")}
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                {t('menu.startingAt')}{" "}
+                                {t("menu.startingAt")}{" "}
                                 <span className="text-red">$59.99</span>
                               </div>
                             </div>
@@ -837,13 +964,13 @@ const MenuEight = () => {
                           >
                             <div className="text-content py-14 ps-8 relative z-[1]">
                               <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                {t('menu.saveAmount')}
+                                {t("menu.saveAmount")}
                               </div>
                               <div className="heading6 mt-2">
-                                {t('menu.offAccessories')}
+                                {t("menu.offAccessories")}
                               </div>
                               <div className="body1 mt-3 text-secondary">
-                                {t('menu.startingAt')}{" "}
+                                {t("menu.startingAt")}{" "}
                                 <span className="text-red">$59.99</span>
                               </div>
                             </div>
@@ -867,7 +994,7 @@ const MenuEight = () => {
                       href={"/shop"}
                       className="text-xl font-semibold flex items-center justify-between mt-5"
                     >
-                      {t('menu.shop')}
+                      {t("menu.shop")}
                     </a>
                   </li>
                   {/* <li
@@ -1216,8 +1343,9 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/about"
-                              className={`link text-secondary duration-300 ${pathname === "/pages/about" ? "active" : ""
-                                }`}
+                              className={`link text-secondary duration-300 ${
+                                pathname === "/pages/about" ? "active" : ""
+                              }`}
                             >
                               {t("menu.mobile.aboutUs")}
                             </Link>
@@ -1225,8 +1353,9 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/contact"
-                              className={`link text-secondary duration-300 ${pathname === "/pages/contact" ? "active" : ""
-                                }`}
+                              className={`link text-secondary duration-300 ${
+                                pathname === "/pages/contact" ? "active" : ""
+                              }`}
                             >
                               {t("menu.mobile.contactUs")}
                             </Link>
@@ -1234,8 +1363,9 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/store-list"
-                              className={`link text-secondary duration-300 ${pathname === "/pages/store-list" ? "active" : ""
-                                }`}
+                              className={`link text-secondary duration-300 ${
+                                pathname === "/pages/store-list" ? "active" : ""
+                              }`}
                             >
                               {t("menu.mobile.storeList")}
                             </Link>
@@ -1243,8 +1373,9 @@ const MenuEight = () => {
                           <li>
                             <Link
                               href="/pages/faqs"
-                              className={`link text-secondary duration-300 ${pathname === "/pages/faqs" ? "active" : ""
-                                }`}
+                              className={`link text-secondary duration-300 ${
+                                pathname === "/pages/faqs" ? "active" : ""
+                              }`}
                             >
                               {t("menu.mobile.faqs")}
                             </Link>
@@ -1292,7 +1423,9 @@ const MenuEight = () => {
           <Link
             href={"/shop"}
             className="menu_bar-link flex flex-col items-center gap-1"
-            onClick={(e) => { e.stopPropagation() }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           >
             <Icon.MagnifyingGlass weight="bold" className="text-2xl" />
             <span

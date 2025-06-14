@@ -199,7 +199,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           window.sessionStorage.removeItem("accessToken");
           window.localStorage.removeItem("refreshToken");
           window.sessionStorage.removeItem("refreshToken");
-          window.location.href = "/login";
         }
         throw new Error("Failed to add item to cart");
       }
@@ -264,7 +263,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           window.sessionStorage.removeItem("accessToken");
           window.localStorage.removeItem("refreshToken");
           window.sessionStorage.removeItem("refreshToken");
-          window.location.href = "/login";
         }
         throw new Error("Failed to remove item from cart");
       }
@@ -323,7 +321,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           window.sessionStorage.removeItem("accessToken");
           window.localStorage.removeItem("refreshToken");
           window.sessionStorage.removeItem("refreshToken");
-          window.location.href = "/login";
+          window.sessionStorage.removeItem("loggedIn");
         }
         throw new Error("Failed to update cart item");
       }
