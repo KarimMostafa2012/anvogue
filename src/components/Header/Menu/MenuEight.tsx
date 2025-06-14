@@ -469,15 +469,14 @@ const MenuEight = () => {
                           }}
                           className="button-main w-full text-center mt-4"
                         >
-                          Dashboard
+                          {t("menu.login")}
                         </Link>
                         <div className="text-secondary text-center mt-3">
-                          {t("menu.noAccount")}
                           <Link
-                            href={"/register"}
+                            href={"/my-account"}
                             className="text-black ps-1 hover:underline"
                           >
-                            {t("menu.register")}
+                            Account
                           </Link>
                         </div>
                       </div>

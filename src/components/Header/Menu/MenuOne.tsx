@@ -1003,12 +1003,11 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                           Dashboard
                         </Link>
                         <div className="text-secondary text-center mt-3">
-                          {t("menu.noAccount")}
                           <Link
-                            href={"/register"}
+                            href={"/my-account"}
                             className="text-black ps-1 hover:underline"
                           >
-                            {t("menu.register")}
+                            Account
                           </Link>
                         </div>
                       </div>
