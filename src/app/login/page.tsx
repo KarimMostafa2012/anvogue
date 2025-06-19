@@ -28,7 +28,7 @@ const Login = () => {
     };
 
 
-    fetch(`https://api.malalshammobel.com/auth/api/token/?lang=${currentLanguage}`, {
+    fetch(`https://api.malalshammobel.com/auth/api/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

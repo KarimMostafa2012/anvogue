@@ -90,6 +90,92 @@ const MenuEight = () => {
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
 
   const currentLanguage = useSelector((state: RootState) => state.language);
+  const [status, setStatus] = useState("Opening dashboard...");
+
+  const goDash = () => {
+    let targetWindow: Window | null = null;
+    let checkInterval: ReturnType<typeof setInterval> | null = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    // Listen for ready signal from dashboard
+    const handleMessage = (event: MessageEvent) => {
+      if (
+        event.origin === "https://dashboard.malalshammobel.com" &&
+        event.data.type === "DASHBOARD_READY"
+      ) {
+        setStatus("Dashboard ready - sending data...");
+        sendData();
+        if (checkInterval) clearInterval(checkInterval);
+        if (timeoutId) clearTimeout(timeoutId);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    const sendData = () => {
+      try {
+        const data = { ...localStorage };
+        if (targetWindow) {
+          targetWindow.postMessage(
+            {
+              type: "CROSS_DOMAIN_STORAGE",
+              payload: data,
+              timestamp: Date.now(),
+            },
+            "https://dashboard.malalshammobel.com"
+          );
+          setStatus("Data sent successfully!");
+        }
+      } catch (error: any) {
+        setStatus("Failed to send data: " + error.message);
+      }
+    };
+
+    const openTargetWindow = () => {
+      try {
+        targetWindow = window.open("https://dashboard.malalshammobel.com");
+        if (!targetWindow) {
+          setStatus("Error: Popup was blocked. Please allow popups.");
+          return;
+        }
+
+        // Start checking for window readiness
+        checkInterval = setInterval(() => {
+          if (!targetWindow || targetWindow.closed) {
+            setStatus("Error: Dashboard window was closed");
+            cleanup();
+            return;
+          }
+
+          try {
+            if (targetWindow.location.href !== "about:blank") {
+              setStatus("Dashboard loaded - waiting for ready signal...");
+            }
+          } catch (e) {
+            // Still loading, ignore
+          }
+        }, 200);
+
+        // Extended timeout (10 seconds)
+        timeoutId = setTimeout(() => {
+          setStatus("Error: Dashboard took too long to load");
+          cleanup();
+        }, 10000);
+      } catch (error: any) {
+        setStatus("Error: " + error.message);
+      }
+    };
+
+    const cleanup = () => {
+      if (checkInterval) clearInterval(checkInterval);
+      if (timeoutId) clearTimeout(timeoutId);
+      window.removeEventListener("message", handleMessage);
+    };
+
+    openTargetWindow();
+
+    return cleanup;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -464,8 +550,7 @@ const MenuEight = () => {
                           href={"/"}
                           onClick={(e) => {
                             e.preventDefault();
-                            window.location.href =
-                              "https://dashboard.malalshammobel.com/dashboard";
+                            goDash();
                           }}
                           className="button-main w-full text-center mt-4"
                         >
