@@ -610,17 +610,17 @@
         }
     }
 
-    .top-overview {
-        .rating.black-start {
-            .rate {
-                svg {
-                    path {
-                        fill: var(--black);
-                    }
-                }
-            }
-        }
-    }
+    // .top-overview {
+    //     .rating.black-start {
+    //         .rate {
+    //             svg {
+    //                 path {
+    //                     fill: var(--black);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     &.sale {
         .featured-product {

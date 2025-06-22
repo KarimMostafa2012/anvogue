@@ -59,6 +59,7 @@ interface UserProfile {
   zip_code?: string;
   addresses?: [];
   profile_img?: string;
+  is_superuser?: boolean;
   // Add other expected properties here
 }
 
@@ -470,7 +471,9 @@ const MenuEight = () => {
               <i className="icon-category text-2xl"></i>
             </div>
             <Link href={"/"} className="flex items-center">
-              <div className="heading4">Mal Al Sham Furniture</div>
+              <div className="heading4">
+                <img src="/images/logo.png" className="h-16" alt="" />
+              </div>
             </Link>
             <div className="form-search w-2/3 ps-8 flex items-center h-[44px] max-lg:hidden">
               <div className="w-full flex items-center h-full">
@@ -531,7 +534,7 @@ const MenuEight = () => {
                         </div>
                       </div>
                     </>
-                  ) : profile.verified ? (
+                  ) : profile.is_superuser ? (
                     <>
                       <Icon.User
                         size={24}
@@ -624,7 +627,7 @@ const MenuEight = () => {
                       <div key={cat.id} className="item block">
                         <Link
                           href={"/shop/?category=" + cat.name}
-                          className="py-1.5 whitespace-nowrap inline-block"
+                          className="py-1.5 inline-block"
                         >
                           {cat.name}
                         </Link>
@@ -913,7 +916,7 @@ const MenuEight = () => {
                   href={"/"}
                   className="logo text-3xl font-semibold text-center"
                 >
-                  Mal Al Sham Furniture
+                  <img src="/images/logo.png" className="h-16" alt="" />
                 </Link>
               </div>
               <div className="form-search relative mt-2">

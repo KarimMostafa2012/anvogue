@@ -347,6 +347,8 @@ const Checkout = () => {
           console.log("Response data:", data);
           if (data.payment_status == "Pending") {
             pyamentEndPoint(data.id);
+          }else if(data.payment_status == "Paid"){
+            window.location.href = "/payment/success"
           }
         })
         .catch((error) => {

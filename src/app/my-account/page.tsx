@@ -12,8 +12,8 @@ import { useSearchParams } from "next/navigation";
 import { Console } from "console";
 import { ProductType } from "@/type/ProductType";
 import { tree } from "next/dist/build/templates/app-page";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 type Address = {
   street_name: string;
@@ -114,10 +114,11 @@ const MyAccount = () => {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-              ? window.localStorage.getItem("accessToken")
-              : window.sessionStorage.getItem("accessToken")
-              }`,
+            Authorization: `Bearer ${
+              window.localStorage.getItem("accessToken")
+                ? window.localStorage.getItem("accessToken")
+                : window.sessionStorage.getItem("accessToken")
+            }`,
             "Content-Type": "application/json",
           },
         }
@@ -163,10 +164,11 @@ const MyAccount = () => {
             fetch(`https://api.malalshammobel.com/order/`, {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-                  ? window.localStorage.getItem("accessToken")
-                  : window.sessionStorage.getItem("accessToken")
-                  }`,
+                Authorization: `Bearer ${
+                  window.localStorage.getItem("accessToken")
+                    ? window.localStorage.getItem("accessToken")
+                    : window.sessionStorage.getItem("accessToken")
+                }`,
                 "Content-Type": "application/json",
               },
             })
@@ -195,14 +197,15 @@ const MyAccount = () => {
           console.error("Error:", error);
         });
     } else if (profile.verified) {
-      const currentLang = localStorage.getItem('language') || 'en';
+      const currentLang = localStorage.getItem("language") || "en";
       fetch(`https://api.malalshammobel.com/order/`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-            ? window.localStorage.getItem("accessToken")
-            : window.sessionStorage.getItem("accessToken")
-            }`,
+          Authorization: `Bearer ${
+            window.localStorage.getItem("accessToken")
+              ? window.localStorage.getItem("accessToken")
+              : window.sessionStorage.getItem("accessToken")
+          }`,
           "Content-Type": "application/json",
         },
       })
@@ -229,10 +232,11 @@ const MyAccount = () => {
       fetch(`https://api.malalshammobel.com/order/`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-            ? window.localStorage.getItem("accessToken")
-            : window.sessionStorage.getItem("accessToken")
-            }`,
+          Authorization: `Bearer ${
+            window.localStorage.getItem("accessToken")
+              ? window.localStorage.getItem("accessToken")
+              : window.sessionStorage.getItem("accessToken")
+          }`,
           "Content-Type": "application/json",
         },
       })
@@ -299,10 +303,11 @@ const MyAccount = () => {
     fetch("https://api.malalshammobel.com/auth/api/users/me/", {
       method: "PATCH",
       headers: {
-        Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-          ? window.localStorage.getItem("accessToken")
-          : window.sessionStorage.getItem("accessToken")
-          }`,
+        Authorization: `Bearer ${
+          window.localStorage.getItem("accessToken")
+            ? window.localStorage.getItem("accessToken")
+            : window.sessionStorage.getItem("accessToken")
+        }`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -342,10 +347,11 @@ const MyAccount = () => {
         {
           method: "PATCH",
           headers: {
-            Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-              ? window.localStorage.getItem("accessToken")
-              : window.sessionStorage.getItem("accessToken")
-              }`,
+            Authorization: `Bearer ${
+              window.localStorage.getItem("accessToken")
+                ? window.localStorage.getItem("accessToken")
+                : window.sessionStorage.getItem("accessToken")
+            }`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -385,10 +391,11 @@ const MyAccount = () => {
       {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-            ? window.localStorage.getItem("accessToken")
-            : window.sessionStorage.getItem("accessToken")
-            }`,
+          Authorization: `Bearer ${
+            window.localStorage.getItem("accessToken")
+              ? window.localStorage.getItem("accessToken")
+              : window.sessionStorage.getItem("accessToken")
+          }`,
           "Content-Type": "application/json",
         },
       }
@@ -417,10 +424,11 @@ const MyAccount = () => {
     fetch("https://api.malalshammobel.com/auth/api/addresses/", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-          ? window.localStorage.getItem("accessToken")
-          : window.sessionStorage.getItem("accessToken")
-          }`,
+        Authorization: `Bearer ${
+          window.localStorage.getItem("accessToken")
+            ? window.localStorage.getItem("accessToken")
+            : window.sessionStorage.getItem("accessToken")
+        }`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -492,10 +500,11 @@ const MyAccount = () => {
     fetch("https://api.malalshammobel.com/auth/api/users/me/", {
       method: "PATCH",
       headers: {
-        Authorization: `Bearer ${window.localStorage.getItem("accessToken")
-          ? window.localStorage.getItem("accessToken")
-          : window.sessionStorage.getItem("accessToken")
-          }`,
+        Authorization: `Bearer ${
+          window.localStorage.getItem("accessToken")
+            ? window.localStorage.getItem("accessToken")
+            : window.sessionStorage.getItem("accessToken")
+        }`,
       },
       body: formData,
       // admin123!
@@ -558,9 +567,10 @@ const MyAccount = () => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${window.localStorage.getItem("accessToken") ||
+            Authorization: `Bearer ${
+              window.localStorage.getItem("accessToken") ||
               window.sessionStorage.getItem("accessToken")
-              }`,
+            }`,
             "Content-Type": "application/json",
           },
         }
@@ -574,43 +584,43 @@ const MyAccount = () => {
           window.sessionStorage.removeItem("refreshToken");
           window.location.href = "/login";
         } else {
-          setCancel((prev) => ({ ...prev, state: false }))
-          fetch(`https://api.malalshammobel.com/order/`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${window.localStorage.getItem("accessToken")
+          const errorText = await response.text();
+          console.error("Failed response:", response.status, errorText);
+          throw new Error("Failed to cancel order");
+        }
+      } else {
+        fetch(`https://api.malalshammobel.com/order/`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${
+              window.localStorage.getItem("accessToken")
                 ? window.localStorage.getItem("accessToken")
                 : window.sessionStorage.getItem("accessToken")
-                }`,
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => {
-              if (!response.ok) {
-                if (Number(response.status) == 401) {
-                  window.localStorage.removeItem("accessToken");
-                  window.sessionStorage.removeItem("accessToken");
-                  window.localStorage.removeItem("refreshToken");
-                  window.sessionStorage.removeItem("refreshToken");
-                  window.location.href = "/login";
-                }
+            }`,
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              if (Number(response.status) == 401) {
+                window.localStorage.removeItem("accessToken");
+                window.sessionStorage.removeItem("accessToken");
+                window.localStorage.removeItem("refreshToken");
+                window.sessionStorage.removeItem("refreshToken");
+                window.location.href = "/login";
               }
-              return response.json();
-            })
-            .then((data) => {
-              setOrders(data);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-        const errorText = await response.text();
-        console.error("Failed response:", response.status, errorText);
-        throw new Error("Failed to cancel order");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            setOrders(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+        setCancel((prev) => ({ ...prev, state: false }));
       }
-
-      const data = await response.json();
-      console.log("Order canceled:", data);
     } catch (error) {
       console.error("Error canceling order:", error);
     }
@@ -618,9 +628,7 @@ const MyAccount = () => {
 
   return (
     <>
-      <TopNavOne
-        props="style-one bg-black"
-      />
+      <TopNavOne props="style-one bg-black" />
       <div id="header" className="relative w-full">
         <MenuOne props="bg-transparent" />
         <Breadcrumb heading="My Account" subHeading="My Account" />
@@ -661,8 +669,9 @@ const MyAccount = () => {
                   <Link
                     href={"#!"}
                     scroll={false}
-                    className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white ${activeTab === "dashboard" ? "active" : ""
-                      }`}
+                    className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white ${
+                      activeTab === "dashboard" ? "active" : ""
+                    }`}
                     onClick={() => setActiveTab("dashboard")}
                   >
                     <Icon.HouseLine size={20} />
@@ -671,8 +680,9 @@ const MyAccount = () => {
                   <Link
                     href={"#!"}
                     scroll={false}
-                    className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === "orders" ? "active" : ""
-                      }`}
+                    className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${
+                      activeTab === "orders" ? "active" : ""
+                    }`}
                     onClick={() => setActiveTab("orders")}
                   >
                     <Icon.Package size={20} />
@@ -681,8 +691,9 @@ const MyAccount = () => {
                   <Link
                     href={"#!"}
                     scroll={false}
-                    className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === "address" ? "active" : ""
-                      }`}
+                    className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${
+                      activeTab === "address" ? "active" : ""
+                    }`}
                     onClick={() => setActiveTab("address")}
                   >
                     <Icon.Tag size={20} />
@@ -691,8 +702,9 @@ const MyAccount = () => {
                   <Link
                     href={"#!"}
                     scroll={false}
-                    className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === "setting" ? "active" : ""
-                      }`}
+                    className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${
+                      activeTab === "setting" ? "active" : ""
+                    }`}
                     onClick={() => setActiveTab("setting")}
                   >
                     <Icon.GearSix size={20} />
@@ -715,8 +727,9 @@ const MyAccount = () => {
             {profile.verified ? (
               <div className="right md:w-2/3 w-full ps-2.5">
                 <div
-                  className={`tab text-content w-full ${activeTab === "dashboard" ? "block" : "hidden"
-                    }`}
+                  className={`tab text-content w-full ${
+                    activeTab === "dashboard" ? "block" : "hidden"
+                  }`}
                 >
                   <div className="overview grid sm:grid-cols-3 gap-5">
                     <div className="item flex items-center justify-between p-5 border border-line rounded-lg box-shadow-xs">
@@ -725,16 +738,16 @@ const MyAccount = () => {
                         <h5 className="heading5 mt-1">
                           {orders.length > 0
                             ? orders.map((retro, i) => {
-                              if (i == 0) {
-                                numConf = 0;
-                              }
-                              if (retro.status == "Confirmed") {
-                                numConf++;
-                              }
-                              if (i == orders.length - 1) {
-                                return numConf;
-                              }
-                            })
+                                if (i == 0) {
+                                  numConf = 0;
+                                }
+                                if (retro.status == "Confirmed") {
+                                  numConf++;
+                                }
+                                if (i == orders.length - 1) {
+                                  return numConf;
+                                }
+                              })
                             : 0}
                         </h5>
                       </div>
@@ -748,16 +761,16 @@ const MyAccount = () => {
                         <h5 className="heading5 mt-1">
                           {orders.length > 0
                             ? orders.map((retro, i) => {
-                              if (i == 0) {
-                                numConf = 0;
-                              }
-                              if (retro.status == "Retroactive") {
-                                numConf++;
-                              }
-                              if (i == orders.length - 1) {
-                                return numConf;
-                              }
-                            })
+                                if (i == 0) {
+                                  numConf = 0;
+                                }
+                                if (retro.status == "Retroactive") {
+                                  numConf++;
+                                }
+                                if (i == orders.length - 1) {
+                                  return numConf;
+                                }
+                              })
                             : 0}
                         </h5>
                       </div>
@@ -840,8 +853,9 @@ const MyAccount = () => {
                   </div>
                 </div>
                 <div
-                  className={`tab text-content overflow-hidden w-full p-7 border border-line rounded-xl ${activeTab === "orders" ? "block" : "hidden"
-                    }`}
+                  className={`tab text-content overflow-hidden w-full p-7 border border-line rounded-xl ${
+                    activeTab === "orders" ? "block" : "hidden"
+                  }`}
                 >
                   <h6 className="heading6">Your Orders</h6>
                   <div className="w-full overflow-x-auto">
@@ -850,11 +864,12 @@ const MyAccount = () => {
                         (item, index) => (
                           <button
                             key={index}
-                            className={`item relative px-3 py-2.5 text-secondary text-center duration-300 hover:text-black border-b-2 ${(activeOrders == "" ? "all" : activeOrders) ===
+                            className={`item relative px-3 py-2.5 text-secondary text-center duration-300 hover:text-black border-b-2 ${
+                              (activeOrders == "" ? "all" : activeOrders) ===
                               item
-                              ? "active border-black"
-                              : "border-transparent"
-                              }`}
+                                ? "active border-black"
+                                : "border-transparent"
+                            }`}
                             onClick={() =>
                               handleActiveOrders(item == "all" ? "" : item)
                             }
@@ -895,7 +910,10 @@ const MyAccount = () => {
                           <div className="list_prd px-5">
                             {order.order_items.map((item) => {
                               return (
-                                <div key={item.id} className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
+                                <div
+                                  key={item.id}
+                                  className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line"
+                                >
                                   <Link
                                     href={
                                       "/product/variable?id=" + item.product.id
@@ -970,14 +988,16 @@ const MyAccount = () => {
                   </div>
                 </div>
                 <div
-                  className={`tab_address text-content w-full p-7 border border-line rounded-xl ${activeTab === "address" ? "block" : "hidden"
-                    }`}
+                  className={`tab_address text-content w-full p-7 border border-line rounded-xl ${
+                    activeTab === "address" ? "block" : "hidden"
+                  }`}
                 >
                   <form id="mainForm">
                     <button
                       type="button"
-                      className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${activeAddress === "mainShipping" ? "active" : ""
-                        }`}
+                      className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${
+                        activeAddress === "mainShipping" ? "active" : ""
+                      }`}
                       onClick={() => handleActiveAddress("mainShipping")}
                     >
                       <strong className="heading6">Main address</strong>
@@ -985,8 +1005,9 @@ const MyAccount = () => {
                     </button>
 
                     <div
-                      className={`form_address ${activeAddress === "mainShipping" ? "block" : "hidden"
-                        }`}
+                      className={`form_address ${
+                        activeAddress === "mainShipping" ? "block" : "hidden"
+                      }`}
                     >
                       <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
                         <div className="street">
@@ -1058,8 +1079,9 @@ const MyAccount = () => {
                         <button
                           key={i}
                           type="button"
-                          className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${activeAddress === "shipping" + i ? "active" : ""
-                            }`}
+                          className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${
+                            activeAddress === "shipping" + i ? "active" : ""
+                          }`}
                           onClick={() => handleActiveAddress("shipping" + i)}
                         >
                           <strong className="heading6">
@@ -1076,10 +1098,11 @@ const MyAccount = () => {
                           }}
                         >
                           <div
-                            className={`form_address ${activeAddress === "shipping" + i
-                              ? "block"
-                              : "hidden"
-                              }`}
+                            className={`form_address ${
+                              activeAddress === "shipping" + i
+                                ? "block"
+                                : "hidden"
+                            }`}
                           >
                             <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
                               <div className="street">
@@ -1173,8 +1196,9 @@ const MyAccount = () => {
                       }}
                     >
                       <div
-                        className={`form_address ${newForm ? "block" : "hidden"
-                          }`}
+                        className={`form_address ${
+                          newForm ? "block" : "hidden"
+                        }`}
                       >
                         <div className="grid sm:grid-cols-2 gap-4 gap-y-5 mt-5">
                           <div className="street">
@@ -1261,8 +1285,9 @@ const MyAccount = () => {
                   </div>
                 </div>
                 <div
-                  className={`tab text-content w-full p-7 border border-line rounded-xl ${activeTab === "setting" ? "block" : "hidden"
-                    }`}
+                  className={`tab text-content w-full p-7 border border-line rounded-xl ${
+                    activeTab === "setting" ? "block" : "hidden"
+                  }`}
                 >
                   <form
                     onSubmit={(e) => {
@@ -1458,8 +1483,9 @@ const MyAccount = () => {
         onClick={() => setOpenDetail(false)}
       >
         <div
-          className={`modal-order-detail-main grid grid-cols-2 w-[1160px] bg-white rounded-2xl ${openDetail ? "open" : ""
-            }`}
+          className={`modal-order-detail-main grid grid-cols-2 w-[1160px] bg-white rounded-2xl ${
+            openDetail ? "open" : ""
+          }`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="info p-10 border-r border-line">
@@ -1535,7 +1561,10 @@ const MyAccount = () => {
             <div className="list_prd">
               {detailOrder?.order_items.map((item) => {
                 return (
-                  <div key={item.id} className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line">
+                  <div
+                    key={item.id}
+                    className="prd_item flex flex-wrap items-center justify-between gap-3 py-5 border-b border-line"
+                  >
                     <Link
                       href={"/product/variable?id=" + item.product.id}
                       className="flex items-center gap-5"
@@ -1601,8 +1630,9 @@ const MyAccount = () => {
         onClick={() => setCancel((prev) => ({ ...prev, state: false }))}
       >
         <div
-          className={`modal-order-detail-main w-fit max-w-[460px] bg-white rounded-2xl ${cancel.state == true ? "open" : ""
-            }`}
+          className={`modal-order-detail-main w-fit max-w-[460px] bg-white rounded-2xl ${
+            cancel.state == true ? "open" : ""
+          }`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="info p-10 text-center">

@@ -13,7 +13,7 @@ import { useCompare } from "@/context/CompareContext";
 import { useModalCompareContext } from "@/context/ModalCompareContext";
 import Rate from "../Other/Rate";
 import ModalSizeguide from "./ModalSizeguide";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const ModalQuickview = () => {
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -71,10 +71,13 @@ const ModalQuickview = () => {
 
   const handleAddToCart = () => {
     if (selectedProduct) {
-
-      console.log(`product page: ${selectedProduct}`)
+      console.log(`product page: ${selectedProduct}`);
       if (!cartState.cartArray.find((item) => item.id === selectedProduct.id)) {
-        addToCart(selectedProduct, activeColor ? activeColor : selectedProduct.colors[0].color, quantity);
+        addToCart(
+          selectedProduct,
+          activeColor ? activeColor : selectedProduct.colors[0].color,
+          quantity
+        );
         updateCart(selectedProduct.id, quantity, activeColor);
       } else {
         updateCart(selectedProduct.id, quantity, activeColor);
@@ -125,8 +128,9 @@ const ModalQuickview = () => {
     <>
       <div className={`modal-quickview-block`} onClick={closeQuickview}>
         <div
-          className={`modal-quickview-main py-6 ${selectedProduct !== null ? "open" : ""
-            }`}
+          className={`modal-quickview-main py-6 ${
+            selectedProduct !== null ? "open" : ""
+          }`}
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -170,12 +174,13 @@ const ModalQuickview = () => {
                     <div className="heading4 mt-1">{selectedProduct?.name}</div>
                   </div>
                   <div
-                    className={`add-wishlist-btn w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-lg duration-300 flex-shrink-0 hover:bg-black hover:text-white ${wishlistState.wishlistArray.some(
-                      (item) => item.id === Number(selectedProduct.id)
-                    )
-                      ? "active"
-                      : ""
-                      }`}
+                    className={`add-wishlist-btn w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-lg duration-300 flex-shrink-0 hover:bg-black hover:text-white ${
+                      wishlistState.wishlistArray.some(
+                        (item) => item.id === Number(selectedProduct.id)
+                      )
+                        ? "active"
+                        : ""
+                    }`}
                     onClick={handleAddToWishlist}
                   >
                     {wishlistState.wishlistArray.some(
@@ -196,9 +201,9 @@ const ModalQuickview = () => {
                   </div>
                 </div>
                 <div className="flex items-center mt-3">
-                  <Rate currentRate={selectedProduct?.rate} size={14} />
+                  <Rate currentRate={selectedProduct?.average_rate} size={14} />
                   <span className="caption1 text-secondary">
-                    (1.234 reviews)
+                    ({selectedProduct?.rates.length} reviews)
                   </span>
                 </div>
                 <div className="flex items-center gap-3 flex-wrap mt-5 pb-6 border-b border-line">
@@ -227,12 +232,13 @@ const ModalQuickview = () => {
                     <div className="list-color flex items-center gap-2 flex-wrap mt-3">
                       {selectedProduct?.colors?.map((item, index) => (
                         <div
-                          className={`color-item w-12 h-12 rounded-xl duration-300 relative ${activeColor === item.color ? "active" : ""
-                            }`}
+                          className={`color-item w-12 h-12 rounded-xl duration-300 relative ${
+                            activeColor === item.color ? "active" : ""
+                          }`}
                           key={index}
                           datatype={item.color}
                           style={{
-                            backgroundColor: item.color
+                            backgroundColor: item.color,
                           }}
                           onClick={() => {
                             handleActiveColor(item.color);
@@ -266,8 +272,9 @@ const ModalQuickview = () => {
                       {/* Example of changed quantity handlers */}
                       <Icon.Minus
                         onClick={handleDecreaseQuantity}
-                        className={`${quantity === 1 ? "disabled" : ""
-                          } cursor-pointer body1`}
+                        className={`${
+                          quantity === 1 ? "disabled" : ""
+                        } cursor-pointer body1`}
                       />
                       <div className="body1 font-semibold">{quantity}</div>
                       <Icon.Plus
@@ -308,7 +315,9 @@ const ModalQuickview = () => {
                     <div className="flex items-center gap-4 flex-wrap">
                       <div className="flex items-center gap-1">
                         <Icon.ArrowClockwise className="body1" />
-                        <div className="text-title">{t("Delivery & Return")}</div>
+                        <div className="text-title">
+                          {t("Delivery & Return")}
+                        </div>
                       </div>
                       <div className="flex items-center gap-1">
                         <Icon.Question className="body1" />
@@ -317,7 +326,9 @@ const ModalQuickview = () => {
                     </div>
                     <div className="flex items-center flex-wrap gap-1 mt-3">
                       <Icon.Timer className="body1" />
-                      <span className="text-title">{t("Estimated Delivery:")}</span>
+                      <span className="text-title">
+                        {t("Estimated Delivery:")}
+                      </span>
                       <span className="text-secondary">
                         14 January - 18 January
                       </span>

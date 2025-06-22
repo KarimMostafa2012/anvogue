@@ -60,6 +60,7 @@ interface UserProfile {
   zip_code?: string;
   addresses?: [];
   profile_img?: string;
+  is_superuser?: boolean;
   // Add other expected properties here
 }
 type SubCategory = {
@@ -1063,7 +1064,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                         </div>
                       </div>
                     </>
-                  ) : profile.verified ? (
+                  ) : profile.is_superuser ? (
                     <>
                       <Icon.User
                         size={24}

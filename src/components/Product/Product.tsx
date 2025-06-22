@@ -877,7 +877,7 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
           <div className="product-infor mt-4">
             <span className="text-title">{data.name}</span>
             <div className="flex gap-0.5 mt-1">
-              <Rate currentRate={data.rate} size={16} />
+              <Rate currentRate={data.average_rate} size={16} />
             </div>
             <span className="text-title inline-block mt-1">${data.price}</span>
           </div>

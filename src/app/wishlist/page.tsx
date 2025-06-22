@@ -52,7 +52,7 @@ const Wishlist = () => {
           average_rate: 0,
           new: false,
           has_offer: false,
-          rate: 0,
+          rates: [],
           new_price: 0,
           price: 0,
           offer_value: 0,

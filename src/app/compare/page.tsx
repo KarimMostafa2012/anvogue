@@ -104,8 +104,8 @@ const Compare = () => {
                         key={index}
                       >
                         <div className="h-full flex items-center justify-center">
-                          <Rate currentRate={item.rate} size={12} />
-                          <p className="ps-1">(1.234)</p>
+                          <Rate currentRate={item.average_rate} size={12} />
+                          <p className="ps-1">({item.average_rate})</p>
                         </div>
                       </td>
                     ))}
