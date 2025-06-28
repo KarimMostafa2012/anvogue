@@ -11,7 +11,7 @@ import productData from "@/data/Product.json";
 import { useModalQuickviewContext } from "@/context/ModalQuickviewContext";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import { getAllProducts } from "@/redux/slices/productSlice";
+import { getOfferProducts } from "@/redux/slices/productSlice";
 
 interface popupType {
   id: number;
@@ -52,7 +52,7 @@ const ModalNewsletter = () => {
           lang: currentLanguage,
           has_offer: true,
         };
-        await dispatch(getAllProducts({ params }));
+        await dispatch(getOfferProducts({ params }));
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -110,8 +110,13 @@ const ModalNewsletter = () => {
             e.stopPropagation();
           }}
         >
-          <div className="main-content flex rounded-[20px] overflow-hidden w-full max-md:max-h-[80vh] overflow-hidden">
-            <div className="left lg:w-1/2 sm:w-2/5 max-sm:hidden bg-green flex flex-col items-center justify-center gap-5 py-14">
+          <div className="main-content flex rounded-[20px] w-full max-md:max-h-[80vh] overflow-hidden">
+            <div
+              className={`left lg:w-1/2 sm:w-2/5 max-sm:hidden flex flex-col items-center justify-center gap-5 py-14`}
+              style={{
+                backgroundColor: popup.background_color || "#d2ef9a",
+              }}
+            >
               <div className="text-xs font-semibold uppercase text-center">
                 {t("special_offer")}
               </div>

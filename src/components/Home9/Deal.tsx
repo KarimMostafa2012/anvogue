@@ -7,7 +7,7 @@ import { ProductType } from "@/type/ProductType";
 import { countdownTime } from "@/store/countdownTime";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "@/redux/slices/productSlice";
+import { getOfferProducts } from "@/redux/slices/productSlice";
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -41,7 +41,7 @@ const Deal: React.FC<Props> = ({ start, limit }) => {
 
   useEffect(() => {
     // console.log("Fetching with params:", params);
-    dispatch(getAllProducts({ params: { lang: "en", has_offer: true } }));
+    dispatch(getOfferProducts({ params: { lang: "en", has_offer: true } }));
   }, [dispatch]);
 
   return (

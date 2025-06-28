@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { getAllProducts, clearProduct } from "@/redux/slices/productSlice";
+import { getOfferProducts } from "@/redux/slices/productSlice";
 import {
   changeLanguage,
   initializeLanguage,
@@ -196,7 +196,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
           has_offer: true,
           lang: lang,
         };
-        await dispatch(getAllProducts({ params }));
+        await dispatch(getOfferProducts({ params }));
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -462,7 +462,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
   };
 
   const handleTypeClick = (type: string) => {
-    router.push(`/shop/breadcrumb1?type=${type}`);
+    router.push(`/shop?category=${type}`);
   };
 
   return (

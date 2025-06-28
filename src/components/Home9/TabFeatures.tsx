@@ -9,7 +9,7 @@ import Product from '../Product/Product'
 import { ProductType } from '@/type/ProductType'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { getNewArrivals, getAllProducts, getBestSellers } from '@/redux/slices/productSlice'
+import { getNewArrivals, getOfferProducts, getBestSellers } from '@/redux/slices/productSlice'
 
 interface Props {
     start: number;
@@ -42,7 +42,7 @@ const TabFeatures: React.FC<Props> = ({ start, limit }) => {
                         lang: currentLanguage,
                         has_offer: true,
                     }
-                    await dispatch(getAllProducts({ params }));
+                    await dispatch(getOfferProducts({ params }));
                 } else if (activeTab === 'new arrivals') {
                     const params = {
                         lang: currentLanguage,

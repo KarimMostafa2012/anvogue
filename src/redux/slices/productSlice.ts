@@ -72,6 +72,28 @@ export const getAllProducts = createAsyncThunk<
   }
 });
 
+export const getOfferProducts = createAsyncThunk<
+  ProductResponse | ProductType[],
+  GetAllProductsParams
+>("products/getOfferProducts", async ({ params }) => {
+  try {
+    const { data } = await axios.get<ProductResponse | ProductType[]>(
+      `${baseUrl}/products/`,
+      {
+        params,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Fetched Products:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+});
+
 // Get all products
 export const getNewArrivals = createAsyncThunk<
   ProductResponse | ProductType[],
@@ -293,6 +315,31 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch products";
+        state.products = [];
+      })
+
+      .addCase(getOfferProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getOfferProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        if ("results" in action.payload) {
+          state.products = action.payload.results;
+          state.count = action.payload.count;
+          state.next = action.payload.next;
+          state.prev = action.payload.previous;
+        } else {
+          state.products = action.payload;
+          state.count = null;
+          state.next = null;
+          state.prev = null;
+        }
+        state.error = null;
+      })
+      .addCase(getOfferProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch products";
         state.products = [];

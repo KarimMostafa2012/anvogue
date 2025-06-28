@@ -2,16 +2,12 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import Image from 'next/image'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
-import productData from '@/data/Product.json'
 import Product from '../Product/Product';
 import { useModalSearchContext } from '@/context/ModalSearchContext'
-import { useModalQuickviewContext } from '@/context/ModalQuickviewContext';
 
 import { useTranslation } from 'react-i18next'
-import { getAllProducts } from '@/redux/slices/productSlice'
+import { getOfferProducts } from '@/redux/slices/productSlice'
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useSelector } from "react-redux";
@@ -39,7 +35,7 @@ const ModalSearch = () => {
                     lang: "en",
                     has_offer: true,
                 }
-                await dispatch(getAllProducts({ params }));
+                await dispatch(getOfferProducts({ params }));
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {

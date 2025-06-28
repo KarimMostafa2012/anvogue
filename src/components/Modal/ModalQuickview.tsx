@@ -41,6 +41,7 @@ const ModalQuickview = () => {
     setQuantity(1);
     setActiveColor("");
     setActiveSize(undefined);
+    console.log(selectedProduct)
   }, [selectedProduct]);
 
   const handleOpenSizeGuide = () => {
@@ -203,7 +204,7 @@ const ModalQuickview = () => {
                 <div className="flex items-center mt-3">
                   <Rate currentRate={selectedProduct?.average_rate} size={14} />
                   <span className="caption1 text-secondary">
-                    ({selectedProduct?.rates.length} reviews)
+                    ({selectedProduct?.rates != undefined ? selectedProduct?.rates?.length : 0} reviews)
                   </span>
                 </div>
                 <div className="flex items-center gap-3 flex-wrap mt-5 pb-6 border-b border-line">

@@ -41,7 +41,7 @@ const TrendingNow = () => {
   const [categories, setCategories] = useState<HomeCategory[]>([]);
 
   const handleTypeClick = (type: string) => {
-    router.push(`/shop/breadcrumb1?type=${type}`);
+    router.push(`/shop?category=${type}`);
   };
 
   useEffect(() => {

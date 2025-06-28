@@ -43,10 +43,10 @@ const Footer = () => {
                                     </div>
                                     <div className="item flex flex-col basis-1/3 ">
                                         <div className="text-button-uppercase pb-3">{t('footer.quickShop.title')}</div>
-                                        <Link className='caption1 has-line-before duration-300 w-fit' href={'/shop/breadcrumb1'}>{t('footer.quickShop.women')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.quickShop.men')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.quickShop.clothes')}</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop/breadcrumb1'}>{t('footer.quickShop.accessories')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit' href={'/shop'}>{t('footer.quickShop.women')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop'}>{t('footer.quickShop.men')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop'}>{t('footer.quickShop.clothes')}</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/shop'}>{t('footer.quickShop.accessories')}</Link>
                                         <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/blog'}>{t('footer.quickShop.blog')}</Link>
                                     </div>
                                     <div className="item flex flex-col basis-1/3 ">

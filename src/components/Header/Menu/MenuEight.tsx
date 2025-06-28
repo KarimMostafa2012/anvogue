@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { getAllProducts } from "@/redux/slices/productSlice";
+import { getOfferProducts } from "@/redux/slices/productSlice";
 
 type Category = {
   id: number;
@@ -185,7 +185,7 @@ const MenuEight = () => {
           has_offer: true,
           lang: currentLanguage,
         };
-        await dispatch(getAllProducts({ params }));
+        await dispatch(getOfferProducts({ params }));
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -730,8 +730,11 @@ const MenuEight = () => {
                                       "banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " +
                                       (i == 1 ? "mt-4" : "")
                                     }
+                                    onClick={()=>{
+                                      router.push("/product/variable?id="+prod.id)
+                                    }}
                                   >
-                                    <div className="text-content py-14 ps-8 relative z-[1]">
+                                    <div className="text-content py-14 ps-8 relative z-[1] max-w-[50%]">
                                       <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
                                         Save ${prod.offer_value}
                                       </div>

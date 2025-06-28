@@ -77,7 +77,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
   });
 
   // Context hooks
-  const { addToCart, updateCart, cartState } = useCart();
+  const { addToCart } = useCart();
   const { openModalCart } = useModalCartContext();
   const { addToWishlist, removeFromWishlist, wishlistState } = useWishlist();
   const { openModalWishlist } = useModalWishlistContext();
@@ -86,7 +86,6 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
 
   // Redux hooks
   const dispatch = useAppDispatch();
-  const data = useSelector((state: RootState) => state.products.products);
   const product = useSelector((state: RootState) => state.products.product);
   const loading = useSelector((state: RootState) => state.products.loading);
   const loadingOffer = useSelector((state: RootState) => state.offer.loading);
@@ -95,12 +94,11 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
   const offerElement = useSelector((state: RootState) => state.offer.offer);
   const { t } = useTranslation();
   const currentLanguage = useSelector((state: RootState) => state.language);
-
-  // Memoized values
-  const productMain = useMemo(
-    () => product || data?.find((p) => p.id === productId),
-    [product, data, productId]
+  const relatedProducts = useSelector(
+    (state: RootState) => state.products.products
   );
+  // Memoized product data - only use the product from Redux store
+  const productMain = useMemo(() => product, [product]);
   const percentSale = useMemo(() => {
     if (!productMain?.new_price || !productMain?.price) return 0;
     return Math.floor(
@@ -108,7 +106,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     );
   }, [productMain]);
 
-  // Fetch product data
+  // Fetch product data - only once when component mounts or productId changes
   useEffect(() => {
     if (productId) {
       dispatch(getProductById({ id: productId, lang: currentLanguage }));
@@ -119,33 +117,35 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     };
   }, [productId, dispatch, currentLanguage]);
 
-  // Fetch offer if product has one
+  // Fetch offer if product has one - only when product changes
   useEffect(() => {
-    if (product?.has_offer && product.offer_id) {
+    if (product?.has_offer && product.offer_id && !offer) {
       dispatch(getOfferById({ id: product.offer_id, lang: currentLanguage }));
     }
-  }, [product?.has_offer, product?.offer_id, dispatch, currentLanguage]);
+  }, [product?.has_offer, product?.offer_id, dispatch, currentLanguage, offer]);
 
   // Set offer once when received
   useEffect(() => {
-    if (offerElement) {
+    if (offerElement && !offer) {
       setOffer(offerElement);
     }
-  }, [offerElement]);
+  }, [offerElement, offer]);
 
-  // Set active color and fetch related products
+  // Set active color and fetch related products - only when productMain changes
   useEffect(() => {
-    if (productMain) {
+    if (productMain && !activeColor) {
       setActiveColor(productMain.colors[0]?.color);
+
+      // Only fetch related products if we don't have them yet
       const params = {
         sub_category_id: productMain.sub_category,
         lang: currentLanguage,
       };
       dispatch(getAllProducts({ params }));
     }
-  }, [productMain, dispatch, currentLanguage]);
+  }, [productMain, dispatch, currentLanguage, activeColor]);
 
-  // Countdown timer for offer
+  // Countdown timer for offer - only when offer changes
   useEffect(() => {
     if (!offer?.end_datetime) return;
 
@@ -157,14 +157,16 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     return () => clearInterval(timer);
   }, [offer?.end_datetime]);
 
-  // Filter related products
+  // Filter related products - only when product data changes
   useEffect(() => {
-    if (data) {
+    if (productMain) {
       setFilteredData(
-        data.filter((item) => String(item.id) !== String(productId))
+        relatedProducts.filter((item) => String(item.id) !== String(productId))
       );
     }
-  }, [data, productId]);
+  }, [productMain, productId]);
+
+  // Rest of your component remains the same...
 
   // Debounce function
   const debounce = useCallback(

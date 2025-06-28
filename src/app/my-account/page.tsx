@@ -225,6 +225,7 @@ const MyAccount = () => {
           console.error("Error:", error);
         });
     }
+    console.log(orders)
   }, []);
 
   useEffect(() => {
