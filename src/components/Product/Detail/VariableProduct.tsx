@@ -919,13 +919,13 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="text-secondary2">
-                            {dayjs(rate.comments[0].created_at).fromNow()}
+                            {dayjs(rate?.comments[0]?.created_at).fromNow()}
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3">{rate.comments[0].comment}</div>
+                  <div className="mt-3">{rate?.comments[0]?.comment}</div>
                 </div>
               ))}
             </div>
