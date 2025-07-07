@@ -84,7 +84,9 @@ const MenuEight = () => {
   const searchParams = useSearchParams();
   const [profile, setProfile] = useState<UserProfile>({});
   let shadowCat = "";
-  const products = useSelector((state: RootState) => state.products.products);
+  const products = useSelector(
+    (state: RootState) => state.products.offerProducts
+  );
 
   const { t } = useTranslation();
   const [fixedHeader, setFixedHeader] = useState(false);
@@ -899,7 +901,7 @@ const MenuEight = () => {
               </div>
             </div>
             <div className="right flex items-center gap-1">
-              <div className="caption1">{t('menu.menuEight.hotline')}:</div>
+              <div className="caption1">{t("menu.menuEight.hotline")}:</div>
               <div className="text-button-uppercase">+01 1234 8888</div>
             </div>
           </div>
@@ -1025,55 +1027,41 @@ const MenuEight = () => {
                             );
                           })}
                         </div>
-                        <div className="banner-ads-block grid sm:grid-cols-2 items-center gap-6 pt-6">
-                          <div
-                            className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden"
-                            onClick={() => handleTypeClick("swimwear")}
-                          >
-                            <div className="text-content py-14 ps-8 relative z-[1]">
-                              <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                {t("menu.saveAmount")}
-                              </div>
-                              <div className="heading6 mt-2">
-                                {t("menu.diveIntoSavings")}
-                              </div>
-                              <div className="body1 mt-3 text-secondary">
-                                {t("menu.startingAt")}{" "}
-                                <span className="text-red">$59.99</span>
-                              </div>
-                            </div>
-                            <Image
-                              src={"/images/slider/bg2-2.png"}
-                              width={200}
-                              height={100}
-                              alt="bg-img"
-                              className="basis-1/3 absolute right-0 top-0"
-                            />
-                          </div>
-                          <div
-                            className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden"
-                            onClick={() => handleTypeClick("accessories")}
-                          >
-                            <div className="text-content py-14 ps-8 relative z-[1]">
-                              <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                {t("menu.saveAmount")}
-                              </div>
-                              <div className="heading6 mt-2">
-                                {t("menu.offAccessories")}
-                              </div>
-                              <div className="body1 mt-3 text-secondary">
-                                {t("menu.startingAt")}{" "}
-                                <span className="text-red">$59.99</span>
-                              </div>
-                            </div>
-                            <Image
-                              src={"/images/other/bg-feature.png"}
-                              width={200}
-                              height={100}
-                              alt="bg-img"
-                              className="basis-1/3 absolute right-0 top-0"
-                            />
-                          </div>
+                        <div className="banner-ads-block ps-2.5 basis-1/3">
+                          {products.length > 0 &&
+                            products.slice(0, 2).map((prod, i) => {
+                              return (
+                                <div
+                                  key={i}
+                                  className={
+                                    "banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " +
+                                    (i == 1 ? "mt-4" : "")
+                                  }
+                                >
+                                  <div className="text-content py-14 ps-8 relative z-[1]">
+                                    <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
+                                      {t("Save")} ${prod.offer_value}
+                                    </div>
+                                    <div className="heading6 mt-2">
+                                      {prod.name}
+                                    </div>
+                                    <div className="body1 mt-3 text-secondary">
+                                      {t("StartingAt")}{" "}
+                                      <span className="text-red">
+                                        ${prod.new_price}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <Image
+                                    src={prod.images[0].img}
+                                    width={200}
+                                    height={100}
+                                    alt={prod.name}
+                                    className="basis-1/3 absolute ltr:right-0 rtl:left-0 top-0 duration-700"
+                                  />
+                                </div>
+                              );
+                            })}
                         </div>
                       </div>
                     </div>
@@ -1526,7 +1514,7 @@ const MenuEight = () => {
                 handleSearch(searchKeyword);
               }}
             >
-              {t('menu.menuEight.search')}
+              {t("menu.menuEight.search")}
             </span>
           </Link>
           <Link

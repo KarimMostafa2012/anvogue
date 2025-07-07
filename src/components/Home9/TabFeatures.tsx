@@ -25,9 +25,9 @@ const TabFeatures: React.FC<Props> = ({ start, limit }) => {
     const currentLanguage = useSelector((state: RootState) => state.language);
 
     // Get products from Redux store
-    const products = useSelector((state: RootState) => state.products.products);
-    const newArrivals = useSelector((state: RootState) => state.products.products);
-    const bestSellers = useSelector((state: RootState) => state.products.products);
+    const products = useSelector((state: RootState) => state.products.offerProducts);
+    const newArrivals = useSelector((state: RootState) => state.products.newArrivals);
+    const bestSellers = useSelector((state: RootState) => state.products.bestSellers);
 
     const handleTabClick = (item: string) => {
         setActiveTab(item)

@@ -41,7 +41,7 @@ const ModalNewsletter = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   // Get products from Redux store
-  const products = useSelector((state: RootState) => state.products.products);
+  const products = useSelector((state: RootState) => state.products.offerProducts);
   const currentLanguage = useSelector((state: RootState) => state.language);
 
   useEffect(() => {

@@ -91,7 +91,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   let shadowCat = "";
-  const products = useSelector((state: RootState) => state.products.products);
+  const products = useSelector((state: RootState) => state.products.offerProducts);
 
   const { t } = useTranslation();
 

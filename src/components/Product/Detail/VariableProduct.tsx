@@ -110,20 +110,26 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
 
   // Filter images based on selected color
   const filteredImages = useMemo(() => {
-    console.log(productMain)
+    console.log(productMain);
     if (!productMain || !productMain.images || !activeColor) return [];
 
     // Find the index of the active color in the colors array
-    const colorIndex =
-      productMain.colors.findIndex(
-        (color) => color.color === activeColor.color
-      ) + 1; // +1 because color numbers in images are 1-based
+    const colorIndex: { color: string }[] = productMain.colors.filter(
+      (color) => color.color === activeColor.color
+    ); // +1 because color numbers in images are 1-based
 
+    console.log(
+      productMain.images.filter(
+        (image) =>
+          typeof image != "string" && image.color == colorIndex[0].color
+      )
+    );
     return productMain.images.filter(
-      (image) => typeof image != "string" && Number(image.color) == colorIndex
+      (image) => typeof image != "string" && image.color == colorIndex[0].color
     );
   }, [productMain, activeColor]);
 
+  console.log(filteredImages);
   // Fetch product data
   useEffect(() => {
     if (productId) {
