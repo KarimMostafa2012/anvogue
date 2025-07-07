@@ -566,7 +566,7 @@ const MyAccount = () => {
       const response = await fetch(
         `https://api.malalshammobel.com/order/${cancel.id}/`,
         {
-          method: "DELETE",
+          method: "PATCH",
           headers: {
             Authorization: `Bearer ${
               window.localStorage.getItem("accessToken") ||
@@ -574,6 +574,7 @@ const MyAccount = () => {
             }`,
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({status: "Retroactive"})
         }
       );
 
@@ -621,6 +622,7 @@ const MyAccount = () => {
             console.error("Error:", error);
           });
         setCancel((prev) => ({ ...prev, state: false }));
+        fetchProfile()
       }
     } catch (error) {
       console.error("Error canceling order:", error);

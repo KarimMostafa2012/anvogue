@@ -76,6 +76,9 @@ const TrendingNow = () => {
         </div>
         <div className="list-trending relative">
           <style jsx global>{`
+            .swiper-trending {
+              height: fit-content !important;
+            }
             .swiper-button-next,
             .swiper-button-prev {
               width: 40px !important;
@@ -98,6 +101,11 @@ const TrendingNow = () => {
               cursor: auto !important;
               pointer-events: none !important;
             }
+            .trending-item {
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+            }
           `}</style>
           <Swiper
             spaceBetween={6}
@@ -118,12 +126,12 @@ const TrendingNow = () => {
                 spaceBetween: 20,
               },
             }}
-            className="swiper-trending"
+            className="swiper-trending !h-fit"
           >
             {categories.map((item, index) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={index} className="!h-fit">
                 <div
-                  className="trending-item bg-surface rounded-2xl p-4 cursor-pointer"
+                  className="trending-item bg-surface rounded-2xl p-4 cursor-pointer !h-fit"
                   onClick={() =>
                     handleTypeClick(item.category.name[currentLanguage])
                   }

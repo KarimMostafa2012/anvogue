@@ -221,7 +221,7 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
               ) : null}
               <div className="product-img w-full h-full aspect-[3/4]">
                 <Image
-                  src={data.images[0].img}
+                  src={data.images[0]?.img}
                   width={500}
                   height={500}
                   priority={true}
@@ -245,31 +245,31 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
                     <div
                       className={`caption2 font-semibold uppercase text-white px-2.5`}
                     >
-                      Hot Sale {percentSale}% OFF
+                      {t('hotSale')} {percentSale}% {t('OFF')}
                     </div>
                     <Icon.Lightning weight="fill" className="text-red" />
                     <div
                       className={`caption2 font-semibold uppercase text-white px-2.5`}
                     >
-                      Hot Sale {percentSale}% OFF
+                      {t('hotSale')} {percentSale}% {t('OFF')}
                     </div>
                     <Icon.Lightning weight="fill" className="text-red" />
                     <div
                       className={`caption2 font-semibold uppercase text-white px-2.5`}
                     >
-                      Hot Sale {percentSale}% OFF
+                      {t('hotSale')} {percentSale}% {t('OFF')}
                     </div>
                     <Icon.Lightning weight="fill" className="text-red" />
                     <div
                       className={`caption2 font-semibold uppercase text-white px-2.5`}
                     >
-                      Hot Sale {percentSale}% OFF
+                      {t('hotSale')} {percentSale}% {t('OFF')}
                     </div>
                     <Icon.Lightning weight="fill" className="text-red" />
                     <div
                       className={`caption2 font-semibold uppercase text-white px-2.5`}
                     >
-                      Hot Sale {percentSale}% OFF
+                      {t('hotSale')} {percentSale}% {t('OFF')}
                     </div>
                     <Icon.Lightning weight="fill" className="text-red" />
                   </Marquee>
@@ -610,7 +610,7 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
                     )}
                     <div className="product-img w-full aspect-[3/4] rounded-2xl overflow-hidden">
                       <Image
-                        src={data.images[0].img}
+                        src={data.images[0]?.img}
                         width={500}
                         height={500}
                         priority={true}
@@ -809,7 +809,7 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
               className="w-full aspect-square"
               width={5000}
               height={5000}
-              src={data.images[0].img}
+              src={data.images[0]?.img}
               alt="img"
             />
             <div className="list-action flex flex-col gap-1 absolute top-0 right-0">

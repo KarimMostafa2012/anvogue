@@ -24,7 +24,7 @@ interface Params {
   min_price?: number;
   max_price?: number;
   category?: string;
-  sub_category?: string;
+  sub_category?: string | undefined;
   lang?: string;
   page_size?: number;
   page?: number;
@@ -79,6 +79,7 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
+  const currentLanguage = useSelector((state: RootState) => state.language);
 
   // Flag to prevent initial fetch on mount when state is initialized from URL
   const hasInitializedFromURL = useRef(false);
@@ -92,7 +93,7 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
       min_price: searchParams.get("min_price"),
       max_price: searchParams.get("max_price"),
       sort: searchParams.get("sort") || "",
-      sale: searchParams.get("sale"),
+      sale: searchParams.get("sale") || "",
       page: searchParams.get("page"),
       product_name: searchParams.get("product_name") || "",
     };
@@ -101,27 +102,74 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
   // Consolidated local state for filters
   const [localState, setLocalState] = useState(() => {
     // Initialize state from URL params directly during the initial render
+    const params = {
+      category: searchParams.get("category"),
+      color: searchParams.get("color"),
+      sub_category: searchParams.get("sub_category") || undefined,
+      min_price: searchParams.get("min_price"),
+      max_price: searchParams.get("max_price"),
+      sort: searchParams.get("sort"),
+      sale: searchParams.get("sale") || false,
+      page: searchParams.get("page"),
+      product_name: searchParams.get("product_name") || "",
+    };
+
     return {
       viewType: "grid" as "grid" | "list" | "marketplace",
-      showOnlySale: memoizedSearchParams.sale === "true",
-      sortOption: memoizedSearchParams.sort,
+      showOnlySale: params.sale === "true",
+      sortOption: params.sort,
       priceRange: {
-        min: memoizedSearchParams.min_price
-          ? Math.max(0, Number(memoizedSearchParams.min_price))
-          : 0,
-        max: memoizedSearchParams.max_price
-          ? Math.min(10000, Number(memoizedSearchParams.max_price))
+        min: params.min_price ? Math.max(0, Number(params.min_price)) : 0,
+        max: params.max_price
+          ? Math.min(10000, Number(params.max_price))
           : 10000,
       },
-      selectedCategory: memoizedSearchParams.category,
-      selectedSubCategory: memoizedSearchParams.sub_category || null,
-      selectedColor: memoizedSearchParams.color,
-      currentPage: memoizedSearchParams.page
-        ? Math.max(0, Number(memoizedSearchParams.page) - 1)
-        : 0,
-      productNameInput: memoizedSearchParams.product_name, // Separate state for immediate input value
+      selectedCategory: params.category,
+      selectedSubCategory: params.sub_category,
+      selectedColor: params.color,
+      currentPage: params.page ? Math.max(0, Number(params.page) - 1) : 0,
+      productNameInput: params.product_name,
     };
   });
+  // Immediate API params (no debounce for initial load)
+  const immediateApiParams = useMemo(() => {
+    return {
+      lang: currentLanguage,
+      page_size: 12,
+      page: localState.currentPage + 1,
+      category: localState.selectedCategory || undefined,
+      sub_category: localState.selectedSubCategory || undefined,
+      min_price:
+        localState.priceRange.min > 0 ? localState.priceRange.min : undefined,
+      max_price:
+        localState.priceRange.max < 10000
+          ? localState.priceRange.max
+          : undefined,
+      color: localState.selectedColor || undefined,
+      sort:
+        localState.sortOption === "priceHighToLow"
+          ? "-price"
+          : localState.sortOption === "priceLowToHigh"
+          ? "price"
+          : undefined,
+      has_offer: localState.showOnlySale || undefined,
+      product_name: localState.productNameInput || undefined,
+    };
+  }, [
+    currentLanguage,
+    localState.currentPage,
+    localState.selectedCategory,
+    localState.selectedColor,
+    localState.sortOption,
+    localState.showOnlySale,
+    localState.selectedSubCategory,
+    localState.priceRange.min,
+    localState.priceRange.max,
+    localState.productNameInput,
+  ]);
+
+  // Debounced API params for subsequent changes
+  const [debouncedApiParams] = useDebounce(immediateApiParams, 500);
 
   // UI state
   const [showMore, setShowMore] = useState<boolean | null>(null);
@@ -132,7 +180,6 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
   >([]);
 
   // Redux state
-  const currentLanguage = useSelector((state: RootState) => state.language);
   const { products, count, loading, error } = useSelector(
     (state: RootState) => state.products
   );
@@ -166,15 +213,16 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
   }, [dispatch, currentLanguage]);
 
   // Consolidated API params - now depends on debounced values for certain filters
+  // Consolidated API params - now depends on debounced values for certain filters
   const apiParams = useMemo(() => {
     return {
       lang: currentLanguage,
       page_size: 12,
       page: localState.currentPage + 1,
       category: localState.selectedCategory || undefined,
-      sub_category: debouncedSubCategory || undefined,
-      min_price: debouncedMinPrice > 0 ? debouncedMinPrice : undefined,
-      max_price: debouncedMaxPrice < 10000 ? debouncedMaxPrice : undefined,
+      sub_category: debouncedSubCategory || undefined, // Uses debounced
+      min_price: debouncedMinPrice > 0 ? debouncedMinPrice : undefined, // Uses debounced
+      max_price: debouncedMaxPrice < 10000 ? debouncedMaxPrice : undefined, // Uses debounced
       color: localState.selectedColor || undefined,
       sort:
         localState.sortOption === "priceHighToLow"
@@ -183,7 +231,7 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
           ? "price"
           : undefined,
       has_offer: localState.showOnlySale || undefined,
-      product_name: debouncedProductName || undefined,
+      product_name: debouncedProductName || undefined, // Uses debounced
     };
   }, [
     currentLanguage,
@@ -200,6 +248,12 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
 
   // Fetch products when API params change (debounced values are stable here)
   useEffect(() => {
+    console.log("Dispatching getAllProducts with params:", apiParams);
+    dispatch(getAllProducts({ params: apiParams }));
+  }, [dispatch, apiParams]); // This will run on initial mount and subsequent debounced changes
+
+  // Fetch products when API params change (debounced values are stable here)
+  useEffect(() => {
     // Prevent fetching on the initial mount if params are already set from URL
     // and we are just setting up the initial state
     if (!hasInitializedFromURL.current) {
@@ -212,6 +266,7 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
       // If it has a value, it will be the initial value, and debouncing won't affect the *first* fetch for it.
     } else {
       const fetchProducts = async () => {
+        console.log(apiParams);
         dispatch(getAllProducts({ params: apiParams }));
       };
       fetchProducts();
@@ -363,7 +418,7 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
       sortOption: "",
       priceRange: { min: 0, max: 10000 },
       selectedCategory: null,
-      selectedSubCategory: null,
+      selectedSubCategory: undefined,
       selectedColor: null,
       currentPage: 0,
       productNameInput: "", // Clear the search input as well
@@ -443,14 +498,16 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
                   {categories.map((item, index) => (
                     <div
                       key={index}
-                      className={`item flex items-center justify-between cursor-pointer ${
-                        localState.selectedCategory === item.name
-                          ? "text-black"
-                          : ""
-                      }`}
+                      className={`item flex items-center justify-between cursor-pointer`}
                       onClick={() => handleCategoryChange(item.name)}
                     >
-                      <div className="text-secondary has-line-before hover:text-black capitalize">
+                      <div
+                        className={`text-secondary has-line-before hover:text-black capitalize ${
+                          localState.selectedCategory === item.name
+                            ? "!text-black font-bold"
+                            : ""
+                        }`}
+                      >
                         {t(item.name)}
                       </div>
                     </div>
@@ -653,7 +710,7 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
                       id="select-filter"
                       name="select-filter"
                       className="caption1 py-2 ps-3 md:pe-20 pe-10 rounded-lg border border-line"
-                      value={localState.sortOption}
+                      value={localState.sortOption || ""}
                       onChange={handleSortChange}
                     >
                       <option value="">{t("shop.sort.default")}</option>

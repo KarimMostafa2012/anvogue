@@ -85,7 +85,7 @@ const SliderNine = () => {
                           {slide.title}
                         </div>
                         <Link
-                          href="/shop/breadcrumb-img"
+                          href="/shop"
                           className="button-main md:mt-8 mt-3"
                         >
                           {slide.button_text}

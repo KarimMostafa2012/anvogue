@@ -1,5 +1,4 @@
 "use client";
-
 import React, {
   useRef,
   useState,
@@ -14,6 +13,7 @@ import { RootState } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductType } from "@/type/ProductType";
+import { color } from "@/type/ProductType";
 import { Offer } from "@/types/products";
 import Rate from "@/components/Other/Rate";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -44,6 +44,7 @@ interface Props {
 
 interface ProductImage {
   img: string;
+  color: number; // This matches the color number in the colors array
   id: number;
 }
 
@@ -58,7 +59,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
   const [offer, setOffer] = useState<Offer | null>(null);
   const [openPopupImg, setOpenPopupImg] = useState(false);
   const [openSizeGuide, setOpenSizeGuide] = useState(false);
-  const [activeColor, setActiveColor] = useState<string | undefined>("");
+  const [activeColor, setActiveColor] = useState<color | undefined>(undefined);
   const [selectedSubColor, setSelectedSubColor] = useState<{
     [productId: string]: string;
   }>({});
@@ -97,7 +98,8 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
   const relatedProducts = useSelector(
     (state: RootState) => state.products.products
   );
-  // Memoized product data - only use the product from Redux store
+
+  // Memoized product data
   const productMain = useMemo(() => product, [product]);
   const percentSale = useMemo(() => {
     if (!productMain?.new_price || !productMain?.price) return 0;
@@ -106,7 +108,23 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     );
   }, [productMain]);
 
-  // Fetch product data - only once when component mounts or productId changes
+  // Filter images based on selected color
+  const filteredImages = useMemo(() => {
+    console.log(productMain)
+    if (!productMain || !productMain.images || !activeColor) return [];
+
+    // Find the index of the active color in the colors array
+    const colorIndex =
+      productMain.colors.findIndex(
+        (color) => color.color === activeColor.color
+      ) + 1; // +1 because color numbers in images are 1-based
+
+    return productMain.images.filter(
+      (image) => typeof image != "string" && Number(image.color) == colorIndex
+    );
+  }, [productMain, activeColor]);
+
+  // Fetch product data
   useEffect(() => {
     if (productId) {
       dispatch(getProductById({ id: productId, lang: currentLanguage }));
@@ -117,7 +135,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     };
   }, [productId, dispatch, currentLanguage]);
 
-  // Fetch offer if product has one - only when product changes
+  // Fetch offer if product has one
   useEffect(() => {
     if (product?.has_offer && product.offer_id && !offer) {
       dispatch(getOfferById({ id: product.offer_id, lang: currentLanguage }));
@@ -131,12 +149,10 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     }
   }, [offerElement, offer]);
 
-  // Set active color and fetch related products - only when productMain changes
+  // Set active color and fetch related products
   useEffect(() => {
     if (productMain && !activeColor) {
-      setActiveColor(productMain.colors[0]?.color);
-
-      // Only fetch related products if we don't have them yet
+      setActiveColor(productMain.colors[0]);
       const params = {
         sub_category_id: productMain.sub_category,
         lang: currentLanguage,
@@ -145,7 +161,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     }
   }, [productMain, dispatch, currentLanguage, activeColor]);
 
-  // Countdown timer for offer - only when offer changes
+  // Countdown timer for offer
   useEffect(() => {
     if (!offer?.end_datetime) return;
 
@@ -157,33 +173,14 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     return () => clearInterval(timer);
   }, [offer?.end_datetime]);
 
-  // Filter related products - only when product data changes
+  // Filter related products
   useEffect(() => {
     if (productMain) {
       setFilteredData(
         relatedProducts.filter((item) => String(item.id) !== String(productId))
       );
     }
-  }, [productMain, productId]);
-
-  // Rest of your component remains the same...
-
-  // Debounce function
-  const debounce = useCallback(
-    <T extends (...args: any[]) => void>(func: T, delay: number) => {
-      let timeoutId: ReturnType<typeof setTimeout>;
-      return (...args: Parameters<T>) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func(...args), delay);
-      };
-    },
-    []
-  );
-
-  const debouncedAddToCart = useMemo(
-    () => debounce(addToCart, 300),
-    [debounce, addToCart]
-  );
+  }, [productMain, productId, relatedProducts]);
 
   // Helper functions
   const getImageUrl = (image: string | ProductImage | undefined): string => {
@@ -206,7 +203,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     };
   };
 
-  const handleActiveColor = (item: string) => {
+  const handleActiveColor = (item: color) => {
     setActiveColor(item);
   };
 
@@ -236,6 +233,22 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
       console.error("Failed to add item to cart:", error);
     }
   };
+
+  const debounce = useCallback(
+    <T extends (...args: any[]) => void>(func: T, delay: number) => {
+      let timeoutId: ReturnType<typeof setTimeout>;
+      return (...args: Parameters<T>) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func(...args), delay);
+      };
+    },
+    []
+  );
+
+  const debouncedAddToCart = useMemo(
+    () => debounce(addToCart, 300),
+    [debounce, addToCart]
+  );
 
   const debouncedCheckout = useMemo(
     () => debounce(handleAddToCart, 300),
@@ -314,6 +327,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     (acc: number, r: { comments: any[] }) => acc + r.comments.length,
     0
   );
+
   // Early return if product not found
   if (!productMain) {
     return <div className="container py-20">{t("product.notFound")}</div>;
@@ -332,7 +346,6 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
     );
   }
 
-  // Render the component
   return (
     <>
       <div className="product-detail sale">
@@ -341,9 +354,9 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
           <div className="container flex justify-between gap-y-6 flex-wrap">
             {/* Left column - product images */}
             <div className="list-img md:w-1/2 md:pe-[45px] w-full flex flex-col gap-5">
-              {productMain.images[0] && (
+              {filteredImages[0] && (
                 <Image
-                  src={getImageUrl(productMain.images[0])}
+                  src={getImageUrl(filteredImages[0].img)}
                   width={1000}
                   height={1000}
                   alt="prd-img"
@@ -357,15 +370,15 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
 
               {/* Thumbnail images */}
               <div className="list-img-child flex gap-5 flex-wrap">
-                {productMain.images.slice(1).map((item, index) => (
+                {filteredImages.slice(1).map((item, index) => (
                   <Image
                     key={index}
-                    src={getImageUrl(item)}
+                    src={getImageUrl(item.img)}
                     width={1000}
                     height={1000}
                     alt="prd-img"
                     className={`${
-                      index === productMain.images.length - 2 && index % 2 === 0
+                      index === filteredImages.length - 2 && index % 2 === 0
                         ? "w-full"
                         : "w-[calc(50%-10px)]"
                     } aspect-[3/4] object-cover rounded-[20px] cursor-pointer`}
@@ -385,7 +398,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                 >
                   <Icon.X className="text-3xl text-white" />
                 </span>
-                {productMain.images.length > 0 && (
+                {filteredImages.length > 0 && (
                   <Swiper
                     spaceBetween={0}
                     slidesPerView={1}
@@ -397,10 +410,10 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                       swiperRef.current = swiper;
                     }}
                   >
-                    {productMain.images.map((item, index) => (
+                    {filteredImages.map((item, index) => (
                       <SwiperSlide key={index}>
                         <Image
-                          src={getImageUrl(item)}
+                          src={getImageUrl(item.img)}
                           width={1000}
                           height={1000}
                           alt="prd-img"
@@ -450,7 +463,7 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
               {/* Rating */}
               <div className="flex items-center mt-3">
                 <Rate currentRate={productMain.average_rate} size={14} />
-                <span className="caption1 text-secondary">
+                <span className="ms-2 caption1 text-secondary">
                   {t("product.detail.reviews")}
                 </span>
               </div>
@@ -504,100 +517,102 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
 
               {/* Related products */}
               <div className="list-group mt-1">
-                {filteredData?.slice(0, 3).map((item) => (
-                  <div
-                    key={item.id}
-                    className="item flex items-center justify-between mt-6 pb-6 border-b border-line"
-                  >
-                    <div className="left flex items-center gap-5">
-                      <Image
-                        src={item.images[0].img}
-                        width={300}
-                        height={400}
-                        alt="img"
-                        className="w-[95px] object-cover rounded-lg aspect-[3/4] flex-shrink-0"
-                      />
-                      <div className="infor">
-                        <div className="text-title">{item.name}</div>
-                        <div className="flex items-center">
-                          <select
-                            onChange={(e) => {
-                              const selectedOption =
-                                e.target.options[e.target.selectedIndex];
-                              const colorCode =
-                                selectedOption.getAttribute(
-                                  "data-color-code"
-                                ) || "";
-                              handleSelectedSubColor(colorCode, item.id);
-                            }}
-                            className="text-button py-2 ps-3 pe-8 rounded-lg bg-white border border-line"
-                          >
-                            {item.colors.map((variate, i) => (
-                              <option key={i} data-color-code={variate.color}>
-                                {variate.color}
-                              </option>
-                            ))}
-                          </select>
-                          <span
-                            className="h-4 w-4 rounded-3xl border-1 inline-block ms-2"
-                            style={{
-                              backgroundColor:
-                                selectedSubColor[item.id] ||
-                                item.colors[0].color,
-                            }}
-                          ></span>
+                {filteredData?.slice(0, 3).map((item) => {
+                  return (
+                    <div
+                      key={item.id}
+                      className="item flex items-center justify-between mt-6 pb-6 border-b border-line"
+                    >
+                      <div className="left flex items-center gap-5">
+                        <Image
+                          src={item.images[0]?.img}
+                          width={300}
+                          height={400}
+                          alt="img"
+                          className="w-[95px] object-cover rounded-lg aspect-[3/4] flex-shrink-0"
+                        />
+                        <div className="infor">
+                          <div className="text-title">{item.name}</div>
+                          <div className="flex items-center">
+                            <select
+                              onChange={(e) => {
+                                const selectedOption =
+                                  e.target.options[e.target.selectedIndex];
+                                const colorCode =
+                                  selectedOption.getAttribute(
+                                    "data-color-code"
+                                  ) || "";
+                                handleSelectedSubColor(colorCode, item.id);
+                              }}
+                              className="text-button py-2 ps-3 pe-8 rounded-lg bg-white border border-line"
+                            >
+                              {item.colors.map((variate, i) => (
+                                <option key={i} data-color-code={variate.color}>
+                                  {variate.color}
+                                </option>
+                              ))}
+                            </select>
+                            <span
+                              className="h-4 w-4 rounded-3xl border-1 inline-block ms-2"
+                              style={{
+                                backgroundColor:
+                                  selectedSubColor[item.id] ||
+                                  item.colors[0].color,
+                              }}
+                            ></span>
+                          </div>
+                          <div className="text-title mt-2">${item.price}</div>
                         </div>
-                        <div className="text-title mt-2">${item.price}</div>
                       </div>
-                    </div>
-                    <div className="quantity-block md:p-3 max-md:py-1.5 max-md:px-3 flex items-center justify-between rounded-lg border border-line sm:w-[140px] w-[120px] flex-shrink-0">
-                      <Icon.Minus
-                        size={20}
-                        onClick={() => {
-                          if (quantity[item.id] > 0) {
+                      <div className="quantity-block md:p-3 max-md:py-1.5 max-md:px-3 flex items-center justify-between rounded-lg border border-line sm:w-[140px] w-[120px] flex-shrink-0">
+                        <Icon.Minus
+                          size={20}
+                          onClick={() => {
+                            if (quantity[item.id] > 0) {
+                              handleQuantityChange(
+                                quantity[item.id] - 1,
+                                item.id
+                              );
+                            }
+                          }}
+                          className={`${
+                            quantity[item.id] === 0 ? "disabled" : ""
+                          } cursor-pointer`}
+                        />
+                        <div className="body1 font-semibold">
+                          {quantity[item.id] || 0}
+                        </div>
+                        <Icon.Plus
+                          size={20}
+                          onClick={() =>
                             handleQuantityChange(
-                              quantity[item.id] - 1,
+                              (quantity[item.id] || 0) + 1,
                               item.id
-                            );
+                            )
                           }
-                        }}
-                        className={`${
-                          quantity[item.id] === 0 ? "disabled" : ""
-                        } cursor-pointer`}
-                      />
-                      <div className="body1 font-semibold">
-                        {quantity[item.id] || 0}
+                          className="cursor-pointer"
+                        />
                       </div>
-                      <Icon.Plus
-                        size={20}
-                        onClick={() =>
-                          handleQuantityChange(
-                            (quantity[item.id] || 0) + 1,
-                            item.id
-                          )
-                        }
-                        className="cursor-pointer"
-                      />
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Color selection */}
               <div className="choose-color mt-5">
                 <div className="text-title">
                   {t("product.detail.color")}:{" "}
-                  <span className="color">{activeColor}</span>
+                  <span className="color">{activeColor?.color}</span>
                 </div>
                 <div className="list-color flex items-center gap-2 flex-wrap mt-3">
                   {productMain.colors.slice(0, 5).map((item, index) => (
                     <div
                       key={index}
                       className={`color-item w-6 h-6 rounded-full !duration-0 relative ${
-                        activeColor === item.color ? "active" : ""
+                        activeColor?.color === item.color ? "active" : ""
                       }`}
                       style={{ backgroundColor: item.color }}
-                      onClick={() => handleActiveColor(item.color)}
+                      onClick={() => handleActiveColor(item)}
                     >
                       <div className="tag-action bg-black text-white caption2 capitalize px-1.5 py-0.5 rounded-sm">
                         {item.color}
@@ -621,11 +636,13 @@ const VariableProduct: React.FC<Props> = ({ productId }) => {
                             <div
                               key={index + 5}
                               className={`color-item w-6 h-6 rounded-full !duration-0 relative ${
-                                activeColor === item.color ? "active" : ""
+                                activeColor?.color === item.color
+                                  ? "active"
+                                  : ""
                               }`}
                               style={{ backgroundColor: item.color }}
                               onClick={() => {
-                                handleActiveColor(item.color);
+                                handleActiveColor(item);
                                 setMoreColor(item.color);
                                 setShowMoreColors(false);
                               }}

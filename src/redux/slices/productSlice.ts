@@ -86,7 +86,7 @@ export const getOfferProducts = createAsyncThunk<
         },
       }
     );
-    console.log("Fetched Products:", data);
+    console.log("offer products:", data);
     return data;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -109,10 +109,10 @@ export const getNewArrivals = createAsyncThunk<
         },
       }
     );
-    console.log("Fetched Products:", data);
+    console.log("Fetched New Arrivals:", data); // Changed console log
     return data;
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error fetching new arrivals:", error); // Changed console log
     throw error;
   }
 });
@@ -123,7 +123,7 @@ export const getBestSellers = createAsyncThunk<
 >("products/getBestSellers", async ({ params }) => {
   try {
     const { data } = await axios.get<ProductResponse | ProductType[]>(
-      `${baseUrl}/home/new-arrivals/`,
+      `${baseUrl}/home/best-sellers/`, // Corrected API endpoint for best sellers
       {
         params,
         headers: {
@@ -131,34 +131,34 @@ export const getBestSellers = createAsyncThunk<
         },
       }
     );
-    console.log("Fetched Products:", data);
+    console.log("Fetched Best Sellers:", data); // Changed console log
     return data;
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error fetching best sellers:", error); // Changed console log
     throw error;
   }
 });
 
 // Get product by ID
-export const getProductById = createAsyncThunk<ProductType, GetOneProductParams>(
-  "products/getById",
-  async ({ id, lang }) => {
-    try {
-      const { data } = await axios.get<ProductType>(`${baseUrl}/products/${id}`, {
-        params: {
-          lang: lang || defaultLanguage,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return data;
-    } catch (error) {
-      console.error("Error fetching product by ID:", error);
-      throw error;
-    }
+export const getProductById = createAsyncThunk<
+  ProductType,
+  GetOneProductParams
+>("products/getById", async ({ id, lang }) => {
+  try {
+    const { data } = await axios.get<ProductType>(`${baseUrl}/products/${id}`, {
+      params: {
+        lang: lang || defaultLanguage,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error fetching product by ID:", error);
+    throw error;
   }
-);
+});
 
 // Create product
 export const createProduct = createAsyncThunk<ProductType, AddProductParams>(
@@ -254,25 +254,42 @@ export const deleteProduct = createAsyncThunk<null, DeleteProductParams>(
 );
 
 interface ProductState {
-  products: ProductType[];
+  products: ProductType[]; // For general products (from getAllProducts)
+  offerProducts: ProductType[]; // NEW: For products with offers
+  newArrivals: ProductType[]; // NEW: For new arrivals
+  bestSellers: ProductType[]; // NEW: For best sellers
   product: ProductType | null;
   count: number | null;
   next: string | null;
   prev: string | null;
   loading: boolean;
+  offerLoading: boolean; // NEW: Separate loading state for offer products
+  newArrivalsLoading: boolean; // NEW: Separate loading state for new arrivals
+  bestSellersLoading: boolean; // NEW: Separate loading state for best sellers
   error: string | null;
+  offerError: string | null; // NEW: Separate error state for offer products
+  newArrivalsError: string | null; // NEW: Separate error state for new arrivals
+  bestSellersError: string | null; // NEW: Separate error state for best sellers
   statusCode: number | null;
 }
 
-
 const initialState: ProductState = {
   products: [],
+  offerProducts: [], // Initialize new state
+  newArrivals: [], // Initialize new state
+  bestSellers: [], // Initialize new state
   product: null,
   count: null,
   next: null,
   prev: null,
   loading: false,
+  offerLoading: false, // Initialize new state
+  newArrivalsLoading: false, // Initialize new state
+  bestSellersLoading: false, // Initialize new state
   error: null,
+  offerError: null, // Initialize new state
+  newArrivalsError: null, // Initialize new state
+  bestSellersError: null, // Initialize new state
   statusCode: null,
 };
 
@@ -290,7 +307,23 @@ const productSlice = createSlice({
       state.next = null;
       state.prev = null;
       state.error = null;
-    }
+    },
+    // Optional: Add clearers for the new product lists if needed
+    clearOfferProducts: (state) => {
+      state.offerProducts = [];
+      state.offerError = null;
+      state.offerLoading = false;
+    },
+    clearNewArrivals: (state) => {
+      state.newArrivals = [];
+      state.newArrivalsError = null;
+      state.newArrivalsLoading = false;
+    },
+    clearBestSellers: (state) => {
+      state.bestSellers = [];
+      state.bestSellersError = null;
+      state.bestSellersLoading = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -320,79 +353,69 @@ const productSlice = createSlice({
         state.products = [];
       })
 
+      // Handle getOfferProducts
       .addCase(getOfferProducts.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.offerLoading = true; // Use separate loading state
+        state.offerError = null; // Use separate error state
       })
       .addCase(getOfferProducts.fulfilled, (state, action) => {
-        state.loading = false;
+        state.offerLoading = false; // Use separate loading state
         if ("results" in action.payload) {
-          state.products = action.payload.results;
-          state.count = action.payload.count;
-          state.next = action.payload.next;
-          state.prev = action.payload.previous;
+          state.offerProducts = action.payload.results; // Update separate products array
         } else {
-          state.products = action.payload;
-          state.count = null;
-          state.next = null;
-          state.prev = null;
+          state.offerProducts = action.payload; // Update separate products array
         }
-        state.error = null;
+        state.offerError = null; // Use separate error state
       })
       .addCase(getOfferProducts.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to fetch products";
-        state.products = [];
+        state.offerLoading = false; // Use separate loading state
+        state.offerError =
+          action.error.message || "Failed to fetch offer products"; // Use separate error state
+        state.offerProducts = []; // Clear separate products array
       })
 
+      // Handle getNewArrivals
       .addCase(getNewArrivals.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.newArrivalsLoading = true; // Use separate loading state
+        state.newArrivalsError = null; // Use separate error state
       })
       .addCase(getNewArrivals.fulfilled, (state, action) => {
-        state.loading = false;
+        state.newArrivalsLoading = false; // Use separate loading state
         if ("results" in action.payload) {
-          state.products = action.payload.results;
-          state.count = action.payload.count;
-          state.next = action.payload.next;
-          state.prev = action.payload.previous;
+          state.newArrivals = action.payload.results; // Update separate products array
         } else {
-          state.products = action.payload;
-          state.count = null;
-          state.next = null;
-          state.prev = null;
+          state.newArrivals = action.payload; // Update separate products array
         }
-        state.error = null;
-      })
-      .addCase(getBestSellers.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to fetch products";
-        state.products = [];
-      })
-
-      .addCase(getBestSellers.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getBestSellers.fulfilled, (state, action) => {
-        state.loading = false;
-        if ("results" in action.payload) {
-          state.products = action.payload.results;
-          state.count = action.payload.count;
-          state.next = action.payload.next;
-          state.prev = action.payload.previous;
-        } else {
-          state.products = action.payload;
-          state.count = null;
-          state.next = null;
-          state.prev = null;
-        }
-        state.error = null;
+        state.newArrivalsError = null; // Use separate error state
       })
       .addCase(getNewArrivals.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to fetch products";
-        state.products = [];
+        // Corrected from getBestSellers.rejected
+        state.newArrivalsLoading = false; // Use separate loading state
+        state.newArrivalsError =
+          action.error.message || "Failed to fetch new arrivals"; // Use separate error state
+        state.newArrivals = []; // Clear separate products array
+      })
+
+      // Handle getBestSellers
+      .addCase(getBestSellers.pending, (state) => {
+        state.bestSellersLoading = true; // Use separate loading state
+        state.bestSellersError = null; // Use separate error state
+      })
+      .addCase(getBestSellers.fulfilled, (state, action) => {
+        state.bestSellersLoading = false; // Use separate loading state
+        if ("results" in action.payload) {
+          state.bestSellers = action.payload.results; // Update separate products array
+        } else {
+          state.bestSellers = action.payload; // Update separate products array
+        }
+        state.bestSellersError = null; // Use separate error state
+      })
+      .addCase(getBestSellers.rejected, (state, action) => {
+        // Corrected from getNewArrivals.rejected
+        state.bestSellersLoading = false; // Use separate loading state
+        state.bestSellersError =
+          action.error.message || "Failed to fetch best sellers"; // Use separate error state
+        state.bestSellers = []; // Clear separate products array
       })
 
       // Handle getProductById
@@ -439,7 +462,10 @@ const productSlice = createSlice({
         state.products = state.products.map((product) =>
           product.id === updatedProduct.id ? updatedProduct : product
         );
-        state.product = updatedProduct;
+        // Also update if the single `product` state matches the updated one
+        if (state.product?.id === updatedProduct.id) {
+          state.product = updatedProduct;
+        }
         state.error = null;
       })
       .addCase(updateProduct.rejected, (state, action) => {
@@ -469,9 +495,15 @@ const productSlice = createSlice({
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to delete product";
-      })
+      });
   },
 });
 
-export const { clearProduct, clearProducts } = productSlice.actions;
+export const {
+  clearProduct,
+  clearProducts,
+  clearOfferProducts,
+  clearNewArrivals,
+  clearBestSellers,
+} = productSlice.actions;
 export default productSlice.reducer;

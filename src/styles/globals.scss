@@ -279,6 +279,10 @@ input[type="file"] {
   }
 }
 
+.list-trending .swiper-wrapper{
+  height: fit-content;
+}
+
 @media (max-width: 1023.99px) {
   .text-sub-display {
     font-size: 16px;

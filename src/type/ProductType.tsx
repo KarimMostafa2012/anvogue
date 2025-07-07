@@ -1,4 +1,4 @@
-interface color {
+export interface color {
   color: string;
   product: number;
   id: number;
@@ -62,6 +62,7 @@ export interface ProductType {
   thumbImage: Array<string>;
   images: {
     img: string;
+    color: string
     id: number;
   }[];
   description: string;

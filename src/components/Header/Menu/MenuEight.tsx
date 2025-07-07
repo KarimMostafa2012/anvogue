@@ -557,14 +557,14 @@ const MenuEight = () => {
                           }}
                           className="button-main w-full text-center mt-4"
                         >
-                          Dashboard
+                          {t("dashboard")}
                         </Link>
                         <div className="text-secondary text-center mt-3">
                           <Link
                             href={"/my-account"}
                             className="text-black ps-1 hover:underline"
                           >
-                            Account
+                            {t("account")}
                           </Link>
                         </div>
                       </div>
@@ -730,19 +730,21 @@ const MenuEight = () => {
                                       "banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer " +
                                       (i == 1 ? "mt-4" : "")
                                     }
-                                    onClick={()=>{
-                                      router.push("/product/variable?id="+prod.id)
+                                    onClick={() => {
+                                      router.push(
+                                        "/product/variable?id=" + prod.id
+                                      );
                                     }}
                                   >
                                     <div className="text-content py-14 ps-8 relative z-[1] max-w-[50%]">
                                       <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">
-                                        Save ${prod.offer_value}
+                                        {t("Save")} ${prod.offer_value}
                                       </div>
                                       <div className="heading6 mt-2">
                                         {prod.name}
                                       </div>
                                       <div className="body1 mt-3 text-secondary">
-                                        Starting at{" "}
+                                        {t("StartingAt")}{" "}
                                         <span className="text-red">
                                           ${prod.new_price}
                                         </span>
@@ -897,7 +899,7 @@ const MenuEight = () => {
               </div>
             </div>
             <div className="right flex items-center gap-1">
-              <div className="caption1">Hotline:</div>
+              <div className="caption1">{t('menu.menuEight.hotline')}:</div>
               <div className="text-button-uppercase">+01 1234 8888</div>
             </div>
           </div>
@@ -929,7 +931,7 @@ const MenuEight = () => {
                 />
                 <input
                   type="text"
-                  placeholder={t("menu.mobile.searchPlaceholder")}
+                  placeholder={t("Search products")}
                   className=" h-12 rounded-lg border border-line text-sm w-full ps-10 pe-4"
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
@@ -984,7 +986,7 @@ const MenuEight = () => {
                                 : subCat.category.name;
                             return (
                               show && (
-                                <div className="nav-item">
+                                <div className="nav-item" key={subCat.id}>
                                   <div className="text-button-uppercase pb-1">
                                     {subCat.category.name}
                                   </div>
@@ -1524,7 +1526,7 @@ const MenuEight = () => {
                 handleSearch(searchKeyword);
               }}
             >
-              Search
+              {t('menu.menuEight.search')}
             </span>
           </Link>
           <Link

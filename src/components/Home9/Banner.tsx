@@ -60,7 +60,7 @@ const Banner = () => {
                 >
                   <div className="banner-img w-full rounded-2xl overflow-hidden">
                     <Image
-                      src={banner.image}
+                      src={banner.image || ""}
                       width={600}
                       height={400}
                       alt="bg-img"

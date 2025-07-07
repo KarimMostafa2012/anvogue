@@ -211,7 +211,7 @@ const ModalCart = ({
               </div>
               <div className="flex items-center justify-center gap-4 px-6 py-4">
                 <Link
-                  href="/shop/breadcrumb-img"
+                  href="/shop"
                   className="button-main bg-black text-white"
                   onClick={closeModalCart}
                 >
