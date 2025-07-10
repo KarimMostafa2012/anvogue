@@ -624,6 +624,16 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       {t("menu.shop")}
                     </Link>
                   </li>
+                  <li className="h-full">
+                    <Link
+                      href="/blog"
+                      className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${
+                        pathname.includes("/blog") ? "active" : ""
+                      }`}
+                    >
+                      {t("menu.menuEight.blog")}
+                    </Link>
+                  </li>
                   <li className="h-full relative">
                     <Link
                       href="#!"
@@ -968,6 +978,14 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       className="text-xl font-semibold flex items-center justify-between mt-5"
                     >
                       {t("menu.shop")}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href={"/blog"}
+                      className="text-xl font-semibold flex items-center justify-between mt-5"
+                    >
+                      {t("menu.menuEight.blog")}
                     </a>
                   </li>
                   <li
