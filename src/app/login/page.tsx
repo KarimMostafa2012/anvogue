@@ -55,6 +55,8 @@ const Login = () => {
         ) {
           window.localStorage.setItem("accessToken", data.access);
           window.localStorage.setItem("refreshToken", data.refresh);
+          window.sessionStorage.setItem("accessToken", data.access);
+          window.sessionStorage.setItem("refreshToken", data.refresh);
           window.sessionStorage.setItem("loggedIn", "true");
         } else {
           window.sessionStorage.setItem("accessToken", data.access);
