@@ -17,6 +17,7 @@ const Login = () => {
   const currentLanguage = useSelector((state: RootState) => state.language);
   const dispatch = useDispatch<AppDispatch>();
   const [showPass, setShowPass] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(initializeLanguage());
@@ -37,11 +38,15 @@ const Login = () => {
       },
       body: JSON.stringify(formData),
     })
-      .then((response) => {
+      .then(async (response) => {
+        const data = await response.json(); // always parse JSON response
+
         if (!response.ok) {
+          setLoginError(data.detail);
           throw new Error("Network response was not ok");
         }
-        return response.json();
+        console.log(response);
+        return data;
       })
       .then((data) => {
         // معالجة الاستجابة الناجحة
@@ -116,7 +121,7 @@ const Login = () => {
                     required
                   />
                   <Icon.Eye
-                    className="absolute top-[50%] ltr:right-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
+                    className="absolute top-[50%] ltr:right-[24px] rtl:left-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
                     onClick={() => {
                       setShowPass(true);
                     }}
@@ -125,7 +130,7 @@ const Login = () => {
                     }}
                   />
                   <Icon.EyeClosed
-                    className="absolute top-[50%] ltr:right-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
+                    className="absolute top-[50%] ltr:right-[24px] rtl:left-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
                     onClick={() => {
                       setShowPass(false);
                     }}
@@ -134,6 +139,11 @@ const Login = () => {
                     }}
                   />
                 </div>
+                {loginError && (
+                  <div className="text-[red] font-medium my-4 text-left">
+                    {loginError}
+                  </div>
+                )}
                 <div className="flex items-center justify-between mt-5">
                   <div className="flex items-center">
                     <div className="block-input">

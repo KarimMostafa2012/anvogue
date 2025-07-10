@@ -4,7 +4,6 @@ import MenuEight from "@/components/Header/Menu/MenuEight";
 import SliderNine from "@/components/Slider/SliderNine";
 import TrendingNow from "@/components/Home9/TrendingNow";
 import Deal from "@/components/Home9/Deal";
-import productData from "@/data/Product.json";
 import Banner from "@/components/Home9/Banner";
 import TabFeatures from "@/components/Home9/TabFeatures";
 import Benefit from "@/components/Home9/Benefit";

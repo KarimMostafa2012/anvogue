@@ -116,8 +116,9 @@ const MenuEight = () => {
     window.addEventListener("message", handleMessage);
 
     const sendData = () => {
+      console.log("data")
       try {
-        const data = { ...localStorage };
+        const data = { ...sessionStorage };
         if (targetWindow) {
           targetWindow.postMessage(
             {
@@ -136,7 +137,7 @@ const MenuEight = () => {
 
     const openTargetWindow = () => {
       try {
-        targetWindow = window.open("https://dashboard.malalshammobel.com");
+        targetWindow = window.open("https://dashboard.malalshammobel.com/");
         if (!targetWindow) {
           setStatus("Error: Popup was blocked. Please allow popups.");
           return;

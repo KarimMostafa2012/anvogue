@@ -8,6 +8,7 @@ import React, {
   useEffect,
 } from "react";
 import { ProductType } from "@/type/ProductType";
+import { useRouter } from "next/navigation";
 
 interface CartItem extends ProductType {
   quantity: number;
@@ -58,7 +59,6 @@ interface CartContextProps {
   ) => Promise<void>;
   loadCart: () => Promise<void>;
 }
-
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
@@ -114,6 +114,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const router = useRouter();
   const [cartState, dispatch] = useReducer(cartReducer, {
     cartArray: [],
     isLoading: false,
@@ -199,6 +200,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           window.sessionStorage.removeItem("accessToken");
           window.localStorage.removeItem("refreshToken");
           window.sessionStorage.removeItem("refreshToken");
+          router.push("/login");
         }
         throw new Error("Failed to add item to cart");
       }

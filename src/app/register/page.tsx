@@ -6,19 +6,16 @@ import MenuOne from "@/components/Header/Menu/MenuOne";
 import Breadcrumb from "@/components/Breadcrumb/Breadcrumb";
 import Footer from "@/components/Footer/Footer";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/redux/store";
-import {
-  changeLanguage,
-  initializeLanguage,
-} from "@/redux/slices/languageSlice";
-import localStorageUtil from "@/utils/localStorageUtil";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { initializeLanguage } from "@/redux/slices/languageSlice";
 
 const Register = () => {
-  const currentLanguage = useSelector((state: RootState) => state.language);
   const dispatch = useDispatch<AppDispatch>();
   const [showPass, setShowPass] = useState(false);
   const [showConfPass, setShowConfPass] = useState(false);
+  const [passNotEqual, setPassNotEqual] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(initializeLanguage());
@@ -27,6 +24,13 @@ const Register = () => {
   const handleRegister = (form: HTMLFormElement) => {
     const checkbox = document.querySelector("#terms") as HTMLInputElement;
     if (!checkbox?.checked) return;
+    if (
+      (form.elements.namedItem("password") as HTMLInputElement).value !=
+      (form.elements.namedItem("confirmPassword") as HTMLInputElement).value
+    ) {
+      setPassNotEqual(true);
+      return;
+    }
 
     const formData = {
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
@@ -40,24 +44,26 @@ const Register = () => {
       ).value,
     };
 
-    fetch(
-      `https://api.malalshammobel.com/auth/api/users/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    )
-      .then((response) => {
+    fetch(`https://api.malalshammobel.com/auth/api/users/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(async (response) => {
+        const data = await response.json(); // always parse JSON response
+
         if (!response.ok) {
+          setLoginError(data[Object.keys(data)[0]]);
+
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         if (
           (document.querySelector("#remember") as HTMLInputElement)?.checked
         ) {
@@ -143,7 +149,7 @@ const Register = () => {
                     required
                   />
                   <Icon.Eye
-                    className="absolute top-[50%] ltr:right-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
+                    className="absolute top-[50%] ltr:right-[24px] rtl:left-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
                     onClick={() => {
                       setShowPass(true);
                     }}
@@ -152,7 +158,7 @@ const Register = () => {
                     }}
                   />
                   <Icon.EyeClosed
-                    className="absolute top-[50%] ltr:right-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
+                    className="absolute top-[50%] ltr:right-[24px] rtl:left-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
                     onClick={() => {
                       setShowPass(false);
                     }}
@@ -163,14 +169,17 @@ const Register = () => {
                 </div>
                 <div className="confirm-pass mt-5 relative">
                   <input
-                    className="border-line px-4 pt-3 pb-3 w-full rounded-lg"
+                    className={
+                      "border-line px-4 pt-3 pb-3 w-full rounded-lg " +
+                      (passNotEqual ? "!border-[red]" : "")
+                    }
                     id="confirmPassword"
                     type={showConfPass ? "text" : "password"}
                     placeholder="Confirm Password *"
                     required
                   />
                   <Icon.Eye
-                    className="absolute top-[50%] ltr:right-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
+                    className="absolute top-[50%] ltr:right-[24px] rtl:left-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
                     onClick={() => {
                       setShowConfPass(true);
                     }}
@@ -179,7 +188,7 @@ const Register = () => {
                     }}
                   />
                   <Icon.EyeClosed
-                    className="absolute top-[50%] ltr:right-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
+                    className="absolute top-[50%] ltr:right-[24px] rtl:left-[24px] transform translate-y-[calc(-50%)] w-[24px] h-[24px] cursor-pointer"
                     onClick={() => {
                       setShowConfPass(false);
                     }}
@@ -188,9 +197,14 @@ const Register = () => {
                     }}
                   />
                 </div>
+                {loginError && (
+                  <div className="text-[red] font-medium my-4 text-left">
+                    {loginError}
+                  </div>
+                )}
                 <div className="flex items-center mt-5">
                   <div className="block-input">
-                    <input type="checkbox" name="remember" id="remember" required/>
+                    <input type="checkbox" name="terms" id="terms" required />
                     <Icon.CheckSquare
                       size={20}
                       weight="fill"
@@ -198,7 +212,7 @@ const Register = () => {
                     />
                   </div>
                   <label
-                    htmlFor="remember"
+                    htmlFor="terms"
                     className="ps-2 cursor-pointer text-secondary2"
                   >
                     I agree to the
@@ -212,14 +226,14 @@ const Register = () => {
                 </div>
                 <div className="flex items-center mt-5">
                   <div className="block-input">
-                    <input type="checkbox" name="terms" id="terms" />
+                    <input type="checkbox" name="remember" id="remember" />
                     <Icon.CheckSquare
                       size={20}
                       weight="fill"
                       className="icon-checkbox"
                     />
                   </div>
-                  <label htmlFor="terms" className="ps-2 cursor-pointer">
+                  <label htmlFor="remember" className="ps-2 cursor-pointer">
                     Remember me
                   </label>
                 </div>

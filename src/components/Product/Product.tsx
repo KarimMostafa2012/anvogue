@@ -71,7 +71,6 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
   };
 
   const handleAddToCart = () => {
-    console.log(`product page: ${data}`);
     if (!cartState.cartArray.find((item) => item.id === data.id)) {
       addToCart(
         { ...data },

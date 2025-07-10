@@ -91,7 +91,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   let shadowCat = "";
-  const products = useSelector((state: RootState) => state.products.offerProducts);
+  const products = useSelector(
+    (state: RootState) => state.products.offerProducts
+  );
 
   const { t } = useTranslation();
 
@@ -118,10 +120,12 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
     };
 
     window.addEventListener("message", handleMessage);
+    console.log("data");
 
     const sendData = () => {
+      console.log("data");
       try {
-        const data = { ...localStorage };
+        const data = { ...sessionStorage };
         if (targetWindow) {
           targetWindow.postMessage(
             {
@@ -140,7 +144,9 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
 
     const openTargetWindow = () => {
       try {
-        targetWindow = window.open("https://dashboard.malalshammobel.com");
+        targetWindow = window.open(
+          "https://dashboard.malalshammobel.com/admin-dashboard/"
+        );
         if (!targetWindow) {
           setStatus("Error: Popup was blocked. Please allow popups.");
           return;
