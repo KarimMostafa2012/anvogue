@@ -122,17 +122,17 @@ const BlogDetailOne = ({ params }: BlogPageProps) => {
               </div>
               <div className="content md:mt-8 mt-5 gap-x-[30px] flex flex-wrap">
                 <div className="body1">{blogMain?.subtitle}</div>
-                {blogMain?.content_blocks?.map((content) => {
+                {blogMain?.content_blocks?.map((content, i) => {
                   if (content.block_type == "text") {
                     return (
-                      <div className="body1 min-w-full mt-3">
+                      <div key={i} className="body1 min-w-full mt-3">
                         {content.text}
                       </div>
                     );
                   } else {
                     console.log(content.image);
                     return (
-                      <div className="flex sm:flex-[calc(50%-30px)] md:mt-8 mt-5">
+                      <div key={i} className="flex sm:flex-[calc(50%-30px)] md:mt-8 mt-5">
                         <Image
                           src={content.image || "/"}
                           width={3000}
