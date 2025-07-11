@@ -24,7 +24,7 @@ const Deal: React.FC<Props> = ({ start, limit }) => {
     seconds: 0,
   });
   const dispatch = useDispatch<AppDispatch>();
-  const { products, count, loading, error } = useSelector(
+  const { offerProducts, count, offerLoading, offerError } = useSelector(
     (state: RootState) => state.products
   );
 
@@ -61,7 +61,7 @@ const Deal: React.FC<Props> = ({ start, limit }) => {
           </div>
 
           <div className="list-product show-product-sold grid lg:grid-cols-4 grid-cols-2 sm:gap-[30px] gap-[20px] md:mt-10 mt-6">
-            {products.slice(start, limit).map((prd, index) => (
+            {offerProducts.slice(start, limit).map((prd, index) => (
               <Product key={index} data={prd} type="grid" />
             ))}
           </div>

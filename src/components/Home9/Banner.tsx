@@ -31,9 +31,11 @@ const Banner = () => {
     )
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
+          console.error(
+            `HTTP error! Status: ${response.status}, Text: ${response.statusText}`
+          );
         } else {
-          console.log("okaaaaay", response);
+          console.log("banner okay", response);
         }
         return response.json();
       })
@@ -67,7 +69,7 @@ const Banner = () => {
                       className="w-full duration-500"
                     />
                   </div>
-                  <div className="banner-content absolute left-[30px] top-1/2 -translate-y-1/2">
+                  <div className="banner-content absolute left-[30px] bottom-[24px] ">
                     <div className="heading6">{banner.name}</div>
                     <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">
                       {t("Shop Now")}
