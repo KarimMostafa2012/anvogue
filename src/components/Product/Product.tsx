@@ -54,7 +54,6 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
       : setDirection("left");
   }, [currentLanguage]);
 
-  
   useEffect(() => {
     if (!data?.images?.length) return;
 
@@ -122,13 +121,9 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
     router.push(`/product/variable?id=${productId}`);
   };
 
-  let percentSale = Math.floor(
-    100 -
-      (data.new_price
-        ? data.new_price
-        : Number(data.price) / Number(data.price)) *
-        100
-  );
+  let percentSale = data.new_price
+    ? (100 - ((Number(data.new_price) / Number(data.price)) * 100))
+    : 0;
 
   return (
     <>
@@ -149,112 +144,17 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
                   {t("Sale")}
                 </div>
               )}
-              {style === "style-1" ||
-              style === "style-3" ||
-              style === "style-4" ? (
-                <div className="list-action-right absolute top-3 right-3 max-lg:hidden">
-                  {style === "style-4" && (
-                    <div
-                      className={`add-cart-btn w-[32px] h-[32px] flex items-center justify-center rounded-full bg-white duration-300 relative mb-2 ${
-                        compareState.compareArray.some(
-                          (item) => item.id === data.id
-                        )
-                          ? "active"
-                          : ""
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToCart();
-                      }}
-                    >
-                      <div className="tag-action bg-black text-white caption2 px-1.5 py-0.5 rounded-sm">
-                        {t("Add To Cart")}
-                      </div>
-                      <Icon.ShoppingBagOpen size={20} />
-                    </div>
-                  )}
-                  <div
-                    className={`add-wishlist-btn w-[32px] h-[32px] flex items-center justify-center rounded-full bg-white duration-300 relative ${
-                      wishlistState.wishlistArray.some(
-                        (item) => item.id === Number(data.id)
-                      )
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddToWishlist();
-                    }}
-                  >
-                    <div className="tag-action bg-black text-white caption2 px-1.5 py-0.5 rounded-sm">
-                      {t("Add To Wishlist")}
-                    </div>
-                    {wishlistState.wishlistArray.some(
-                      (item) => item.id === Number(data.id)
-                    ) ? (
-                      <>
-                        <Icon.Heart
-                          size={18}
-                          weight="fill"
-                          className="text-white"
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <Icon.Heart size={18} />
-                      </>
-                    )}
-                  </div>
-                  <div
-                    className={`compare-btn w-[32px] h-[32px] flex items-center justify-center rounded-full bg-white duration-300 relative mt-2 ${
-                      compareState.compareArray.some(
-                        (item) => item.id === data.id
-                      )
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddToCompare();
-                    }}
-                  >
-                    <div className="tag-action bg-black text-white caption2 px-1.5 py-0.5 rounded-sm">
-                      {t("Compare Product")}
-                    </div>
-                    <Icon.Repeat size={18} className="compare-icon" />
-                    <Icon.CheckCircle size={20} className="checked-icon" />
-                  </div>
-                  {style === "style-3" || style === "style-4" ? (
-                    <div
-                      className={`quick-view-btn w-[32px] h-[32px] flex items-center justify-center rounded-full bg-white duration-300 relative mt-2 ${
-                        compareState.compareArray.some(
-                          (item) => item.id === data.id
-                        )
-                          ? "active"
-                          : ""
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleQuickviewOpen();
-                      }}
-                    >
-                      <div className="tag-action bg-black text-white caption2 px-1.5 py-0.5 rounded-sm">
-                        {t("Quick View")}
-                      </div>
-                      <Icon.Eye size={18} />
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
               <div className="product-img w-full h-full aspect-[3/4]">
-                {desiredImages.length > 0 && (<Image
-                  src={desiredImages[0]?.img || "/"}
-                  width={500}
-                  height={500}
-                  priority={true}
-                  alt={data.name}
-                  className="w-full h-full object-cover duration-700"
-                />)}
+                {desiredImages.length > 0 && (
+                  <Image
+                    src={desiredImages[0]?.img || "/"}
+                    width={500}
+                    height={500}
+                    priority={true}
+                    alt={data.name}
+                    className="w-full h-full object-cover duration-700"
+                  />
+                )}
                 {(desiredImages[1] != undefined ||
                   desiredImages[1] != null) && (
                   <Image
@@ -267,6 +167,7 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
                   />
                 )}
               </div>
+              {/* 
               {data.has_offer && (
                 <>
                   <Marquee
@@ -305,7 +206,8 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
                     <Icon.Lightning weight="fill" className="text-red" />
                   </Marquee>
                 </>
-              )}
+              )} 
+               */}
               {style === "style-2" || style === "style-4" ? (
                 // data.colors.length > 0 && (
                 <div className="list-size-block flex items-center justify-center gap-4 absolute bottom-0 left-0 w-full h-8">
@@ -338,77 +240,6 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
                 </div>
               ) : (
                 // )
-                <></>
-              )}
-              {style === "style-1" || style === "style-3" ? (
-                <div
-                  className={`list-action ${
-                    style === "style-1" ? "grid grid-cols-2 gap-3" : ""
-                  } px-5 absolute w-full bottom-5 max-lg:hidden`}
-                >
-                  {style === "style-1" && (
-                    <div
-                      className="quick-view-btn w-full text-button-uppercase py-2 text-center rounded-full duration-300 bg-white hover:bg-black hover:text-white"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleQuickviewOpen();
-                      }}
-                    >
-                      Quick View
-                    </div>
-                  )}
-                  {data.action === "add to cart" ? (
-                    <div
-                      className="add-cart-btn w-full text-button-uppercase py-2 text-center rounded-full duration-500 bg-white hover:bg-black hover:text-white"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToCart();
-                      }}
-                    >
-                      Add To Cart
-                    </div>
-                  ) : (
-                    <>
-                      <div
-                        className="quick-shop-btn text-button-uppercase py-2 text-center rounded-full duration-500 bg-white hover:bg-black hover:text-white"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setOpenQuickShop(!openQuickShop);
-                        }}
-                      >
-                        Quick Shop
-                      </div>
-                      <div
-                        className={`quick-shop-block absolute left-5 right-5 bg-white p-5 rounded-[20px] ${
-                          openQuickShop ? "open" : ""
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        <div className="list-size flex items-center justify-center flex-wrap gap-2">
-                          <div
-                            className={`size-item w-10 h-10 rounded-full flex items-center justify-center text-button bg-white border border-line ${
-                              data.size ? "active" : ""
-                            }`}
-                          >
-                            {data.size}
-                          </div>
-                        </div>
-                        <div
-                          className="button-main w-full text-center rounded-full py-3 mt-4"
-                          onClick={() => {
-                            handleAddToCart();
-                            setOpenQuickShop(false);
-                          }}
-                        >
-                          Add To cart
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              ) : (
                 <></>
               )}
               {style === "style-2" || style === "style-5" ? (
@@ -507,35 +338,6 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
                       </div>
                       <Icon.Eye size={20} />
                     </div>
-                    {style === "style-5" && data.action !== "add to cart" && (
-                      <div
-                        className={`quick-shop-block absolute left-5 right-5 bg-white p-5 rounded-[20px] ${
-                          openQuickShop ? "open" : ""
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        {/* <div className="list-size flex items-center justify-center flex-wrap gap-2">
-                          <div
-                            className={`size-item w-10 h-10 rounded-full flex items-center justify-center text-button bg-white border border-line ${
-                              data.size ? "active" : ""
-                            }`}
-                          >
-                            {data.size}
-                          </div>
-                        </div> */}
-                        <div
-                          className="button-main w-full text-center rounded-full py-3 mt-4"
-                          onClick={() => {
-                            handleAddToCart();
-                            setOpenQuickShop(false);
-                          }}
-                        >
-                          Add To cart
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </>
               ) : (
@@ -595,37 +397,11 @@ const Product: React.FC<ProductProps> = ({ data, type = "grid" }) => {
                       <del>${data.price}</del>
                     </div>
                     <div className="product-sale caption1 font-medium bg-green px-3 py-0.5 inline-block rounded-full">
-                      -{percentSale}%
+                      -{percentSale.toFixed(2)}%
                     </div>
                   </>
                 )}
               </div>
-
-              {style === "style-5" && (
-                <>
-                  {data.action === "add to cart" ? (
-                    <div
-                      className="add-cart-btn w-full text-button-uppercase py-2.5 text-center mt-2 rounded-full duration-300 bg-white border border-black hover:bg-black hover:text-white max-lg:hidden"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToCart();
-                      }}
-                    >
-                      Add To Cart
-                    </div>
-                  ) : (
-                    <div
-                      className="quick-shop-btn text-button-uppercase py-2.5 text-center mt-2 rounded-full duration-300 bg-white border border-black hover:bg-black hover:text-white max-lg:hidden"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setOpenQuickShop(!openQuickShop);
-                      }}
-                    >
-                      Quick Shop
-                    </div>
-                  )}
-                </>
-              )}
             </div>
           </div>
         </div>

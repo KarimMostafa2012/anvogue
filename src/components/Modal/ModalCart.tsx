@@ -197,12 +197,8 @@ const ModalCart = ({
               })}
             </div>
             <div className="footer-modal bg-white absolute bottom-0 left-0 w-full">
-              <div className="flex items-center justify-center lg:gap-14 gap-8 px-6 py-4 border-b border-line">
-                <div className="flex items-center ">
-                  {/* <div className="text-secondary2">{t('modal.cart.subtotal')}:</div> */}
-                  {/* <div className="text-title">${totalCart}</div> */}
-                </div>
-                <div className="flex items-center gap-2">
+              <div className="flex items-center justify-start lg:gap-14 gap-8 px-6 py-4 border-b border-line">
+                <div className="flex items-start gap-2">
                   <div className="text-secondary2">{t('modal.cart.total')}:</div>
                   <div className="text-title">
                     ${totalCart >= moneyForFreeship ? totalCart : totalCart + 0}

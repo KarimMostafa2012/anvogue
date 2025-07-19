@@ -10,11 +10,34 @@ import Footer from "@/components/Footer/Footer";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { useCart } from "@/context/CartContext";
 import { countdownTime } from "@/store/countdownTime";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+
+interface UserProfile {
+  first_name?: string;
+  last_name?: string;
+  phone_number?: string;
+  distance?: number | null;
+  balance?: string;
+  email?: string;
+  verified?: boolean;
+  city?: string;
+  house_num?: string;
+  street_name?: string;
+  id?: number | string;
+  zip_code?: string;
+  addresses?: [];
+  profile_img?: string;
+  // Add other expected properties here
+}
 
 const Cart = () => {
   const [timeLeft, setTimeLeft] = useState(countdownTime());
   const router = useRouter();
+  const [profile, setProfile] = useState<UserProfile>({});
+  const [shipping, setShipping] = useState<{
+    shipping_cost: number;
+    total_order: number;
+  }>({ total_order: 0, shipping_cost: 0 });
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -26,6 +49,76 @@ const Cart = () => {
   }, []);
 
   const { cartState, updateCart, removeFromCart } = useCart();
+
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch(
+        "https://api.malalshammobel.com/auth/api/users/me/",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${
+              window.localStorage.getItem("accessToken")
+                ? window.localStorage.getItem("accessToken")
+                : window.sessionStorage.getItem("accessToken")
+            }`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        if (Number(response.status) == 401) {
+          window.localStorage.removeItem("accessToken");
+          window.sessionStorage.removeItem("accessToken");
+          window.localStorage.removeItem("refreshToken");
+          window.sessionStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+      }
+
+      const data = await response.json();
+      setProfile(data);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+  const getShipping = async () => {
+    if (!profile) return;
+    console.log(profile);
+
+    const response = await fetch(
+      `https://api.malalshammobel.com/order/data/precheckout/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            window.localStorage.getItem("accessToken") ||
+            window.sessionStorage.getItem("accessToken")
+          }`,
+        },
+        body: JSON.stringify({
+          street_name: profile.street_name || "",
+          house_num: profile.house_num || "",
+          city: profile.city || "",
+          zip_code: profile.zip_code || "",
+        }),
+      }
+    );
+
+    const data = await response.json();
+    setShipping(data)
+    return data;
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+  useEffect(() => {
+    console.log(profile);
+    getShipping();
+  }, [profile.street_name]);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     // Tìm sản phẩm trong giỏ hàng
@@ -45,47 +138,13 @@ const Cart = () => {
     }
   };
 
-  let moneyForFreeship = 150;
-  let [totalCart, setTotalCart] = useState<number>(0);
-  let [discountCart, setDiscountCart] = useState<number>(0);
-  let [shipCart, setShipCart] = useState<number>(30);
-  let [applyCode, setApplyCode] = useState<number>(0);
-
-  cartState.cartArray.map(
-    (item) => (totalCart += Number(item.price) * item.quantity)
-  );
-
-  const handleApplyCode = (minValue: number, discount: number) => {
-    if (totalCart > minValue) {
-      setApplyCode(minValue);
-      setDiscountCart(discount);
-    } else {
-      alert(`Minimum order must be ${minValue}$`);
-    }
-  };
-
-  if (totalCart < applyCode) {
-    applyCode = 0;
-    discountCart = 0;
-  }
-
-  if (totalCart < moneyForFreeship) {
-    shipCart = 30;
-  }
-
-  if (cartState.cartArray.length === 0) {
-    shipCart = 0;
-  }
-
   const redirectToCheckout = () => {
-    router.push(`/checkout?discount=${discountCart}&ship=${shipCart}`);
+    router.push(`/checkout?discount=${0}&ship=${shipping.shipping_cost}`);
   };
 
   return (
     <>
-      <TopNavOne
-        props="style-one bg-black"
-      />
+      <TopNavOne props="style-one bg-black" />
       <div id="header" className="relative w-full">
         <MenuOne props="bg-transparent" />
         <Breadcrumb heading="Shopping cart" subHeading="Shopping cart" />
@@ -189,7 +248,7 @@ const Cart = () => {
                           </div>
                           <div className="w-1/12 price flex items-center justify-center">
                             <div className="text-title text-center">
-                              ${product.price}
+                              ${product.new_price ? product.new_price : product.price}
                             </div>
                           </div>
                           <div className="w-1/6 flex items-center justify-center">
@@ -223,7 +282,7 @@ const Cart = () => {
                           </div>
                           <div className="w-1/6 flex total-price items-center justify-center">
                             <div className="text-title text-center">
-                              ${product.quantity * Number(product.price)}
+                              ${product.quantity * Number(product.new_price ? product.new_price : product.price)}
                             </div>
                           </div>
                           <div className="w-1/12 flex items-center justify-center">
@@ -349,85 +408,15 @@ const Cart = () => {
                 <div className="total-block py-5 flex justify-between border-b border-line">
                   <div className="text-title">Subtotal</div>
                   <div className="text-title">
-                    $<span className="total-product">{totalCart}</span>
-                    <span></span>
-                  </div>
-                </div>
-                <div className="discount-block py-5 flex justify-between border-b border-line">
-                  <div className="text-title">Discounts</div>
-                  <div className="text-title">
-                    {" "}
-                    <span>-$</span>
-                    <span className="discount">{discountCart}</span>
+                    $<span className="total-product">{shipping.total_order}</span>
                     <span></span>
                   </div>
                 </div>
                 <div className="ship-block py-5 flex justify-between border-b border-line">
                   <div className="text-title">Shipping</div>
                   <div className="choose-type flex gap-12">
-                    <div className="left">
-                      <div className="type">
-                        {moneyForFreeship - totalCart > 0 ? (
-                          <input
-                            id="shipping"
-                            type="radio"
-                            name="ship"
-                            disabled
-                          />
-                        ) : (
-                          <input
-                            id="shipping"
-                            type="radio"
-                            name="ship"
-                            checked={shipCart === 0}
-                            onChange={() => setShipCart(0)}
-                          />
-                        )}
-                        <label className="ps-1" htmlFor="shipping">
-                          Free Shipping:
-                        </label>
-                      </div>
-                      <div className="type mt-1">
-                        <input
-                          id="local"
-                          type="radio"
-                          name="ship"
-                          value={30}
-                          checked={shipCart === 30}
-                          onChange={() => setShipCart(30)}
-                        />
-                        <label
-                          className="text-on-surface-variant1 ps-1"
-                          htmlFor="local"
-                        >
-                          Local:
-                        </label>
-                      </div>
-                      <div className="type mt-1">
-                        <input
-                          id="flat"
-                          type="radio"
-                          name="ship"
-                          value={40}
-                          checked={shipCart === 40}
-                          onChange={() => setShipCart(40)}
-                        />
-                        <label
-                          className="text-on-surface-variant1 ps-1"
-                          htmlFor="flat"
-                        >
-                          Flat Rate:
-                        </label>
-                      </div>
-                    </div>
                     <div className="right">
-                      <div className="ship">$0</div>
-                      <div className="local text-on-surface-variant1 mt-1">
-                        $30
-                      </div>
-                      <div className="flat text-on-surface-variant1 mt-1">
-                        $40
-                      </div>
+                      <div className="ship">${shipping.shipping_cost}</div>
                     </div>
                   </div>
                 </div>
@@ -436,7 +425,7 @@ const Cart = () => {
                   <div className="heading5">
                     $
                     <span className="total-cart heading5">
-                      {totalCart - discountCart + shipCart}
+                      {shipping.total_order + shipping.shipping_cost}
                     </span>
                     <span className="heading5"></span>
                   </div>
@@ -448,10 +437,7 @@ const Cart = () => {
                   >
                     Process To Checkout
                   </div>
-                  <Link
-                    className="text-button hover-underline"
-                    href={"/shop"}
-                  >
+                  <Link className="text-button hover-underline" href={"/shop"}>
                     {t("Continue Shopping")}
                   </Link>
                 </div>

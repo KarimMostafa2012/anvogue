@@ -306,7 +306,8 @@
       "discounts": "الخصومات",
       "shipping": "الشحن",
       "total": "المجموع",
-      "next": "المتابعة إلى الدفع"
+      "next": "المتابعة إلى الدفع",
+      "note": "ملحوظة"
     }
   },
   "footer": {
@@ -568,7 +569,8 @@
       "organic": "عضوي",
       "marketplace": "سوق"
     },
-    "viewMore": "عرض المزيد"
+    "viewMore": "عرض المزيد",
+    "profile": "الملفي الشخصي"
   },
   "special_offer": "عرض خاص",
   "black_fridays": "الجمعة\nالسوداء",

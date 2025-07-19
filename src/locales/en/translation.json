@@ -309,7 +309,8 @@
       "discounts": "Discounts",
       "shipping": "Shipping",
       "total": "Total",
-      "next": "Proceed to Payment"
+      "next": "Proceed to Payment",
+      "note": "Note"
     }
   },
   "footer": {
@@ -571,7 +572,8 @@
       "organic": "Organic",
       "marketplace": "Marketplace"
     },
-    "viewMore": "view more"
+    "viewMore": "view more",
+    "profile": "My Profile"
   },
   "special_offer": "Special Offer",
   "black_fridays": "Black\nFridays",

@@ -85,8 +85,7 @@ const Login = () => {
         router.push(`${data.google_login_url}`);
       });
   };
-  //localhost:3000/google-auth?state=3f590309-ccf6-4aad-88a7-ac8d771acf80&code=4%2F0AVMBsJgN0t_HIKw9tlHS-WaPdtex-soBCgnVHoGNc8uKsQ1NDnwtaF4aI5-VCLkpRjSJ5g&scope=email%20profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20openid&authuser=0&prompt=consent
-  http: return (
+  return (
     <>
       <TopNavOne props="style-one bg-black" />
       <div id="header" className="relative w-full">
@@ -167,12 +166,12 @@ const Login = () => {
                     Forgot Your Password?
                   </Link>
                 </div>
-                <div className="block-button md:mt-7 mt-4">
-                  <button className="button-main">Login</button>
+                <div className="mt-[32px] flex gap-[16px] cursor-pointer border-[1px] border-[#ddd] rounded-[12px] py-[12px] px-[12px] items-center bg-[#1f1f1f] text-white font-bold justify-center duration-300 hover:bg-[#D2EF9A] hover:text-[#1F1F1F]">
+                  <button>Login</button>
                 </div>
               </form>
               <div
-                className="mt-[32px] flex gap-[16px] cursor-pointer border-[1px] border-[#ddd] rounded-[12px] py-[12px] px-[12px] items-center bg-[#1f1f1f] hover:bg-[#1f1f1fea] text-white font-bold justify-center duration-300"
+                className="mt-[32px] flex gap-[16px] cursor-pointer border-[1px] border-[#ddd] rounded-[12px] py-[12px] px-[12px] items-center bg-[#1f1f1f] text-white font-bold justify-center duration-300 hover:bg-[#D2EF9A] hover:text-[#1F1F1F]"
                 onClick={googleSubmit}
               >
                 <span>

@@ -306,7 +306,8 @@
       "discounts": "Rabatte",
       "shipping": "Versand",
       "total": "Gesamt",
-      "next": "Zur Zahlung"
+      "next": "Zur Zahlung",
+      "note": "Notiz"
     }
   },
   "topNav": {
@@ -571,7 +572,8 @@
       "organic": "Bio",
       "marketplace": "Marktplatz"
     },
-    "viewMore": "Mehr anzeigen"
+    "viewMore": "Mehr anzeigen",
+    "profile": "Mein Profil"
   },
   "Blog": "Blog",
   "home": {

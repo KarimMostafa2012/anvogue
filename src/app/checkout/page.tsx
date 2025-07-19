@@ -6,9 +6,6 @@ import TopNavOne from "@/components/Header/TopNav/TopNavOne";
 import MenuOne from "@/components/Header/Menu/MenuOne";
 import Breadcrumb from "@/components/Breadcrumb/Breadcrumb";
 import Footer from "@/components/Footer/Footer";
-import { ProductType } from "@/type/ProductType";
-import productData from "@/data/Product.json";
-import Product from "@/components/Product/Product";
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { useCart } from "@/context/CartContext";
 import { useSearchParams } from "next/navigation";
@@ -26,6 +23,7 @@ interface UserProfile {
   first_name?: string;
   last_name?: string;
   phone_number?: string;
+  distance?: number | null;
   balance?: string;
   email?: string;
   verified?: boolean;
@@ -111,10 +109,10 @@ const Checkout = () => {
       },
       body: JSON.stringify({
         phone_number: profile.phone_number,
-        street_name: mainForm[0].value,
-        house_num: mainForm[2].value,
-        city: mainForm[1].value,
-        zip_code: mainForm[3].value,
+        street_name: mainForm[1].value,
+        house_num: mainForm[3].value,
+        city: mainForm[2].value,
+        zip_code: mainForm[4].value,
       }),
     })
       .then((response) => {
@@ -141,10 +139,10 @@ const Checkout = () => {
         "input"
       ) as NodeListOf<HTMLInputElement>;
       console.log({
-        street_name: formElements[0].value,
-        house_num: formElements[2].value,
-        city: formElements[1].value,
-        zip_code: formElements[3].value,
+        street_name: formElements[1].value,
+        house_num: formElements[3].value,
+        city: formElements[2].value,
+        zip_code: formElements[4].value,
       });
       // more addresses ================================
       fetch(
@@ -162,10 +160,10 @@ const Checkout = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            street_name: formElements[0].value,
-            house_num: formElements[2].value,
-            city: formElements[1].value,
-            zip_code: formElements[3].value,
+            street_name: formElements[1].value,
+            house_num: formElements[3].value,
+            city: formElements[2].value,
+            zip_code: formElements[4].value,
           }),
         }
       )
@@ -228,10 +226,10 @@ const Checkout = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        street_name: form[0].value,
-        house_num: form[2].value,
-        city: form[1].value,
-        zip_code: form[3].value,
+        street_name: form[1].value,
+        house_num: form[3].value,
+        city: form[2].value,
+        zip_code: form[4].value,
       }),
     })
       .then((response) => {
@@ -311,6 +309,7 @@ const Checkout = () => {
       const selectedFormChilds = document.querySelectorAll(
         "#mainForm input"
       ) as NodeListOf<HTMLInputElement>;
+      console.log(selectedFormChilds);
 
       fetch("https://api.malalshammobel.com/order/", {
         method: "POST",
@@ -323,11 +322,10 @@ const Checkout = () => {
         },
         body: JSON.stringify({
           notes: notes?.value == null ? "" : notes?.value,
-          street_name: selectedFormChilds[0].value,
-          house_num: selectedFormChilds[2].value,
-          city: selectedFormChilds[1].value,
-          zip_code: selectedFormChilds[3].value,
-          user: profile.id,
+          street_name: selectedFormChilds[1].value,
+          house_num: selectedFormChilds[3].value,
+          city: selectedFormChilds[2].value,
+          zip_code: selectedFormChilds[4].value,
         }),
       })
         .then((response) => {
@@ -347,8 +345,8 @@ const Checkout = () => {
           console.log("Response data:", data);
           if (data.payment_status == "Pending") {
             pyamentEndPoint(data.id);
-          }else if(data.payment_status == "Paid"){
-            window.location.href = "/payment/success"
+          } else if (data.payment_status == "Paid") {
+            window.location.href = "/payment/success";
           }
         })
         .catch((error) => {
@@ -834,7 +832,7 @@ const Checkout = () => {
                     ))
                   )}
                 </div>
-                <div className="discount-block py-5 flex justify-between border-b border-line">
+                {/* <div className="discount-block py-5 flex justify-between border-b border-line">
                   <div className="text-title">
                     {t("checkout.order.discounts")}
                   </div>
@@ -842,7 +840,7 @@ const Checkout = () => {
                     -$
                     <span className="discount">{discount ? discount : 0}</span>
                   </div>
-                </div>
+                </div> */}
                 <div className="ship-block py-5 flex justify-between border-b border-line">
                   <div className="text-title">
                     {t("checkout.order.shipping")}
@@ -857,15 +855,20 @@ const Checkout = () => {
                     ${totalCart - Number(discount) + Number(ship)}
                   </div>
                 </div>
-                <textarea
-                  className="border-line mt-2 px-4 py-3 w-full rounded-lg"
-                  name="notes"
-                  id="notes"
-                ></textarea>
+
+                <div className="pt-5">
+                  <div className="heading5">{t("checkout.order.note")}</div>
+                  <textarea
+                    className="border-line mt-2 px-4 py-3 w-full rounded-lg"
+                    name="notes"
+                    id="notes"
+                  ></textarea>
+                </div>
               </div>
               <button
                 onClick={() => {
                   payment();
+                  console.log("test");
                 }}
                 className="button-main mt-6"
               >

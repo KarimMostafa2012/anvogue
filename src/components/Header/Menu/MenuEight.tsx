@@ -181,6 +181,15 @@ const MenuEight = () => {
     return cleanup;
   };
 
+  const handleLogout = () => {
+    window.localStorage.removeItem("accessToken");
+    window.localStorage.removeItem("refreshToken");
+    window.sessionStorage.removeItem("loggedIn");
+    window.sessionStorage.removeItem("refreshToken");
+    window.sessionStorage.removeItem("accessToken");
+    window.location.href = "/";
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -573,13 +582,40 @@ const MenuEight = () => {
                       </div>
                     </>
                   ) : (
-                    <Icon.User
-                      size={24}
-                      color="black"
-                      onClick={() => {
-                        window.location.href = "/my-account";
-                      }}
-                    />
+                    <>
+                      <Icon.User
+                        size={24}
+                        color="black"
+                        onClick={handleLoginPopup}
+                      />
+                      <div
+                        className={`login-popup absolute top-[74px] w-[320px] p-7 rounded-xl bg-white box-shadow-sm 
+                                                        ${
+                                                          openLoginPopup
+                                                            ? "open"
+                                                            : ""
+                                                        }`}
+                      >
+                        <Link
+                          href={"/my-account"}
+                          className="button-main w-full text-center"
+                        >
+                          {t("menu.profile")}
+                        </Link>
+                        <div className="text-secondary text-center mt-3">
+                          <Link
+                            href={"/login"}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleLogout();
+                            }}
+                            className="text-black ps-1 hover:underline"
+                          >
+                            {t("menu.account.logout")}
+                          </Link>
+                        </div>
+                      </div>
+                    </>
                   )}
                 </div>
                 <div

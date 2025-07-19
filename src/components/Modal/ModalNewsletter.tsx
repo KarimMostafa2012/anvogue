@@ -41,7 +41,9 @@ const ModalNewsletter = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   // Get products from Redux store
-  const products = useSelector((state: RootState) => state.products.offerProducts);
+  const products = useSelector(
+    (state: RootState) => state.products.offerProducts
+  );
   const currentLanguage = useSelector((state: RootState) => state.language);
 
   useEffect(() => {
@@ -165,10 +167,16 @@ const ModalNewsletter = () => {
                               <del>${item.price}</del>
                             </div>
                           </div>
+                          <button
+                            className="sm:hidden mt-3 quick-view-btn button-main sm:py-3 py-2 sm:px-5 px-4 bg-black hover:bg-green text-white rounded-full whitespace-nowrap"
+                            onClick={() => openQuickview(item)}
+                          >
+                            {t("quick_view")}
+                          </button>
                         </div>
                       </div>
                       <button
-                        className="quick-view-btn button-main sm:py-3 py-2 sm:px-5 px-4 bg-black hover:bg-green text-white rounded-full whitespace-nowrap"
+                        className="max-sm:hidden quick-view-btn button-main sm:py-3 py-2 sm:px-5 px-4 bg-black hover:bg-green text-white rounded-full whitespace-nowrap"
                         onClick={() => openQuickview(item)}
                       >
                         {t("quick_view")}

@@ -9,8 +9,10 @@ import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { initializeLanguage } from "@/redux/slices/languageSlice";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [showPass, setShowPass] = useState(false);
   const [showConfPass, setShowConfPass] = useState(false);
@@ -79,6 +81,21 @@ const Register = () => {
       })
       .catch((error) => {
         console.error("Error:", error);
+      });
+  };
+
+  const googleSubmit = () => {
+    fetch(`https://api.malalshammobel.com/auth/google-auth/?platform=web`, {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        router.push(`${data.google_login_url}`);
       });
   };
 
@@ -237,10 +254,23 @@ const Register = () => {
                     Remember me
                   </label>
                 </div>
-                <div className="block-button md:mt-7 mt-4">
-                  <button className="button-main">Register</button>
+                <div className="mt-[32px] flex gap-[16px] cursor-pointer border-[1px] border-[#ddd] rounded-[12px] py-[12px] px-[12px] items-center bg-[#1f1f1f] text-white font-bold justify-center duration-300 hover:bg-[#D2EF9A] hover:text-[#1F1F1F]">
+                  <button>Register</button>
                 </div>
               </form>
+              <div
+                className="mt-[32px] flex gap-[16px] cursor-pointer border-[1px] border-[#ddd] rounded-[12px] py-[12px] px-[12px] items-center bg-[#1f1f1f] text-white font-bold justify-center duration-300 hover:bg-[#D2EF9A] hover:text-[#1F1F1F]"
+                onClick={googleSubmit}
+              >
+                <span>
+                  <img
+                    src="/images/other/google-icon.svg"
+                    className="w-[24px]"
+                    alt="Google"
+                  />
+                </span>
+                <span>Login Using Google</span>
+              </div>
             </div>
             <div className="right md:w-1/2 w-full lg:ps-[60px] md:ps-[40px] flex items-center">
               <div className="text-content">
