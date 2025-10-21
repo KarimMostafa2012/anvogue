@@ -116,7 +116,7 @@ const ModalNewsletter = () => {
             <div
               className={`left lg:w-1/2 sm:w-2/5 max-sm:hidden flex flex-col items-center justify-center gap-5 py-14`}
               style={{
-                backgroundColor: popup.background_color || "#d2ef9a",
+                backgroundColor: popup?.background_color || "#d2ef9a",
               }}
             >
               <div className="text-xs font-semibold uppercase text-center">
