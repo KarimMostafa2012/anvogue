@@ -74,7 +74,7 @@ const SliderNine = () => {
                     <div
                       className="slider-item h-full w-full flex items-center relative"
                       style={{
-                        backgroundColor: slide.background_color,
+                        backgroundColor: slide?.background_color ? slide?.background_color : "#ffffff",
                       }}
                     >
                       <div className="text-content md:ps-16 ps-5 basis-1/2">
