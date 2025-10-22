@@ -53,7 +53,7 @@ const Banner = () => {
       <div className="banner-block md:pt-20 pt-10">
         <div className="container">
         {
-            banners?.length > 0 && (
+            (banners != undefined && banners?.length > 0) && (
               <div className="list-banner grid lg:grid-cols-3 md:grid-cols-2 lg:gap-[30px] gap-[20px]">
                 {banners?.map((banner) => {
                   return (
