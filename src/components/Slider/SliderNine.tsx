@@ -70,7 +70,7 @@ const SliderNine = () => {
             >
               {slides.map((slide) => {
                 return (
-                  <SwiperSlide key={slide.id}>
+                  <SwiperSlide key={slide?.id}>
                     <div
                       className="slider-item h-full w-full flex items-center relative"
                       style={{
@@ -82,18 +82,18 @@ const SliderNine = () => {
                           {slide.sub_title}
                         </div>
                         <div className="heading1 md:mt-5 mt-2">
-                          {slide.title}
+                          {slide?.title}
                         </div>
                         <Link
                           href="/shop"
                           className="button-main md:mt-8 mt-3"
                         >
-                          {slide.button_text}
+                          {slide?.button_text}
                         </Link>
                       </div>
                       <div className="sub-img absolute xl:w-[33%] sm:w-[38%] w-[60%] ltr:xl:right-[100px] ltr:sm:right-[20px] ltr:-right-5 rtl:xl:left-[100px] rtl:sm:left[20xpx] rtl:-left-5 bottom-[50%] transform translate-y-[50%]">
                         <Image
-                          src={slide.image || ""}
+                          src={slide?.image || ""}
                           width={2000}
                           height={1936}
                           alt="bg9-1"

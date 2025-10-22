@@ -137,7 +137,7 @@ const BlogDetailOne = ({ params }: BlogPageProps) => {
                           src={content.image || "/"}
                           width={3000}
                           height={2000}
-                          alt={blogMain.title}
+                          alt={blogMain?.title}
                           className="w-full rounded-3xl"
                         />
                       </div>
@@ -228,7 +228,7 @@ const BlogDetailOne = ({ params }: BlogPageProps) => {
                       <div className="text-button-uppercase text-secondary2">
                         Next
                       </div>
-                      <div className="text-title mt-2">{blogData[0].title}</div>
+                      <div className="text-title mt-2">{blogData[0]?.title}</div>
                     </div>
                   </>
                 ) : (

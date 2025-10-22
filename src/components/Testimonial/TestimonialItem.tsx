@@ -19,11 +19,11 @@ const TestimonialItem: React.FC<TestimonialProps> = ({ data, type }) => {
             {type === "style-one" ? (
                 <div className="testimonial-item style-one h-full">
                     <div className="testimonial-main bg-white p-8 rounded-2xl h-full">
-                        <Rate currentRate={data.star} size={14} />
-                        <div className="heading6 title mt-4">{data.title}</div>
-                        <div className="desc mt-2">{data.description}</div>
-                        <div className="text-button name mt-4">{data.name}</div>
-                        <div className="caption2 date text-secondary2 mt-1">{data.date}</div>
+                        <Rate currentRate={data?.star} size={14} />
+                        <div className="heading6 title mt-4">{data?.title}</div>
+                        <div className="desc mt-2">{data?.description}</div>
+                        <div className="text-button name mt-4">{data?.name}</div>
+                        <div className="caption2 date text-secondary2 mt-1">{data?.date}</div>
                     </div>
                 </div>
             ) : (
@@ -31,11 +31,11 @@ const TestimonialItem: React.FC<TestimonialProps> = ({ data, type }) => {
                     {type === "style-four" ? (
                         <div className="testimonial-item style-four h-full">
                             <div className="testimonial-main h-full">
-                                <Rate currentRate={data.star} size={14} />
+                                <Rate currentRate={data?.star} size={14} />
                                 <div className="text-button-uppercase text-secondary mt-4">{t("Customer reviews")}</div>
-                                <div className="heading4 normal-case desc font-normal mt-2">{data.description}</div>
-                                <div className="text-button name mt-4">{data.name}</div>
-                                <div className="caption2 text-secondary2 date">{data.date}</div>
+                                <div className="heading4 normal-case desc font-normal mt-2">{data?.description}</div>
+                                <div className="text-button name mt-4">{data?.name}</div>
+                                <div className="caption2 text-secondary2 date">{data?.date}</div>
                             </div>
                         </div>
                     ) : (

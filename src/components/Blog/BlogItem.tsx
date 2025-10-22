@@ -34,7 +34,7 @@ const BlogItem: React.FC<BlogProps> = ({ data, type }) => {
           <div className="blog-main h-full block">
             <div className="blog-thumb rounded-[20px] overflow-hidden aspect-[3/2]">
               <Image
-                src={data.featured_image}
+                src={data?.featured_image}
                 width={2000}
                 height={1500}
                 alt="blog-img"
@@ -43,15 +43,15 @@ const BlogItem: React.FC<BlogProps> = ({ data, type }) => {
             </div>
             <div className="blog-infor mt-7">
               <div className="heading6 blog-title mt-3 duration-300">
-                {data.title}
+                {data?.title}
               </div>
               <div className="flex items-center gap-2 mt-2">
                 <div className="blog-author caption1 text-secondary">
-                  by {data.author}
+                  by {data?.author}
                 </div>
                 <span className="w-[20px] h-[1px] bg-black"></span>
                 <div className="blog-date caption1 text-secondary">
-                  {data.created_at}
+                  {data?.created_at}
                 </div>
               </div>
             </div>
@@ -62,12 +62,12 @@ const BlogItem: React.FC<BlogProps> = ({ data, type }) => {
           {type === "style-list" ? (
             <div
               className="blog-item style-list h-full cursor-pointer"
-              onClick={() => handleBlogClick(data.id.toString())}
+              onClick={() => handleBlogClick(data?.id?.toString())}
             >
               <div className="blog-main h-full flex max-md:flex-col md:items-center md:gap-9 gap-6">
                 <div className="blog-thumb md:w-1/2 w-full rounded-[20px] overflow-hidden flex-shrink-0">
                   <Image
-                    src={data.featured_image}
+                    src={data?.featured_image}
                     width={2000}
                     height={1500}
                     alt="blog-img"
@@ -76,19 +76,19 @@ const BlogItem: React.FC<BlogProps> = ({ data, type }) => {
                 </div>
                 <div className="blog-infor">
                   <div className="heading6 blog-title mt-3 duration-300">
-                    {data.title}
+                    {data?.title}
                   </div>
                   <div className="flex items-center gap-2 mt-2">
                     <div className="blog-author caption1 text-secondary">
-                      by {data.author}
+                      by {data?.author}
                     </div>
                     <span className="w-[20px] h-[1px] bg-black"></span>
                     <div className="blog-date caption1 text-secondary">
-                      {data.created_at}
+                      {data?.created_at}
                     </div>
                   </div>
                   <div className="body1 text-secondary mt-4">
-                    {data.subtitle}
+                    {data?.subtitle}
                   </div>
                   <div className="text-button underline mt-4">Read More</div>
                 </div>
@@ -99,12 +99,12 @@ const BlogItem: React.FC<BlogProps> = ({ data, type }) => {
               {type === "style-default" && (
                 <div
                   className="blog-item style-default h-full cursor-pointer"
-                  onClick={() => handleBlogClick(data.id.toString())}
+                  onClick={() => handleBlogClick(data?.id?.toString())}
                 >
                   <div className="blog-main h-full block pb-8 border-b border-line">
                     <div className="blog-thumb rounded-[20px] overflow-hidden">
                       <Image
-                        src={data.featured_image}
+                        src={data?.featured_image}
                         width={2000}
                         height={1500}
                         alt="blog-img"
@@ -113,19 +113,19 @@ const BlogItem: React.FC<BlogProps> = ({ data, type }) => {
                     </div>
                     <div className="blog-infor mt-7">
                       <div className="heading6 blog-title mt-3 duration-300">
-                        {data.title}
+                        {data?.title}
                       </div>
                       <div className="flex items-center gap-2 mt-2">
                         <div className="blog-author caption1 text-secondary">
-                          by {data.author}
+                          by {data?.author}
                         </div>
                         <span className="w-[20px] h-[1px] bg-black"></span>
                         <div className="blog-date caption1 text-secondary">
-                          {data.created_at}
+                          {data?.created_at}
                         </div>
                       </div>
                       <div className="body1 text-secondary mt-4">
-                        {data.subtitle}
+                        {data?.subtitle}
                       </div>
                       <div className="text-button underline mt-4">
                         Read More
