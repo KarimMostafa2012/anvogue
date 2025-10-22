@@ -656,24 +656,28 @@ const MenuEight = () => {
                     className="text-xl max-sm:text-base"
                   />
                 </div>
-                <div
-                  className={`sub-menu-department absolute top-[44px] left-0 right-0 h-max bg-white rounded-b-2xl ${
-                    openSubMenuDepartment ? "open" : ""
-                  }`}
-                >
-                  {categories && categories?.map((cat) => {
-                    return (
-                      <div key={cat.id} className="item block">
-                        <Link
-                          href={"/shop/?category=" + cat.name}
-                          className="py-1.5 inline-block"
+                {
+                    categories.length > 0 (
+                        <div
+                          className={`sub-menu-department absolute top-[44px] left-0 right-0 h-max bg-white rounded-b-2xl ${
+                            openSubMenuDepartment ? "open" : ""
+                          }`}
                         >
-                          {cat.name}
-                        </Link>
-                      </div>
-                    );
-                  })}
-                </div>
+                          {categories?.map((cat) => {
+                            return (
+                              <div key={cat.id} className="item block">
+                                <Link
+                                  href={"/shop/?category=" + cat.name}
+                                  className="py-1.5 inline-block"
+                                >
+                                  {cat.name}
+                                </Link>
+                              </div>
+                            );
+                          })}
+                        </div>
+                    )
+                }
               </div>
               <div className="menu-main style-eight h-full ps-12 max-lg:hidden">
                 <ul className="flex items-center gap-8 h-full">
@@ -701,7 +705,7 @@ const MenuEight = () => {
                       <div className="container">
                         <div className="flex justify-between py-8">
                           {
-                              subCategories.length > 0 && (
+                          subCategories.length > 0 && (
                           <div className="nav-link basis-2/3 grid grid-cols-4 gap-y-8">
                             {subCategories?.map((subCat) => {
                               let i = 0;
