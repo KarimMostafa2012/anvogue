@@ -52,33 +52,37 @@ const Banner = () => {
     <>
       <div className="banner-block md:pt-20 pt-10">
         <div className="container">
-          <div className="list-banner grid lg:grid-cols-3 md:grid-cols-2 lg:gap-[30px] gap-[20px]">
-            {banners?.map((banner) => {
-              return (
-                <Link
-                  key={banner.id}
-                  href={banner.link || ""}
-                  className="banner-item relative block duration-500"
-                >
-                  <div className="banner-img w-full rounded-2xl overflow-hidden">
-                    <Image
-                      src={banner.image || ""}
-                      width={600}
-                      height={400}
-                      alt="bg-img"
-                      className="w-full duration-500"
-                    />
-                  </div>
-                  <div className="banner-content absolute left-[30px] bottom-[24px] ">
-                    <div className="heading6">{banner.name}</div>
-                    <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">
-                      {t("Shop Now")}
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+        {
+            banners.length > 0 && (
+              <div className="list-banner grid lg:grid-cols-3 md:grid-cols-2 lg:gap-[30px] gap-[20px]">
+                {banners?.map((banner) => {
+                  return (
+                    <Link
+                      key={banner.id}
+                      href={banner.link || ""}
+                      className="banner-item relative block duration-500"
+                    >
+                      <div className="banner-img w-full rounded-2xl overflow-hidden">
+                        <Image
+                          src={banner.image || ""}
+                          width={600}
+                          height={400}
+                          alt="bg-img"
+                          className="w-full duration-500"
+                        />
+                      </div>
+                      <div className="banner-content absolute left-[30px] bottom-[24px] ">
+                        <div className="heading6">{banner.name}</div>
+                        <div className="caption1 font-semibold text-black relative inline-block pb-1 border-b-2 border-black duration-500 mt-2">
+                          {t("Shop Now")}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+                )
+            }
         </div>
       </div>
     </>
