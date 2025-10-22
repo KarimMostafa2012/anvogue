@@ -16,7 +16,7 @@ const Footer = () => {
                         <div className="content-footer py-[60px] flex justify-between flex-wrap gap-y-8">
                             <div className="company-infor basis-1/4 max-lg:basis-full pe-7">
                                 <Link href={'/'} className="logo">
-                                    <div className="heading4">{t('footer.company.name')}</div>
+                                    <img src="/images/logo.png" className="h-24" alt="" />
                                 </Link>
                                 <div className='flex gap-3 mt-3'>
                                     <div className="flex flex-col ">
