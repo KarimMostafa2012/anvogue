@@ -260,7 +260,7 @@ const categorySlice = createSlice({
             .addCase(updateCategory.fulfilled, (state, action) => {
                 state.loading = false;
                 const updatedCategory = action.payload;
-                state.categories = state.categories.map(category =>
+                state.categories = state?.categories?.map(category =>
                     category.id === updatedCategory.id ? updatedCategory : category
                 );
                 state.category = updatedCategory;

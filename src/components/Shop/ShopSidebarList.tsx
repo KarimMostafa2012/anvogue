@@ -494,25 +494,27 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
               {/* Category filter */}
               <div className="filter-type pb-8 border-b border-line">
                 <div className="heading6">{t("shop.sidebar.categories")}</div>
-                <div className="list-type mt-4">
-                  {categories.map((item, index) => (
-                    <div
-                      key={index}
-                      className={`item flex items-center justify-between cursor-pointer`}
-                      onClick={() => handleCategoryChange(item.name)}
-                    >
-                      <div
-                        className={`text-secondary has-line-before hover:text-black capitalize ${
-                          localState.selectedCategory === item.name
-                            ? "!text-black font-bold"
-                            : ""
-                        }`}
-                      >
-                        {t(item.name)}
-                      </div>
+                {categories.length > 0 && (
+                    <div className="list-type mt-4">
+                      {categories?.map((item, index) => (
+                        <div
+                          key={index}
+                          className={`item flex items-center justify-between cursor-pointer`}
+                          onClick={() => handleCategoryChange(item.name)}
+                        >
+                          <div
+                            className={`text-secondary has-line-before hover:text-black capitalize ${
+                              localState.selectedCategory === item.name
+                                ? "!text-black font-bold"
+                                : ""
+                            }`}
+                          >
+                            {t(item.name)}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                )}
               </div>
 
               {/* Price range filter */}

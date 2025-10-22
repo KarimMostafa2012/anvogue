@@ -107,51 +107,55 @@ const TrendingNow = () => {
               flex-direction: column;
             }
           `}</style>
-          <Swiper
-            spaceBetween={6}
-            slidesPerView={1}
-            navigation={true}
-            modules={[Navigation, Autoplay]}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-              },
-              768: {
-                slidesPerView: 3,
-                spaceBetween: 20,
-              },
-              1024: {
-                slidesPerView: 4,
-                spaceBetween: 20,
-              },
-            }}
-            className="swiper-trending !h-fit"
-          >
-            {categories.map((item, index) => (
-              <SwiperSlide key={index} className="!h-fit">
-                <div
-                  className="trending-item bg-surface rounded-2xl p-4 cursor-pointer !h-fit"
-                  onClick={() =>
-                    handleTypeClick(item.category.name[currentLanguage])
-                  }
-                >
-                  <div className="bg-img w-full aspect-sq uare rounded-xl overflow-hidden mb-4">
-                    <Image
-                      src={item.image || "/images/logo.png"}
-                      width={300}
-                      height={300}
-                      alt={item.category.name[currentLanguage]}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="name text-button text-center">
-                    {item.category.name[currentLanguage]}
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {
+              categories.length > 0 && (
+                  <Swiper
+                    spaceBetween={6}
+                    slidesPerView={1}
+                    navigation={true}
+                    modules={[Navigation, Autoplay]}
+                    breakpoints={{
+                      640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                      },
+                      768: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                      },
+                      1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 20,
+                      },
+                    }}
+                    className="swiper-trending !h-fit"
+                  >
+                    {categories?.map((item, index) => (
+                      <SwiperSlide key={index} className="!h-fit">
+                        <div
+                          className="trending-item bg-surface rounded-2xl p-4 cursor-pointer !h-fit"
+                          onClick={() =>
+                            handleTypeClick(item.category.name[currentLanguage])
+                          }
+                        >
+                          <div className="bg-img w-full aspect-sq uare rounded-xl overflow-hidden mb-4">
+                            <Image
+                              src={item.image || "/images/logo.png"}
+                              width={300}
+                              height={300}
+                              alt={item.category.name[currentLanguage]}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="name text-button text-center">
+                            {item.category.name[currentLanguage]}
+                          </div>
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                  )
+              }
         </div>
       </div>
     </div>
