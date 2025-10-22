@@ -661,7 +661,7 @@ const MenuEight = () => {
                     openSubMenuDepartment ? "open" : ""
                   }`}
                 >
-                  {categories?.map((cat) => {
+                  {categories && categories?.map((cat) => {
                     return (
                       <div key={cat.id} className="item block">
                         <Link
