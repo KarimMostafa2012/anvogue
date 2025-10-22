@@ -98,9 +98,11 @@ const ModalNewsletter = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setOpen(true);
-    }, 3000);
+      if(popup != null && popup != undefined){
+        setTimeout(() => {
+          setOpen(true);
+        }, 3000);
+      }
   }, []);
 
   return (
