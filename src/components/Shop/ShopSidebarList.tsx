@@ -494,7 +494,7 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
               {/* Category filter */}
               <div className="filter-type pb-8 border-b border-line">
                 <div className="heading6">{t("shop.sidebar.categories")}</div>
-                {categories.length > 0 && (
+                {(categories != undefined && categories?.length > 0) && (
                     <div className="list-type mt-4">
                       {categories?.map((item, index) => (
                         <div

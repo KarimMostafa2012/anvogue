@@ -523,7 +523,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       <div className="container">
                         <div className="flex justify-between py-8">
                         {
-                            subCategories.length > 0 && (
+                            (subCategories != undefined && subCategories?.length > 0) && (
                               <div className="nav-link basis-2/3 grid grid-cols-4 gap-y-8">
                                 {subCategories?.map((subCat) => {
                                   let i = 0;
@@ -920,7 +920,7 @@ const MenuOne: React.FC<Props> = ({ props, lang = "de" }) => {
                       </div>
                       <div className="list-nav-item w-full pt-3 pb-12">
                       {
-                          subCategories.length > 0 && (
+                          (subCategories != undefined && subCategories?.length > 0) && (
                                 <div className="nav-link grid grid-cols-2 gap-5 gap-y-6">
                                   {subCategories?.map((subCat) => {
                                     let i = 0;
