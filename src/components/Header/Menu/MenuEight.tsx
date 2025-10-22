@@ -700,6 +700,8 @@ const MenuEight = () => {
                     <div className="mega-menu absolute top-[44px] left-0 bg-white w-screen">
                       <div className="container">
                         <div className="flex justify-between py-8">
+                          {
+                              subCategories.length > 0 && (
                           <div className="nav-link basis-2/3 grid grid-cols-4 gap-y-8">
                             {subCategories?.map((subCat) => {
                               let i = 0;
@@ -759,6 +761,8 @@ const MenuEight = () => {
                               );
                             })}
                           </div>
+                                )
+                            }
                           <div className="banner-ads-block ps-2.5 basis-1/3">
                             {products.length > 0 &&
                               products.slice(0, 2).map((prod, i) => {
@@ -1022,56 +1026,60 @@ const MenuEight = () => {
                         {t("menu.mobile.back")}
                       </div>
                       <div className="list-nav-item w-full pt-3 pb-12">
-                        <div className="nav-link grid grid-cols-2 gap-5 gap-y-6">
-                          {subCategories?.map((subCat) => {
-                            let i = 0;
-                            let show = shadowCat != subCat.category.name;
-                            let onTime = true;
-                            shadowCat =
-                              shadowCat == subCat.category.name
-                                ? shadowCat
-                                : subCat.category.name;
-                            return (
-                              show && (
-                                <div className="nav-item" key={subCat.id}>
-                                  <div className="text-button-uppercase pb-1">
-                                    {subCat.category.name}
-                                  </div>
-                                  <ul>
-                                    {subCategories.map((subCatName) => {
-                                      if (
-                                        subCatName.category.name == shadowCat &&
-                                        i <= 4
-                                      ) {
-                                        i++;
-                                        return (
-                                          <li key={subCatName.id}>
-                                            <div
-                                              className={`link text-secondary duration-300 cursor-pointer`}
-                                            >
-                                              {subCatName.name}
-                                            </div>
-                                          </li>
-                                        );
-                                      } else if (i == 5) {
-                                        i++;
-                                        return (
-                                          <li key={subCatName.id}>
-                                            <div
-                                              className={`link text-secondary duration-300 cursor-pointer`}
-                                            >
-                                              {t("viewMore")}
-                                            </div>
-                                          </li>
-                                        );
-                                      }
-                                    })}
-                                  </ul>
-                                </div>
-                              )
-                            );
-                          })}
-                        </div>
+                      {
+                          subCategories.length > 0  && (
+                            <div className="nav-link grid grid-cols-2 gap-5 gap-y-6">
+                              {subCategories?.map((subCat) => {
+                                let i = 0;
+                                let show = shadowCat != subCat.category.name;
+                                let onTime = true;
+                                shadowCat =
+                                  shadowCat == subCat.category.name
+                                    ? shadowCat
+                                    : subCat.category.name;
+                                return (
+                                  show && (
+                                    <div className="nav-item" key={subCat.id}>
+                                      <div className="text-button-uppercase pb-1">
+                                        {subCat.category.name}
+                                      </div>
+                                      <ul>
+                                        {subCategories.map((subCatName) => {
+                                          if (
+                                            subCatName.category.name == shadowCat &&
+                                            i <= 4
+                                          ) {
+                                            i++;
+                                            return (
+                                              <li key={subCatName.id}>
+                                                <div
+                                                  className={`link text-secondary duration-300 cursor-pointer`}
+                                                >
+                                                  {subCatName.name}
+                                                </div>
+                                              </li>
+                                            );
+                                          } else if (i == 5) {
+                                            i++;
+                                            return (
+                                              <li key={subCatName.id}>
+                                                <div
+                                                  className={`link text-secondary duration-300 cursor-pointer`}
+                                                >
+                                                  {t("viewMore")}
+                                                </div>
+                                              </li>
+                                            );
+                                          }
+                                        })}
+                                      </ul>
+                                    </div>
+                                  )
+                                );
+                              })}
+                            </div>
+                          )
+                      }
                         <div className="banner-ads-block ps-2.5 basis-1/3">
                           {products.length > 0 &&
                             products.slice(0, 2).map((prod, i) => {
