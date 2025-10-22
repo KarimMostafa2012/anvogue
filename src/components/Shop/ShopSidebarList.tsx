@@ -570,26 +570,28 @@ const ShopSidebarList = ({ className }: ShopSidebarListProps) => {
               {/* Color filter */}
               <div className="filter-color pb-8 border-b border-line mt-8">
                 <div className="heading6">{t("shop.sidebar.colors")}</div>
-                <div className="list-color flex items-center flex-wrap gap-3 gap-y-4 mt-4">
-                  {colors
-                    .slice(0, showMore ? colors.length : 59)
-                    .map((color, i) => (
-                      <div
-                        key={i}
-                        className={`color-item flex items-center justify-center gap-2 rounded-full border border-line ${
-                          localState.selectedColor === color.color
-                            ? "border-[rgba(0,0,0,0.5)] border-[2px]"
-                            : ""
-                        }`}
-                        onClick={() => handleColorChange(color.color)}
-                      >
-                        <div
-                          className="color w-5 h-5 rounded-full border-[1px] border-[rgba(0,0,0,0.4)]"
-                          style={{ backgroundColor: color.color }}
-                        ></div>
-                      </div>
-                    ))}
-                </div>
+                {
+                    colors.length > 0 && (
+                        <div className="list-color flex items-center flex-wrap gap-3 gap-y-4 mt-4">
+                          {colors?.slice(0, showMore ? colors.length : 59)?.map((color, i) => (
+                              <div
+                                key={i}
+                                className={`color-item flex items-center justify-center gap-2 rounded-full border border-line ${
+                                  localState.selectedColor === color.color
+                                    ? "border-[rgba(0,0,0,0.5)] border-[2px]"
+                                    : ""
+                                }`}
+                                onClick={() => handleColorChange(color.color)}
+                              >
+                                <div
+                                  className="color w-5 h-5 rounded-full border-[1px] border-[rgba(0,0,0,0.4)]"
+                                  style={{ backgroundColor: color.color }}
+                                ></div>
+                              </div>
+                            ))}
+                        </div>
+                        )
+                    }
                 {colors.length > 59 && (
                   <button
                     className="block w-full text-center font-medium text-[14px] mt-2"
