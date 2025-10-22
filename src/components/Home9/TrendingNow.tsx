@@ -108,7 +108,7 @@ const TrendingNow = () => {
             }
           `}</style>
           {
-              categories.length > 0 && (
+              categories?.length > 0 && (
                   <Swiper
                     spaceBetween={6}
                     slidesPerView={1}
