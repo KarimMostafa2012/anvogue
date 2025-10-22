@@ -657,7 +657,7 @@ const MenuEight = () => {
                   />
                 </div>
                 {
-                    categories?.length > 0 && (
+                    (categories != undefined && categories?.length > 0) && (
                         <div
                           className={`sub-menu-department absolute top-[44px] left-0 right-0 h-max bg-white rounded-b-2xl ${
                             openSubMenuDepartment ? "open" : ""
